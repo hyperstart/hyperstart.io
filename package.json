@@ -12,6 +12,7 @@
     "start": "parcel src/index.html"
   },
   "dependencies": {
+    "firebase": "^4.10.1",
     "hyperapp": "1.1.2",
     "hyperapp-context": "0.1.0",
     "spectre.css": "0.5.1"

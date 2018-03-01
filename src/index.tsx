@@ -3,7 +3,7 @@ import { h, app } from "hyperapp"
 // import { combineModules } from "./utils"
 
 const state = {
-  name: "world"
+  name: "world 2"
 }
 
 const actions = {
