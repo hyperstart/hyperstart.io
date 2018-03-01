@@ -1,3 +1,4 @@
+import { ModuleActions } from "api"
 import { projects } from "projects"
 
 export namespace editor {
@@ -24,7 +25,7 @@ export namespace editor {
 
   // # Actions
 
-  export interface Actions {
+  export interface Actions extends ModuleActions {
     localStore: projects.Actions
     sources: SourcesActions
     open(project: projects.Project)

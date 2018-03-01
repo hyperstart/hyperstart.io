@@ -1,3 +1,5 @@
+import { ModuleActions } from "api"
+
 export namespace projects {
   // # Files
 
@@ -81,7 +83,7 @@ export namespace projects {
     files: Files
   }
 
-  export interface Actions {
+  export interface Actions extends ModuleActions {
     // ## Projects
     add(project: Project): Promise<void>
     update(project: UpdatedProject): Promise<void>

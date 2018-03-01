@@ -5,7 +5,11 @@
     "rootDirs": ["src"],
     "paths": {
       "lib/*": ["src/lib/*"],
-      "projects": ["src/projects"]
+      "api": ["src/api.ts"],
+      "editor": ["src/editor/api.ts"],
+      "logger": ["src/logger/api.ts"],
+      "projects": ["src/projects/api.ts"],
+      "users": ["src/users/api.ts"]
     },
     "moduleResolution": "node",
     "target": "es5",

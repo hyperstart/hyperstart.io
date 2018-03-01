@@ -1,5 +1,7 @@
 import firebase from "firebase"
 
+import { ModuleActions } from "api"
+
 export namespace users {
   // # Authentication
 
@@ -27,9 +29,10 @@ export namespace users {
 
   // # Actions
 
-  export interface Actions {
-    init(listeners: AuthenticationListener[]): void
+  export interface Actions extends ModuleActions {
+    initFirebase(listeners: AuthenticationListener[]): void
     setUser(user?: firebase.User): void
     tryLogout(): Promise<void>
+    getState(): State
   }
 }

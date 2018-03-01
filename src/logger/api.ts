@@ -1,3 +1,5 @@
+import { ModuleActions } from "api"
+
 export namespace logger {
   // # Log Entry
 
@@ -24,7 +26,7 @@ export namespace logger {
 
   // # Actions
 
-  export interface Actions {
+  export interface Actions extends ModuleActions {
     log(entry: LogEntry): void
     clearCurrent(entry?: LogEntry): void
   }
