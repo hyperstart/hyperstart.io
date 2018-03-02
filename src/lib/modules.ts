@@ -7,15 +7,9 @@ export interface Modules {
   [name: string]: Module
 }
 
-export function combineModules(tree: Module & Modules): Modules {
-  const modules = {}
-
-  for (let name in tree.modules || {}) {
-    modules[name] = combineModules(tree.modules[name])
-  }
-
-  const state = tree.state || {}
-  const actions = tree.actions || {}
+export function combine(modules: Modules, root?: Module): Module {
+  const state = root ? root.state : {}
+  const actions = root ? root.actions : {}
 
   for (let name in modules) {
     state[name] = modules[name].state || {}

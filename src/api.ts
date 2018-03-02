@@ -1,7 +1,7 @@
-import { editor } from "editor"
-import { logger } from "logger"
-import { projects } from "projects"
-import { users } from "users"
+import * as editor from "editor"
+import * as logger from "logger"
+import * as projects from "projects"
+import * as users from "users"
 
 // # State
 
@@ -19,8 +19,10 @@ export interface Actions {
   logger: logger.Actions
   projects: projects.Actions
   users: users.Actions
+  init(): void
 }
 
-export interface ModuleActions {
+export interface ModuleActions<State> {
   init(actions: Actions): void
+  getState(): State
 }

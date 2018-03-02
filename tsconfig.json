@@ -4,6 +4,8 @@
     "rootDir": ".",
     "rootDirs": ["src"],
     "paths": {
+      "src/*": ["src/*"],
+      "lib": ["src/lib"],
       "lib/*": ["src/lib/*"],
       "api": ["src/api.ts"],
       "editor": ["src/editor/api.ts"],

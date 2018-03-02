@@ -1,33 +1,31 @@
 import { ModuleActions } from "api"
 
-export namespace logger {
-  // # Log Entry
+// # Log Entry
 
-  export enum Severity {
-    LOADING,
-    SUCCESS,
-    INFO,
-    WARNING,
-    ERROR
-  }
+export enum Severity {
+  LOADING,
+  SUCCESS,
+  INFO,
+  WARNING,
+  ERROR
+}
 
-  export interface LogEntry {
-    lseverity: Severity
-    message?: string
-    detailedMessage?: string
-  }
+export interface LogEntry {
+  lseverity: Severity
+  message?: string
+  detailedMessage?: string
+}
 
-  // # State
+// # State
 
-  export interface State {
-    entries: LogEntry[]
-    current?: LogEntry
-  }
+export interface State {
+  entries: LogEntry[]
+  current?: LogEntry
+}
 
-  // # Actions
+// # Actions
 
-  export interface Actions extends ModuleActions {
-    log(entry: LogEntry): void
-    clearCurrent(entry?: LogEntry): void
-  }
+export interface Actions extends ModuleActions<State> {
+  log(entry: LogEntry): void
+  clearCurrent(entry?: LogEntry): void
 }

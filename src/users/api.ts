@@ -2,37 +2,35 @@ import firebase from "firebase"
 
 import { ModuleActions } from "api"
 
-export namespace users {
-  // # Authentication
+// # Authentication
 
-  export interface AuthenticationListener {
-    (user?: User): void
+export interface AuthenticationListener {
+  (user?: User): void
+}
+
+// # User
+
+export interface User {
+  id: string
+  displayName: string
+  email: string
+  emailVerified: boolean
+}
+
+// # State
+
+export interface State {
+  currentUser?: User
+  usersById: {
+    [id: string]: User
   }
+}
 
-  // # User
+// # Actions
 
-  export interface User {
-    id: string
-    displayName: string
-    email: string
-    emailVerified: boolean
-  }
-
-  // # State
-
-  export interface State {
-    currentUser?: User
-    usersById: {
-      [id: string]: User
-    }
-  }
-
-  // # Actions
-
-  export interface Actions extends ModuleActions {
-    initFirebase(listeners: AuthenticationListener[]): void
-    setUser(user?: firebase.User): void
-    tryLogout(): Promise<void>
-    getState(): State
-  }
+export interface Actions extends ModuleActions<State> {
+  initFirebase(listeners: AuthenticationListener[]): void
+  setUser(user?: firebase.User): void
+  tryLogout(): Promise<void>
+  getState(): State
 }
