@@ -7,6 +7,7 @@ import * as users from "users"
 
 export interface State {
   editor: editor.State
+  location: any
   logger: logger.State
   projects: projects.State
   users: users.State
@@ -16,6 +17,7 @@ export interface State {
 
 export interface Actions {
   editor: editor.Actions
+  location: any
   logger: logger.Actions
   projects: projects.Actions
   users: users.Actions

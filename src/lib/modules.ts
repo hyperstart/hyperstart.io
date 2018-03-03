@@ -3,6 +3,8 @@ export interface Module<State = any, Actions = any> {
   actions: Actions
 }
 
+/*
+
 export interface Modules {
   [name: string]: Module
 }
@@ -17,6 +19,24 @@ export function combine(modules: Modules, root?: Module): Module {
   }
 
   return { state, actions }
+}
+*/
+
+interface Mod<State = any, Actions = any> {
+  modules: {
+    [key: string]: Mod
+  }
+  state: State
+  actions: Actions
+}
+
+type MergedModule<Module extends Mod> = {
+  state: {
+    // TODO
+  }
+  actions: {
+    // TODO
+  }
 }
 
 export type ActionResult<State> = Partial<State> | Promise<any> | null | void

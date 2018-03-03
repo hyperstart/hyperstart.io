@@ -29,3 +29,21 @@ export const getErrorMessage = (error: string | Error): string => {
   }
   return error.message
 }
+
+/**
+ * Generic compare function that works with any primitive type including null and undefined.
+ */
+export const compare = (obj1: any, obj2: any): number => {
+  if (obj1 === obj2) {
+    return 0
+  }
+
+  if (obj1 === undefined) {
+    return 1
+  } else if (obj1 === null) {
+    return obj2 === undefined ? -1 : 1
+  } else if (obj2 === null || obj2 === undefined) {
+    return -1
+  }
+  return obj1 < obj2 ? -1 : 1
+}

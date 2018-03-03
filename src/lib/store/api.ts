@@ -31,6 +31,7 @@ export interface QueryPayload {
 
 export interface DocumentToCreate {
   collection: string
+  id?: string
   document: any
 }
 
