@@ -3,6 +3,7 @@ import * as router from "lib/router"
 import * as editor from "editor"
 import * as logger from "logger"
 import * as projects from "projects"
+import * as search from "search"
 import * as users from "users"
 
 // # State
@@ -12,6 +13,7 @@ export interface State {
   logger: logger.State
   projects: projects.State
   router: router.State
+  search: search.State
   users: users.State
 }
 
@@ -22,6 +24,7 @@ export interface Actions {
   logger: logger.Actions
   projects: projects.Actions
   router: router.Actions
+  search: search.Actions
   users: users.Actions
   init(): void
 }

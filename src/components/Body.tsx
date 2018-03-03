@@ -1,8 +1,6 @@
 import { h } from "hyperapp"
 
-import { Routes } from "lib/router"
-
-import "./Body.scss"
+import { replace, Routes } from "lib/router"
 
 import { State, Actions } from "../api"
 
@@ -24,6 +22,7 @@ function ProjectSearchPage() {
 }
 
 function RediredToIndexPage() {
+  replace("/")
   return <div>Redirect</div>
 }
 

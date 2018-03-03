@@ -2,10 +2,11 @@ import { create as createRouter } from "lib/router"
 import { ModuleImpl } from "lib/modules"
 
 import { State, Actions } from "./api"
-import { editor } from "./editor"
-import { logger } from "./logger"
-import { projects } from "./projects"
-import { users } from "./users"
+import { editor } from "editor"
+import { logger } from "logger"
+import { projects } from "projects"
+import { search } from "search"
+import { users } from "users"
 
 const router = createRouter()
 
@@ -15,6 +16,7 @@ export const app: ModuleImpl<State, Actions> = {
     logger: logger.state,
     projects: projects.state,
     router: router.state,
+    search: search.state,
     users: users.state
   },
   actions: {
@@ -22,6 +24,7 @@ export const app: ModuleImpl<State, Actions> = {
     logger: logger.actions,
     projects: projects.actions,
     router: router.actions,
+    search: search.actions,
     users: users.actions,
 
     init: () => (_, actions) => {
