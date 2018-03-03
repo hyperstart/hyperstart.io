@@ -31,20 +31,21 @@ export interface Owner {
 export interface Details {
   id: string
   name: string
+  owner?: Owner
   mainFile?: string
   hidden?: boolean
   url?: string
   version?: string
 }
 
-export interface ProjectStatus {
+export interface Status {
   loading?: boolean
   error?: string
 }
 
 export interface Project {
   details: Details
-  state: State
+  status: Status
   files?: Files
 }
 
