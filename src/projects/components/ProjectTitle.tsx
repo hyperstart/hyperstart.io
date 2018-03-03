@@ -4,26 +4,22 @@ import { UrlIcon } from "lib/components"
 
 import { Details } from "../api"
 
-// # Artifact Owner
+// # Project Title
 
-export interface ArtifactOwnerProps {
+export interface ProjectTitleProps {
   project: Details
   Tag?: string
-  class: string
+  className?: string
 }
 
-export function ArtifactOwner(props: ArtifactOwnerProps) {
-  const { project, Tag = "span" } = props
-  const name =
-    project.owner && project.owner.displayName
-      ? project.owner.displayName
-      : "Anonymous User"
-  const url = project.owner && project.owner.url ? project.owner.url : ""
+export const ProjectTitle = (props: ProjectTitleProps) => {
+  const { project, className = "", Tag = "span" } = props
 
   return (
-    <Tag class={props.class}>
-      {name + " "}
-      <UrlIcon url={url} />
+    <Tag class={className}>
+      {project.name + " "}
+      <UrlIcon url={project.url} />
+      {project.version ? <small> v{project.version}</small> : ""}
     </Tag>
   )
 }
