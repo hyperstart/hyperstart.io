@@ -21,11 +21,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
   const onsubmit = (e: Event) => {
     if (createProject.template) {
       e.preventDefault()
-      actions.ui.closeCreateProject()
-      actions.projects.createAndSave(createProject.template).then(project => {
-        actions.editor.open(project)
-        replace("/projects/" + project.details.id)
-      })
+      actions.createProject()
     }
   }
 

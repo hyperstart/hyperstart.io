@@ -1,5 +1,6 @@
 import { ModuleActions } from "api"
 import * as projects from "projects"
+
 // # Sources
 
 export interface SourcesState {
@@ -45,7 +46,11 @@ export interface FilesActions {
 
 // # State
 
+export type Status = "closed" | "loading" | "editing" | "error"
+
 export interface State {
+  project?: projects.Details
+  status: Status
   files: FilesState
   localStore: projects.State
   sources: SourcesState

@@ -21,6 +21,11 @@ export interface State {
 
 // # Actions
 
+export interface FetchProjectPayload {
+  id: string
+  open?: boolean
+}
+
 export interface Actions {
   editor: editor.Actions
   logger: logger.Actions
@@ -30,6 +35,8 @@ export interface Actions {
   ui: ui.Actions
   users: users.Actions
   init(): void
+  createProject(): Promise<void> | null
+  fetchProject(payload: FetchProjectPayload): Promise<projects.Project> | null
 }
 
 export interface ModuleActions<State> {

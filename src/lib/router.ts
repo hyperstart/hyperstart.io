@@ -11,6 +11,17 @@ function clearSlashes(path: string) {
   )
 }
 
+export interface Params {
+  [key: string]: string
+}
+
+export interface Match {
+  location: string
+  path: String
+  /** { [key: string]: string } */
+  params: any
+}
+
 function getMatch(location: string, path: string, exact: boolean) {
   const params = {}
   if (location === path) {
