@@ -13,6 +13,7 @@ export interface IndexPageProps {
 
 export function IndexPage(props: IndexPageProps) {
   const { state, actions } = props
+
   return (
     <div class="index-page">
       <h1>Welcome to Hyperstart</h1>
