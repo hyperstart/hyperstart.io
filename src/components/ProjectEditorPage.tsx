@@ -3,6 +3,7 @@ import { h } from "hyperapp"
 import { Match, replace } from "lib/router"
 
 import { State, Actions } from "api"
+import { Editor } from "editor/Editor"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./ProjectEditorPage"
@@ -32,6 +33,5 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
     )
   }
 
-  // TODO
-  return <div>TODO add editor here.</div>
+  return Editor({ state: state.editor, actions: actions.editor })
 }
