@@ -53,16 +53,11 @@ export interface State {
 
 // # Actions
 
-export interface OpenPayload {
-  project: projects.Project
-  save: boolean
-}
-
 export interface Actions extends ModuleActions<State> {
   files: FilesActions
   localStore: projects.Actions
   sources: SourcesActions
-  open(payload: OpenPayload): Promise<void>
+  open(project: projects.Project)
   close()
   submitEdits(): Promise<void>
   setOwner(owner: projects.Owner): Promise<void>

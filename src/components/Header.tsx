@@ -2,8 +2,8 @@ import { h } from "hyperapp"
 
 import { Link } from "lib/router"
 
-import { State, Actions } from "../api"
-import { Status } from "../logger"
+import { State, Actions } from "api"
+import { Status } from "logger"
 
 import "./Header.scss"
 

@@ -1,0 +1,14 @@
+.create-project-modal .modal-container {
+  .modal-body .card {
+    width: 280px;
+    margin: 11px;
+    padding: 1px;
+
+    &.active {
+      background-color: $bg-color;
+      border: 3px solid $primary-color-dark;
+      padding: 0px;
+      margin: 10px;
+    }
+  }
+}

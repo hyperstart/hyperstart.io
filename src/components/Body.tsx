@@ -2,7 +2,7 @@ import { h } from "hyperapp"
 
 import { replace, Routes } from "lib/router"
 
-import { State, Actions } from "../api"
+import { State, Actions } from "api"
 
 export interface BodyProps {
   state: State

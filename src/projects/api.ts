@@ -20,6 +20,8 @@ export interface Files {
 
 // # Project
 
+export type Template = "hyperapp" | "blank"
+
 export interface Owner {
   id: string
   displayName: string
@@ -84,6 +86,7 @@ export interface ImportedProject {
 
 export interface Actions extends ModuleActions<State> {
   // ## Projects
+  createAndSave(template: Template): Promise<Project>
   add(project: Project): Promise<void>
   update(project: UpdatedProject): Promise<void>
   fetch(id: string): Promise<Project>
