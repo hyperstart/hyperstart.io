@@ -9,7 +9,7 @@ import { Details } from "../api"
 export interface ProjectOwnerProps {
   project: Details
   Tag?: string
-  class: string
+  class?: string
 }
 
 export function ProjectOwner(props: ProjectOwnerProps) {

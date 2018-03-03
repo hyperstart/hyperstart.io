@@ -9,14 +9,14 @@ import { Details } from "../api"
 export interface ProjectTitleProps {
   project: Details
   Tag?: string
-  className?: string
+  class?: string
 }
 
 export const ProjectTitle = (props: ProjectTitleProps) => {
-  const { project, className = "", Tag = "span" } = props
+  const { project, Tag = "span" } = props
 
   return (
-    <Tag class={className}>
+    <Tag class={props.class || ""}>
       {project.name + " "}
       <UrlIcon url={project.url} />
       {project.version ? <small> v{project.version}</small> : ""}

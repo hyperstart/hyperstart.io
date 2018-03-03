@@ -60,8 +60,7 @@ const view = (state, actions) => (
 app(state, actions, view, document.body)
 `
 
-// This is only there for local execution
-// TODO replace with fetch to githubraw
+// This is not used.
 const hyperappJs = `
 export function h(name, props) {
   var node
