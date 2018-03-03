@@ -1,8 +1,19 @@
 import { h, VNode } from "hyperapp"
 
-/**
- * Utilities
- */
+// # Utilities
+
+export function toAbsolute(base: string, relative: string): string {
+  const stack = base.split("/")
+  const parts = relative.split("/")
+
+  stack.pop()
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i] == ".") continue
+    if (parts[i] == "..") stack.pop()
+    else stack.push(parts[i])
+  }
+  return stack.join("/")
+}
 
 function clearSlashes(path: string) {
   return path.substring(
@@ -55,11 +66,54 @@ function getMatch(location: string, path: string, exact: boolean) {
   return { location, path, params }
 }
 
+// # Interceptors
+
+const INTERCEPTORS = []
+
+const intercept = (url: string): boolean =>
+  INTERCEPTORS.reduce((prev, interceptor) => prev && interceptor(url), true)
+
+window.onpopstate = e => {
+  const allowed = intercept(window.location.href)
+  if (!allowed) {
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    history.go(1)
+  }
+}
+
+export interface RouteChangeInterceptor {
+  /**
+   * return false if prevent route change
+   */
+  (newUrl: string): boolean
+}
+
+export function addInterceptor(interceptor: RouteChangeInterceptor): void {
+  INTERCEPTORS.push(interceptor)
+}
+
+export function removeInterceptor(interceptor: RouteChangeInterceptor): void {
+  const index = INTERCEPTORS.findIndex(i => i === interceptor)
+  if (index >= 0) {
+    INTERCEPTORS.splice(index)
+  }
+}
+
+// # Listeners
+
 const LISTENERS = []
 
-/**
- * Exports
- */
+export function listen(path, listener, exact) {
+  LISTENERS.push(() => {
+    const result = getMatch(window.location.pathname, path, exact)
+    if (result) {
+      listener(result)
+    }
+  })
+}
+
+// # Module
 
 export interface State {
   location: string
@@ -90,9 +144,13 @@ export function create(): Module {
   }
 }
 
+// # Navigation functions
+
 export function push(url) {
-  history.pushState(null, null, url)
-  LISTENERS.forEach(u => u())
+  if (intercept(url)) {
+    history.pushState(null, null, url)
+    LISTENERS.forEach(u => u())
+  }
 }
 
 export function back() {
@@ -106,18 +164,15 @@ export function forward() {
 }
 
 export function replace(url) {
-  history.replaceState(null, null, url)
-  LISTENERS.forEach(u => u())
+  if (intercept(url)) {
+    history.replaceState(null, null, url)
+    LISTENERS.forEach(u => u())
+  }
 }
 
-export function listen(path, listener, exact) {
-  LISTENERS.push(() => {
-    const result = getMatch(window.location.pathname, path, exact)
-    if (result) {
-      listener(result)
-    }
-  })
-}
+// # Components
+
+// ## Link
 
 export function Link(props, children) {
   props.onclick = function(e) {
@@ -142,6 +197,8 @@ export function Link(props, children) {
 
   return h("a", props, children)
 }
+
+// ## Routes
 
 export interface Route {
   path: string
