@@ -12,6 +12,7 @@
     "start": "parcel src/index.html"
   },
   "dependencies": {
+    "@hyperapp/router": "^0.4.1",
     "firebase": "^4.10.1",
     "hyperapp": "1.1.2",
     "hyperapp-context": "0.1.0",
