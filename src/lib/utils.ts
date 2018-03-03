@@ -1,4 +1,24 @@
 /**
+ * Type for Map<String, T>.
+ */
+export interface StringMap<T> {
+  [key: string]: T
+}
+
+const ALPHABET =
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_~"
+const SIZE = 12
+const rand = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)]
+
+/**
+ * Function to generate a GUID.
+ */
+export const guid = (): string =>
+  Array.apply(null, Array(SIZE))
+    .map(rand)
+    .join("")
+
+/**
  * Creates a promise that resolves to the given value after the given timeout.
  */
 export const resolveAfter = <T>(value: T, timeout: number): Promise<T> => {

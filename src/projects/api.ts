@@ -1,3 +1,5 @@
+import { Searches } from "lib/search"
+
 import { ModuleActions } from "api"
 
 // # Files
@@ -31,6 +33,7 @@ export interface Owner {
 export interface Details {
   id: string
   name: string
+  searches: Searches
   owner?: Owner
   mainFile?: string
   hidden?: boolean
