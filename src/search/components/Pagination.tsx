@@ -5,12 +5,12 @@ import { State, Actions } from "../api"
 export interface PaginationProps {
   state: State
   actions: Actions
-  name?: string
+  name: string
   hidden?: boolean
 }
 
 export function Pagination(props: PaginationProps) {
-  const { state, actions, name = "default", hidden } = props
+  const { state, actions, name, hidden } = props
   const search = state[name]
   const page = search.currentPage
   const prevDisabled = page === 0

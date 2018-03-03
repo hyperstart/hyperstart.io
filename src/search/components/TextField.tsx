@@ -6,13 +6,13 @@ export interface TextFieldProps {
   state: State
   actions: Actions
   type: "field" | "pane"
-  name?: string
+  name: string
   placeholder?: string
   displaySearchButton?: boolean
 }
 
 export function TextField(props: TextFieldProps) {
-  const { state, actions, name = "default", type } = props
+  const { state, actions, name, type } = props
   const valueAttr = type === "field" ? "fieldText" : "paneText"
   const search = state[name] || {}
   return (

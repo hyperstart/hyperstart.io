@@ -6,9 +6,8 @@ import { TextField, SearchResults } from "./components"
 export interface SearchPaneProps {
   state: State
   actions: Actions
+  name: string
   resultView: SingleResultView
-  /** Defaults to "default" */
-  name?: string
   placeholder?: string
   aroundResults?: () => any | string
   singleResultViewProps?: any

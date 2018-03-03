@@ -9,7 +9,7 @@ export interface SearchResultsProps {
   state: State
   actions: Actions
   resultView: SingleResultView
-  name?: string
+  name: string
   aroundResults?: () => any | string
   singleResultViewProps?: any
   hideTopPagination?: boolean
@@ -20,7 +20,7 @@ export function SearchResults(props: SearchResultsProps) {
   const {
     state,
     actions,
-    name = "default",
+    name,
     resultView,
     hideBottomPagination,
     hideTopPagination

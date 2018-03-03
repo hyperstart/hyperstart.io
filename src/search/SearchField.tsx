@@ -6,8 +6,7 @@ import { TextField, SearchResults } from "./components"
 export interface SearchFieldProps {
   state: State
   actions: Actions
-  /** Defaults to "default" */
-  name?: string
+  name: string
   placeholder?: string
 }
 
