@@ -1,5 +1,10 @@
 import { h } from "hyperapp"
 
 import { State, Actions } from "./api"
+import { Header } from "./components"
 
-export const view = (state: State, actions: Actions) => <div>Hello world!</div>
+import "./view.scss"
+
+export function view(state: State, actions: Actions) {
+  return <main class="main">{Header({ state, actions })}</main>
+}

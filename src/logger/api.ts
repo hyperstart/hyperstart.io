@@ -2,16 +2,10 @@ import { ModuleActions } from "api"
 
 // # Log Entry
 
-export enum Severity {
-  LOADING,
-  SUCCESS,
-  INFO,
-  WARNING,
-  ERROR
-}
+export type Severity = "loading" | "success" | "info" | "warning" | "error"
 
 export interface LogEntry {
-  lseverity: Severity
+  severity: Severity
   message?: string
   detailedMessage?: string
 }
