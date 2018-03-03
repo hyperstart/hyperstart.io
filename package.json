@@ -12,7 +12,6 @@
     "start": "parcel src/index.html"
   },
   "dependencies": {
-    "@hyperapp/router": "^0.4.1",
     "firebase": "^4.10.1",
     "hyperapp": "1.1.2",
     "hyperapp-context": "0.1.0",
@@ -21,6 +20,7 @@
   "devDependencies": {
     "node-sass": "^4.7.2",
     "parcel-bundler": "^1.6.2",
+    "parcel-plugin-typescript": "^0.7.0",
     "typescript": "^2.7.2"
   },
   "prettier": {

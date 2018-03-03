@@ -2,16 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
-    "rootDirs": ["src"],
     "paths": {
-      "src/*": ["src/*"],
-      "lib": ["src/lib"],
-      "lib/*": ["src/lib/*"],
-      "api": ["src/api.ts"],
-      "editor": ["src/editor/api.ts"],
-      "logger": ["src/logger/api.ts"],
-      "projects": ["src/projects/api.ts"],
-      "users": ["src/users/api.ts"]
+      "*": ["src/*"]
     },
     "moduleResolution": "node",
     "target": "es5",
@@ -27,5 +19,5 @@
     "declarationDir": "dist",
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src"]
+  "include": ["src/**"]
 }

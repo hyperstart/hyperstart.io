@@ -1,5 +1,4 @@
-import { location } from "@hyperapp/router"
-
+import { create as createRouter } from "lib/router"
 import { ModuleImpl } from "lib/modules"
 
 import { State, Actions } from "./api"
@@ -8,22 +7,26 @@ import { logger } from "./logger"
 import { projects } from "./projects"
 import { users } from "./users"
 
+const router = createRouter()
+
 export const app: ModuleImpl<State, Actions> = {
   state: {
     editor: editor.state,
-    location: location.state,
     logger: logger.state,
     projects: projects.state,
+    router: router.state,
     users: users.state
   },
   actions: {
     editor: editor.actions,
-    location: location.actions,
     logger: logger.actions,
     projects: projects.actions,
+    router: router.actions,
     users: users.actions,
 
     init: () => (_, actions) => {
+      actions.router.init()
+
       // TODO
       // actions.editor.init(actions)
       // actions.logger.init(actions)

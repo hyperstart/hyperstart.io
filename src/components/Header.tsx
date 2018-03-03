@@ -1,5 +1,6 @@
 import { h } from "hyperapp"
-import { Link } from "@hyperapp/router"
+
+import { Link } from "lib/router"
 
 import { State, Actions } from "../api"
 import { Status } from "../logger"
