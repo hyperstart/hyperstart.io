@@ -1,0 +1,14 @@
+.split-pane {
+  display: flex;
+  flex: "1 1 auto";
+  flex-direction: row;
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  .resizer {
+    outline: solid 1px #ccc;
+    flex: 0 0 1px;
+  }
+}
