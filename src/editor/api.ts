@@ -1,67 +1,31 @@
 import { ModuleActions } from "api"
 import * as projects from "projects"
+import { FileTree } from "projects/fileTree"
 
-// # Sources
-
-export interface SourcesState {
-  opened: string[]
-  selected: string[]
-}
-
-export interface SourcesActions {
-  open(sources: string | string[], clearOpened?: boolean)
-  close(sources: string | string[])
-  closeAll()
-  select(source: string | null)
-}
-
-// # Files
-
-// ## State
-
-export interface FilesState {
-  // TODO
-}
-
-// ## Actions
-
-export interface CreateFilePayload {
-  type: "file" | "folder"
-  name: string
-  parent?: projects.File
-}
-
-export interface SetContentPayload {
-  path: string
-  content: string
-}
-
-export interface FilesActions {
-  toggleExpanded(path: string)
-  create(file: CreateFilePayload): Promise<void>
-  delete(file: string | projects.File): Promise<void>
-  preview(file: string | projects.File)
-  setContent(source: SetContentPayload)
-}
+import * as files from "./files/api"
+import * as sources from "./sources/api"
+import * as ui from "./ui/api"
 
 // # State
 
 export type Status = "closed" | "loading" | "editing" | "error"
 
 export interface State {
+  files: files.State
+  localStore: projects.State
   project?: projects.Details
   status: Status
-  files: FilesState
-  localStore: projects.State
-  sources: SourcesState
+  sources: sources.State
+  ui: ui.State
 }
 
 // # Actions
 
 export interface Actions extends ModuleActions<State> {
-  files: FilesActions
+  files: files.Actions
   localStore: projects.Actions
-  sources: SourcesActions
+  sources: sources.Actions
+  ui: ui.Actions
   open(project: projects.Project)
   close()
   submitEdits(): Promise<void>
