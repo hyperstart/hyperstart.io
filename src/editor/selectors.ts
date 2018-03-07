@@ -14,5 +14,14 @@ export function isDirty(source: SourceNode): boolean {
   return source.content !== source.original
 }
 
-export const isNotFound = (file: any): file is FileNotFound =>
-  file.notFound === true
+export function isNotFound(file: any): file is FileNotFound {
+  return file.notFound === true
+}
+
+export function getPreviewedFile(state: State): SourceNode | null {
+  const id = state.ui.previewedFile
+  if (!id) {
+    return null
+  }
+  return (state.files.byId[id] as SourceNode) || null
+}

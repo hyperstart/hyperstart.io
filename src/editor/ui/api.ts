@@ -16,6 +16,7 @@ export interface State {
   importProjectDialog?: ImportProjectDialog
   deletingFile?: FileNode
   selectedFile?: string
+  previewedFile?: string
 }
 
 // # Actions
@@ -45,5 +46,7 @@ export interface Actions {
   openCreateFileModal(payload: OpenFileModalPayload)
   closeCreateFileModal()
   // ## Selected file
-  select(file: string | null)
+  select(fileId: string | null)
+  // ## Previewed file
+  preview(fileId: string | null)
 }

@@ -42,7 +42,6 @@ export interface FileItemProps {
   state: State
   actions: Actions
   file: SourceNode
-  onSelectFile(file: string): void
 }
 
 function getFileSuffix(state: State, file: SourceNode): string {
@@ -53,9 +52,9 @@ function getFileSuffix(state: State, file: SourceNode): string {
 }
 
 export const FileItem = (props: FileItemProps) => {
-  const { state, actions, file, onSelectFile } = props
+  const { state, actions, file } = props
   const onselect = e => {
-    onSelectFile(file.id)
+    actions.ui.select(file.id)
   }
 
   const onpreview = (e: Event) => {

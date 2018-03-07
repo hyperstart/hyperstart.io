@@ -7,7 +7,6 @@ import { State, Actions } from "../../api"
 export interface HeaderMenuProps {
   state: State
   actions: Actions
-  onImportArtifact(): void
 }
 
 export const HeaderMenu = (props: HeaderMenuProps) => {
@@ -34,7 +33,7 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
         </li>
         <li class="divider" />
         <li class="menu-item">
-          <a href="#" onclick={() => props.onImportArtifact()}>
+          <a href="#" onclick={() => actions.openImportProjectDialog()}>
             Import Artifact
           </a>
         </li>

@@ -6,7 +6,7 @@ import { DEPENDENCIES_FOLDER } from "projects/constants"
 
 import { State, Actions } from "../../api"
 
-const stopPropagation = (e: Event) => {
+function stopPropagation(e: Event) {
   e.stopPropagation()
 }
 

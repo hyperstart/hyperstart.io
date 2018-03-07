@@ -16,7 +16,6 @@ interface NodeViewProps {
   actions: Actions
   path: string
   file: FileNode
-  onSelectFile(file: string): void
 }
 
 const NodeView = (props: NodeViewProps) => {
@@ -31,7 +30,6 @@ const NodeView = (props: NodeViewProps) => {
 export interface FileTreeProps {
   state: State
   actions: Actions
-  onSelectFile(file: string): void
 }
 
 const getChildren = (state: State) => (file: FileNode) => {
