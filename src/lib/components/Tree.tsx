@@ -59,15 +59,9 @@ function NodeList<T>(props: NodeListProps<T>) {
 
 export interface TreeProps<T> extends BaseProps<T> {
   items: T[]
-  className?: string
+  class?: string
 }
 
 export function Tree<T>(props: TreeProps<T>) {
-  const { className = "", ...rest } = props
-
-  return (
-    <div class={className}>
-      <NodeList {...rest} />
-    </div>
-  )
+  return <div class={props.class}>{NodeList(props)}</div>
 }

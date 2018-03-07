@@ -3,8 +3,8 @@ import * as projects from "projects/api"
 
 // # State
 
-export interface State {
-  files: FileTree
+export interface State extends FileTree {
+  // Nothing for now.
 }
 
 // # Actions
