@@ -1,9 +1,9 @@
 import * as router from "lib/router"
 
-import * as editor from "editor"
-import * as logger from "logger"
-import * as projects from "projects"
-import * as search from "search"
+import * as editor from "editor/api"
+import * as logger from "logger/api"
+import * as projects from "projects/api"
+import * as search from "lib/search/api"
 import * as ui from "ui"
 import * as users from "users"
 

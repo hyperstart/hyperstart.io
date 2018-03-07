@@ -1,15 +1,18 @@
-import * as form from "lib/form"
+import * as form from "lib/form/api"
+import * as search from "lib/search/api"
 import * as projects from "projects/api"
 import { FileTree, FileNode } from "projects/fileTree"
 
 // # State
 
 export interface ImportProjectDialog {
+  search: search.State
   selected?: string
 }
 
 export interface State {
-  form: form.State
+  editForm: form.State
+  createFileModal: form.State
   importProjectDialog?: ImportProjectDialog
   deletingFile?: FileNode
   selectedFile?: string
@@ -24,10 +27,13 @@ export interface OpenFileModalPayload {
 
 export interface Actions {
   // ## Edit form
-  actions: form.Actions
+  editForm: form.Actions
   startEdit(project: projects.Details)
   stopEdit()
   // ## Import project dialog
+  importProjectDialog: {
+    search: search.Actions
+  }
   openImportProjectDialog()
   selectImportedProject(projectId: string)
   closeImportProjectDialog()
@@ -35,6 +41,7 @@ export interface Actions {
   openDeleteFileModal(file: FileNode)
   closeDeleteFileModal()
   // ## Create file modal
+  createFileModal: form.Actions
   openCreateFileModal(payload: OpenFileModalPayload)
   closeCreateFileModal()
   // ## Selected file

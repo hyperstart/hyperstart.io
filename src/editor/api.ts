@@ -8,7 +8,7 @@ import * as ui from "./ui/api"
 
 // # State
 
-export type Status = "closed" | "loading" | "editing" | "error"
+export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
 
 export interface State {
   files: files.State

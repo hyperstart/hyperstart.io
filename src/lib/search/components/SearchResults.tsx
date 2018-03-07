@@ -10,7 +10,7 @@ export interface SearchResultsProps {
   actions: Actions
   resultView: SingleResultView
   name: string
-  aroundResults?: () => any | string
+  aroundResults?: (props, children) => any | string
   singleResultViewProps?: any
   hideTopPagination?: boolean
   hideBottomPagination?: boolean
