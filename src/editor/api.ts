@@ -6,6 +6,11 @@ import * as files from "./files/api"
 import * as sources from "./sources/api"
 import * as ui from "./ui/api"
 
+export interface FileNotFound {
+  notFound: true
+  path: string
+}
+
 // # State
 
 export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
