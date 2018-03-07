@@ -19,6 +19,7 @@
     "spectre.css": "0.5.1"
   },
   "devDependencies": {
+    "monaco-editor": "^0.10.1",
     "node-sass": "^4.7.2",
     "parcel-bundler": "^1.6.2",
     "parcel-plugin-typescript": "^0.7.0",
