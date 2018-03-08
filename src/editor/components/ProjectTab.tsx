@@ -8,14 +8,14 @@ import { ProjectDetailsSection } from "./ProjectDetailsSection"
 import { ImportProjectModal } from "./ImportProjectModal"
 import { ProjectFilesSection } from "./files"
 
-export interface ArtifactTabProps {
+export interface ProjectTabProps {
   state: State
   actions: Actions
   currentUser: User | null
   style?: any
 }
 
-export const ArtifactTab = (props: ArtifactTabProps) => {
+export const ProjectTab = (props: ProjectTabProps) => {
   const { state } = props
   const project = state.project
   if (!project || state.status === "loading" || state.status === "error") {

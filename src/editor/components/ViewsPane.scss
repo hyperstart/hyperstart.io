@@ -1,0 +1,9 @@
+.views-pane {
+  display: flex;
+  flex-direction: column;
+
+  // Tab
+  ul {
+    flex-shrink: 0;
+  }
+}

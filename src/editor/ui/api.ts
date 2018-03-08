@@ -13,6 +13,7 @@ export interface ImportProjectDialog {
 export interface State {
   editForm: form.State
   createFileModal: form.State
+  selectedViewPaneTab: string
   importProjectDialog?: ImportProjectDialog
   deletingFile?: FileNode
   selectedFile?: string
@@ -49,4 +50,6 @@ export interface Actions {
   select(fileId: string | null)
   // ## Previewed file
   preview(fileId: string | null)
+  // ## View pane's tabs
+  selectViewPaneTab(tab: string | null)
 }
