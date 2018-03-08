@@ -10,12 +10,12 @@ import { FileTree } from "./FileTree"
 import { FilePreview } from "./FilePreview"
 import { HeaderMenu } from "./HeaderMenu"
 
-export interface ArtifactFilesSectionProps {
+export interface ProjectFilesSectionProps {
   state: State
   actions: Actions
 }
 
-export const ArtifactFilesSection = (props: ArtifactFilesSectionProps) => {
+export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
   const { state, actions } = props
   const file = getPreviewedFile(state)
 
