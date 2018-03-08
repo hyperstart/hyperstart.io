@@ -26,7 +26,7 @@ This repository contains:
   * `selectors.ts`: A list of pure functions that take the state and compute some useful value out of it (not present in all modules).
   * `Xxx.tsx`: The view(s) (i.e. components that use the entire state and action tree) for this module. There may 0 or many of these depending on the module.
   * `components/` (folder): Components (often internal only) relevant for this module.
-  * `index.ts`: The file that exports all...
+  * `index.ts`: The file that exports public apis (i.e. everything except the module's implementation)
 * On startup, an `init()` action gets called on each top-level module with the global actions.  
   Each top-level module receives the public facing API of each other module.  
   Each module can store the dependencies it needs from other modules at this point.  

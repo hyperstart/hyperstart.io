@@ -4,7 +4,7 @@ import { Template } from "projects/api"
 // # State
 
 export interface CreateProjectDialog {
-  template?: Template
+  template: Template
 }
 
 export interface State {
