@@ -31,6 +31,5 @@ export interface State {
 export interface Actions extends ModuleActions<State> {
   initFirebase(listeners: AuthenticationListener[]): void
   setUser(user?: firebase.User): void
-  tryLogout(): Promise<void>
-  getState(): State
+  logout(): Promise<void>
 }
