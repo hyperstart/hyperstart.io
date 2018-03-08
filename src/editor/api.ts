@@ -1,3 +1,5 @@
+import { StringMap } from "lib/utils"
+
 import { ModuleActions } from "api"
 import * as projects from "projects"
 import { FileTree } from "projects/fileTree"
@@ -13,9 +15,36 @@ export interface FileNotFound {
 
 // # State
 
+export interface Diagnostic {
+  message: string
+  category: DiagnosticCategory
+  start?: number
+  length?: number
+}
+
+export enum DiagnosticCategory {
+  Warning = 0,
+  Error = 1,
+  Message = 2
+}
+
+export interface CompiledModule {
+  fileId: string
+  diagnostics: Diagnostic[]
+}
+
+export interface CompilationOutput {
+  loading: boolean
+  success: boolean
+  iframeSource?: string
+  error?: string
+  compiledModules?: StringMap<CompiledModule>
+}
+
 export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
 
 export interface State {
+  compilationOutput?: CompilationOutput
   files: files.State
   localStore: projects.State
   project?: projects.Details
