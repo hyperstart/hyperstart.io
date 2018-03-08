@@ -4,6 +4,7 @@ import { ModuleActions } from "api"
 import * as projects from "projects"
 import { FileTree } from "projects/fileTree"
 
+import * as debug from "./debug/api"
 import * as files from "./files/api"
 import * as sources from "./sources/api"
 import * as ui from "./ui/api"
@@ -45,6 +46,7 @@ export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
 
 export interface State {
   compilationOutput?: CompilationOutput
+  debug: debug.State
   files: files.State
   localStore: projects.State
   project?: projects.Details
@@ -56,6 +58,7 @@ export interface State {
 // # Actions
 
 export interface Actions extends ModuleActions<State> {
+  debug: debug.Actions
   files: files.Actions
   localStore: projects.Actions
   sources: sources.Actions
