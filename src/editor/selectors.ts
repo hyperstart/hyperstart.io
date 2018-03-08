@@ -39,11 +39,16 @@ export function getRuns(runs: StringMap<Run>): Run[] {
     .sort(compareRuns)
 }
 
-export function getSelected(state: State): AppState | null {
+export function getSelectedState(state: State): AppState | null {
   const selected = state.debug.selectedState
   return selected.length > 0 ? selected[0] : null
 }
 
 export function isSelected(state: State, appState: AppState): boolean {
-  return getSelected(state) === appState
+  return getSelectedState(state) === appState
+}
+
+export function getSelectedSource(state: State): SourceNode | null {
+  // TODO implement
+  return null
 }

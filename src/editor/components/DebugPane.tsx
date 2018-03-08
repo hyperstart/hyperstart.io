@@ -4,7 +4,7 @@ import { Icon, Tree, SplitPane } from "lib/components"
 
 import { State, Actions, Diagnostic } from "../api"
 import { AppAction, Run, AppState } from "../debug"
-import { getRuns, getSelected, isSelected } from "../selectors"
+import { getRuns, getSelectedState, isSelected } from "../selectors"
 
 interface StateItemProps {
   state: State
@@ -150,7 +150,7 @@ const RunsPane = (props: PaneProps) => {
 
 const StatePane = (props: PaneProps) => {
   const { state, actions } = props
-  const selected = getSelected(state)
+  const selected = getSelectedState(state)
 
   if (!selected) {
     return (
