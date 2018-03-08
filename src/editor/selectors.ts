@@ -8,13 +8,22 @@ export function isEditable(state: State): boolean {
   return state.status === "editing"
 }
 
-export function fileExists(state: State, name: string, parent?: string) {
+export function fileExists(
+  state: State,
+  name: string,
+  parent?: string
+): boolean {
   // TODO
   return false
 }
 
 export function isDirty(source: SourceNode): boolean {
   return source.content !== source.original
+}
+
+export function hasDirtySources(state: State): boolean {
+  // TODO
+  return false
 }
 
 export function isNotFound(file: any): file is FileNotFound {
