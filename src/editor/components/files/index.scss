@@ -1,0 +1,106 @@
+@import "../../../variables.scss";
+
+.artifact-files {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    margin-bottom: 0rem;
+
+    .dropdown {
+      font-size: 0.8rem;
+      font-style: normal;
+      font-weight: 400;
+    }
+  }
+
+  .file-tree {
+    border: 1px solid $border-color-dark;
+    padding-right: 0.1rem;
+    overflow-y: auto;
+    min-height: 0px;
+    flex-grow: 1;
+
+    .file-node {
+      padding-left: 0.8rem;
+    }
+
+    .file {
+      .preview {
+        visibility: hidden;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+
+      &:hover {
+        background: $secondary-color;
+
+        span:hover {
+          color: $primary-color;
+        }
+
+        .preview {
+          visibility: visible;
+        }
+
+        .actions {
+          visibility: visible;
+
+          &:hover {
+            border: 1px solid $primary-color;
+            color: $primary-color;
+          }
+        }
+      }
+
+      .ul {
+        margin: 0rem;
+        padding: 0rem;
+      }
+      .actions {
+        border: 1px solid $light-color;
+        padding: 0.1rem;
+        visibility: hidden;
+      }
+    }
+  }
+
+  .file-window {
+    padding-right: 0.1rem;
+    border: 1px solid $border-color-dark;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .title-bar {
+      border-bottom: 1px solid $border-color-dark;
+
+      .btn-clear {
+        margin-top: 0.2rem;
+        margin-right: 0.2rem;
+        float: right;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+
+    .monaco-editor {
+      overflow-y: auto;
+      min-height: 0px;
+      flex-grow: 1;
+      height: 100%;
+    }
+
+    .markdown-preview {
+      overflow-y: auto;
+      min-height: 0px;
+      flex-grow: 1;
+      height: 100%;
+    }
+  }
+}
