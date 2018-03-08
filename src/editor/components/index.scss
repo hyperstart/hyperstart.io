@@ -1,0 +1,152 @@
+@import "../../variables.scss";
+
+.sources-pane {
+  display: flex;
+  flex-direction: column;
+
+  .tab {
+    height: 2rem;
+  }
+
+  .monaco-editor {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.debug-pane {
+  display: flex;
+  flex-direction: column;
+
+  .debug-title {
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+
+    h4 {
+      margin: 0.25rem 0.8rem;
+    }
+
+    .btn-clear {
+      margin: 0.7rem;
+    }
+  }
+
+  .debugger-options {
+    display: flex;
+    flex-shrink: 0;
+
+    .option {
+      flex-grow: 1;
+      padding-left: 1.8rem;
+      border-top: 1px solid $border-color-dark;
+    }
+  }
+
+  .runs-pane {
+    overflow-y: auto;
+    min-height: 0px;
+    flex-grow: 1;
+
+    ul {
+      list-style-type: none;
+      margin: 0.2rem;
+
+      li {
+        margin: 0rem;
+      }
+    }
+
+    .run {
+      border-bottom: 1px solid $border-color-dark;
+      font-size: 1rem;
+      width: 100%;
+
+      &:hover {
+        background-color: $secondary-color;
+
+        .fa {
+          color: $primary-color;
+        }
+      }
+
+      .btn-clear:hover {
+        color: $primary-color;
+      }
+    }
+
+    .state {
+      border-bottom: 1px solid $border-color-dark;
+      font-size: 0.7rem;
+      padding-left: 1.2rem;
+      font-family: monospace;
+
+      .fa {
+        margin-right: 0.1rem;
+      }
+      .fa:hover {
+        color: $primary-color;
+      }
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+
+      &.selected {
+        background-color: $secondary-color-dark;
+        font-weight: bold;
+        &:hover {
+          background-color: $secondary-color-dark;
+        }
+      }
+
+      &.has-icon {
+        padding-left: 0.2rem;
+      }
+    }
+  }
+
+  .state-pane {
+    overflow-y: auto;
+    min-height: 0px;
+    flex-grow: 1;
+
+    pre {
+      margin: 0rem;
+    }
+  }
+}
+
+.view-pane-tab {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.artifact-tab {
+  .artifact-details {
+    h1 {
+      margin-bottom: 0rem;
+      .dropdown {
+        font-size: 0.8rem;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .import-artifact-modal
+    .modal-container
+    .modal-body
+    table.table
+    tbody
+    tr.active {
+    background: $secondary-color-dark;
+  }
+}
+
+.output-tab iframe {
+  flex-grow: 1;
+}
