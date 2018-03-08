@@ -56,5 +56,5 @@ export function Status(props: StatusProps) {
     }
   }
 
-  return ""
+  return null
 }
