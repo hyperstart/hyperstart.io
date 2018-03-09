@@ -110,14 +110,14 @@ function importFileRecursive(
   }
 }
 
-export interface ImportedArtifact {
+export interface ImportedProject {
   name: string
   files: StringMap<File>
 }
 
-export const importArtifacts = (
+export const importProjects = (
   files: StringMap<File>,
-  imports: ImportedArtifact[]
+  imports: ImportedProject[]
 ): StringMap<File> => {
   const result: StringMap<File> = {}
 

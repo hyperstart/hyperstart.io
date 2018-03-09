@@ -90,8 +90,9 @@ export interface ImportedProject {
 
 export interface Actions extends ModuleActions<State> {
   // ## Projects
+  // TODO createAndSave() and add() are kind of duplicate, we should remove createAndSave()
   createAndSave(template: Template): Promise<Project>
-  add(project: Project): Promise<void>
+  add(project: Project): Promise<Project>
   update(project: UpdatedProject): Promise<void>
   fetch(id: string): Promise<Project>
   // ## Files

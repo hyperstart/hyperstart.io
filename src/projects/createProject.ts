@@ -1,7 +1,7 @@
 import { guid, StringMap } from "lib/utils"
 import { getSearches } from "lib/search"
 
-import { importArtifacts } from "./importArtifacts"
+import { importProjects } from "./importProjects"
 import { createBlankFiles, createHyperappFiles } from "./createFiles"
 import { Actions, File, Owner, Project, Details, Template } from "./api"
 import { HYPERAPP_ID, HYPERAPP_NAME, LOCAL_ARTIFACT_ID } from "./constants"
@@ -35,7 +35,7 @@ export function createProject(payload: Payload): Promise<Project> {
     return actions.fetch(HYPERAPP_ID).then(hyperapp => {
       return {
         details,
-        files: importArtifacts(files, [
+        files: importProjects(files, [
           { name: HYPERAPP_NAME, files: hyperapp.files }
         ]),
         status: { loading: false }
