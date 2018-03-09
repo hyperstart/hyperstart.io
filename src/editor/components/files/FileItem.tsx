@@ -59,7 +59,7 @@ export const FileItem = (props: FileItemProps) => {
 
   const onpreview = (e: Event) => {
     e.stopPropagation()
-    actions.files.preview(file)
+    actions.previewFile(file)
   }
 
   return (

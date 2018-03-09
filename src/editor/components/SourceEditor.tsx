@@ -27,7 +27,7 @@ export function SourceEditor(props: SourceEditorProps) {
 
   function onModelContentChanged(editor: monaco.editor.IEditor) {
     const model = editor.getModel() as monaco.editor.IModel
-    actions.files.setContent({
+    actions.setFileContent({
       path: model.uri.path,
       content: model.getValue()
     })

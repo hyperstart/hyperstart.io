@@ -20,10 +20,10 @@ export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
   const file = getPreviewedFile(state)
 
   function createFile(type: "file" | "folder", name: string, parent?: File) {
-    actions.files.create({ type, name, parent })
+    actions.createFile({ type, name, parent })
   }
   function onDeleteFile(file: FileNode) {
-    actions.files.delete(file)
+    actions.deleteFile(file)
   }
 
   return (

@@ -100,7 +100,7 @@ export const postRender = (e: HTMLElement, actions: Actions) => {
     const link = links.item(i) as HTMLAnchorElement
     link.onclick = function(e) {
       e.preventDefault()
-      actions.files.preview(link.href)
+      actions.previewFile(link.href)
     }
   }
 }

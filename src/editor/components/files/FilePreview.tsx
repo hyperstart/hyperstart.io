@@ -79,7 +79,7 @@ export const FilePreview = (props: FilePreviewProps) => {
   const { actions, file } = props
 
   const onclose = (e: Event) => {
-    actions.files.preview(null)
+    actions.previewFile(null)
   }
 
   if (isNotFound(file)) {

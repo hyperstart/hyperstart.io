@@ -40,7 +40,7 @@ const getChildren = (state: State) => (file: FileNode) => {
 }
 
 const toggleExpanded = (actions: Actions) => (node: FileNode) => {
-  actions.files.toggleExpanded(node.path)
+  actions.toggleFileExpanded(node.path)
 }
 
 const getItems = (state: State): FileNode[] =>

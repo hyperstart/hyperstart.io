@@ -5,7 +5,6 @@ import * as projects from "projects"
 import { FileTree } from "projects/fileTree"
 
 import * as debug from "./debug/api"
-import * as files from "./files/api"
 import * as sources from "./sources/api"
 import * as ui from "./ui/api"
 
@@ -47,7 +46,7 @@ export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
 export interface State {
   compilationOutput?: CompilationOutput
   debug: debug.State
-  files: files.State
+  files: projects.FileTree
   localStore: projects.State
   project?: projects.Details
   status: Status
@@ -57,12 +56,24 @@ export interface State {
 
 // # Actions
 
+export interface CreateFilePayload {
+  type: "file" | "folder"
+  name: string
+  parent?: projects.File
+}
+
+export interface SetFileContentPayload {
+  path: string
+  content: string
+}
+
 export interface Actions extends ModuleActions<State> {
+  // ## Sub-modules
   debug: debug.Actions
-  files: files.Actions
   localStore: projects.Actions
   sources: sources.Actions
   ui: ui.Actions
+  // ## Project
   open(project: projects.Project)
   close()
   submitEdits(): Promise<void>
@@ -70,4 +81,10 @@ export interface Actions extends ModuleActions<State> {
   saveAllSources(): Promise<void>
   run(debug: boolean): Promise<void>
   importProjects(projects: string[]): Promise<void>
+  // ## Files
+  toggleFileExpanded(path: string)
+  createFile(file: CreateFilePayload): Promise<void>
+  deleteFile(file: string | projects.File): Promise<void>
+  previewFile(file: string | projects.File)
+  setFileContent(source: SetFileContentPayload)
 }
