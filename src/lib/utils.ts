@@ -5,6 +5,18 @@ export interface StringMap<T> {
   [key: string]: T
 }
 
+/**
+ * The map function for StringMap.
+ */
+export function map<I, O>(
+  param: StringMap<I>,
+  fn: (p: I, key: string) => O
+): StringMap<O> {
+  const result: StringMap<O> = {}
+  Object.keys(param).forEach(key => (result[key] = fn(param[key], key)))
+  return result
+}
+
 const ALPHABET =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_~"
 const SIZE = 12

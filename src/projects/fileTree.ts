@@ -54,8 +54,8 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
       children: [],
       path: ""
     }
-    if (file.artifactId) {
-      result.artifactId = file.artifactId
+    if (file.projectId) {
+      result.artifactId = file.projectId
     }
     return result
   }

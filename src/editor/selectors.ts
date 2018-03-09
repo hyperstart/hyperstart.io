@@ -1,6 +1,6 @@
 import { StringMap } from "lib/utils"
 
-import { SourceNode } from "projects/fileTree"
+import { SourceNode, FileNode } from "projects/fileTree"
 import { State, FileNotFound } from "./api"
 import { AppState, Run } from "./debug/api"
 
@@ -17,13 +17,18 @@ export function fileExists(
   return false
 }
 
-export function isDirty(source: SourceNode): boolean {
-  return source.content !== source.original
+export function isDirty(source: FileNode): boolean {
+  return source.type === "file" && source.content !== source.original
+}
+
+export function getDirtySources(state: State): string[] {
+  const files: any = state.files.byId
+  return Object.keys(files).filter(key => isDirty(files[key]))
 }
 
 export function hasDirtySources(state: State): boolean {
-  // TODO
-  return false
+  const files: any = state.files.byId
+  return Object.keys(files).findIndex(key => isDirty(files[key])) >= 0
 }
 
 export function isNotFound(file: any): file is FileNotFound {
@@ -59,5 +64,14 @@ export function isSelected(state: State, appState: AppState): boolean {
 
 export function getSelectedSource(state: State): SourceNode | null {
   // TODO implement
+  return null
+}
+
+export function getSource(state: State, path: string): SourceNode | null {
+  const id = state.files.byPath[path]
+  const result = id ? state.files.byId[id] : null
+  if (result && result.type === "file") {
+    return result
+  }
   return null
 }

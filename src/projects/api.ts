@@ -13,7 +13,7 @@ export interface File {
   parent?: string
   content?: string
   url?: string
-  artifactId?: string
+  projectId?: string
 }
 
 export interface Files {

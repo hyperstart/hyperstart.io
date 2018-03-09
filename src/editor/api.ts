@@ -85,7 +85,7 @@ export interface Actions extends ModuleActions<State> {
   // ## Files
   toggleFileExpanded(path: string)
   createFile(file: CreateFilePayload): Promise<void>
-  deleteFile(file: string | projects.File): Promise<void>
+  deleteFile(file: projects.FileNode): Promise<void>
   previewFile(file: string | projects.File)
   setFileContent(source: SetFileContentPayload)
 }
