@@ -1,5 +1,7 @@
 import "monaco-editor"
 
+import { FileTree } from "projects"
+
 import { State } from "../api"
 import { getLanguage } from "./languages"
 import { createModel, hasModel } from "./modelStore"
@@ -39,8 +41,7 @@ const configureCompiler = (): void => {
   )
 }
 
-const createModelsFor = (state: State): void => {
-  const files = state.files.byId
+const createModelsFor = (files: FileTree): void => {
   Object.keys(files).forEach(id => {
     const file = files[id]
     if (file.type === "file" && !hasModel(file.path)) {
@@ -49,9 +50,9 @@ const createModelsFor = (state: State): void => {
   })
 }
 
-export const configureFor = (state: State, newlyOpened: boolean): void => {
+export const configureFor = (files: FileTree, newlyOpened: boolean): void => {
   if (newlyOpened) {
     configureCompiler()
   }
-  createModelsFor(state)
+  createModelsFor(files)
 }

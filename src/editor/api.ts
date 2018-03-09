@@ -4,9 +4,9 @@ import { ModuleActions } from "api"
 import * as projects from "projects"
 import { FileTree } from "projects/fileTree"
 
-import * as debug from "./debug/api"
-import * as sources from "./sources/api"
-import * as ui from "./ui/api"
+import * as debug from "./debug"
+import * as sources from "./sources"
+import * as ui from "./ui"
 
 export interface FileNotFound {
   notFound: true
@@ -48,6 +48,7 @@ export interface State {
   debug: debug.State
   files: projects.FileTree
   localStore: projects.State
+  monacoLoaded?: boolean
   project?: projects.Details
   status: Status
   sources: sources.State
