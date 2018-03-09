@@ -11,9 +11,9 @@ export interface ImportProjectDialog {
 }
 
 export interface State {
-  editForm: form.State
-  createFileModal: form.State
   selectedViewPaneTab: string
+  editForm?: form.State
+  createFileDialog?: form.State
   importProjectDialog?: ImportProjectDialog
   deletingFile?: FileNode
   selectedFile?: string
@@ -43,7 +43,7 @@ export interface Actions {
   openDeleteFileModal(file: FileNode)
   closeDeleteFileModal()
   // ## Create file modal
-  createFileModal: form.Actions
+  createFileDialog: form.Actions
   openCreateFileModal(payload: OpenFileModalPayload)
   closeCreateFileModal()
   // ## Selected file

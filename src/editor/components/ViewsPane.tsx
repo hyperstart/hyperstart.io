@@ -5,7 +5,7 @@ import { Tab, TabItem } from "lib/components"
 import { User } from "users"
 
 import { State, Actions } from "../api"
-import { ARTIFACT_TAB_ID, PREVIEW_TAB_ID } from "../constants"
+import { PROJECT_TAB_ID, PREVIEW_TAB_ID } from "../constants"
 
 import { ProjectTab } from "./ProjectTab"
 import { OutputTab } from "./OutputTab"
@@ -24,7 +24,7 @@ const getTabs = (state: State): ViewTab[] => {
   if (state.project && state.project.mainFile) {
     return [
       {
-        id: ARTIFACT_TAB_ID,
+        id: PROJECT_TAB_ID,
         name: ARTIFACT_TAB_NAME
       },
       {
@@ -35,7 +35,7 @@ const getTabs = (state: State): ViewTab[] => {
   }
   return [
     {
-      id: ARTIFACT_TAB_ID,
+      id: PROJECT_TAB_ID,
       name: ARTIFACT_TAB_NAME
     }
   ]
@@ -56,7 +56,7 @@ const ViewsPaneContent = (props: ViewsPaneContentProps) => {
   }
 
   switch (props.tab.id) {
-    case ARTIFACT_TAB_ID:
+    case PROJECT_TAB_ID:
       return ProjectTab(props)
     case PREVIEW_TAB_ID:
       return OutputTab(props)

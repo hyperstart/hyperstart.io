@@ -14,8 +14,8 @@ export interface CreateFileModalProps {
 
 export const CreateFileModal = (props: CreateFileModalProps) => {
   const { confirm, state, actions } = props
-  const modalState = state.ui.createFileModal
-  const modalActions = actions.ui.createFileModal
+  const modalState = state.ui.createFileDialog
+  const modalActions = actions.ui.createFileDialog
   if (!modalState) {
     return <div />
   }
