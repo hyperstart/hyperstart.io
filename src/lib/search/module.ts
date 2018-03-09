@@ -2,7 +2,10 @@ import { ModuleImpl } from "lib/modules"
 
 import * as api from "./api"
 
-export const search: ModuleImpl<api.State, api.Actions> = {
-  state: null,
-  actions: null
+// TODO
+export function createSearch(): ModuleImpl<api.State, api.Actions> {
+  return {
+    state: null,
+    actions: null
+  }
 }
