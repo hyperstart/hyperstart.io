@@ -47,10 +47,10 @@ export interface DocumentToDelete {
 }
 
 export interface UpdatePayload {
-  toCreate: DocumentToCreate[]
-  toSet: DocumentToUpdate[]
-  toUpdate: DocumentToUpdate[]
-  toDelete: DocumentToDelete[]
+  toCreate?: DocumentToCreate[]
+  toSet?: DocumentToUpdate[]
+  toUpdate?: DocumentToUpdate[]
+  toDelete?: DocumentToDelete[]
 }
 
 export interface UpdatedDocument {
