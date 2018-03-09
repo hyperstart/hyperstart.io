@@ -20,50 +20,63 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## Edit form
     editForm: editForm.actions,
     startEdit: (project: projects.Details) => state => {
-      // TODO
+      return {
+        editForm: { fields: {}, loading: false }
+      }
     },
     stopEdit: () => state => {
-      // TODO
+      return { editForm: null }
     },
     // ## Import project dialog
     importProjectDialog: {
       search: search.actions
     },
     openImportProjectDialog: () => state => {
-      // TODO
+      return {
+        importProjectDialog: {
+          search: {}
+        }
+      }
     },
-    selectImportedProject: (projectId: string) => state => {
-      // TODO
+    selectImportedProject: (selected: string) => state => {
+      return {
+        importProjectDialog: {
+          search: state.importProjectDialog.search,
+          selected
+        }
+      }
     },
     closeImportProjectDialog: () => state => {
-      // TODO
+      return { importProjectDialog: null }
     },
     // ## Delete file modal
-    openDeleteFileModal: (file: projects.FileNode) => state => {
-      // TODO
+    openDeleteFileModal: (deletingFile: projects.FileNode) => {
+      return { deletingFile }
     },
     closeDeleteFileModal: () => state => {
-      // TODO
+      return { deletingFile: null }
     },
     // ## Create file modal
     createFileDialog: createFileForm.actions,
     openCreateFileModal: (payload: api.OpenFileModalPayload) => state => {
-      // TODO
+      return {
+        createFileDialog: { fields: {}, loading: false }
+      }
     },
     closeCreateFileModal: () => state => {
-      // TODO
+      return { createFileDialog: null }
     },
     // ## Selected file
-    select: (fileId: string | null) => state => {
-      // TODO
+    select: (selectedFile: string | null) => state => {
+      return { selectedFile }
     },
     // ## Previewed file
-    preview: (fileId: string | null) => state => {
-      // TODO
+    preview: (previewedFile: string | null) => state => {
+      return { previewedFile }
     },
     // ## View pane's tabs
-    selectViewPaneTab: (tab: string | null) => state => {
-      // TODO
+    selectViewPaneTab: (selectedViewPaneTab: string | null) => state => {
+      return { selectedViewPaneTab }
     }
   }
 }
