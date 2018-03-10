@@ -10,8 +10,6 @@ import { DebugPane, SourcesPane, ViewsPane } from "./components"
 import { hasDirtySources } from "./selectors"
 import { State, Actions } from "./api"
 
-import "./Editor.scss"
-
 export interface EditorProps {
   state: State
   actions: Actions

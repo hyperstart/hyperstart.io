@@ -9,17 +9,18 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
   },
   "dependencies": {
     "firebase": "^4.10.1",
     "hyperapp": "1.1.2",
     "hyperapp-context": "0.1.0",
     "marked": "^0.3.17",
+    "monaco-editor": "^0.10.1",
     "spectre.css": "0.5.1"
   },
   "devDependencies": {
-    "monaco-editor": "^0.10.1",
     "node-sass": "^4.7.2",
     "parcel-bundler": "^1.6.2",
     "parcel-plugin-typescript": "^0.7.0",

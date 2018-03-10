@@ -1,7 +1,7 @@
 import { h } from "hyperapp"
 
 import { State, Actions } from "api"
-import { ProjectsSearch } from "search"
+import { ProjectsSearch } from "lib/search/ProjectsSearch"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./IndexPage.scss"

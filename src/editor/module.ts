@@ -205,17 +205,17 @@ const _editor: ModuleImpl<api.State, Actions> = {
       }
       const files: any = state.files.byId
       const projectId = state.project.id
-      const updates: projects.FileUpdate[] = getDirtySources(state).map(id => {
-        return {
-          projectId,
+      const update: projects.UpdateFilesPayload = {
+        id: projectId,
+        files: getDirtySources(state).map(id => ({
           id,
           content: files[id].content
-        }
-      })
+        }))
+      }
 
       actions._setState({ status: "loading" })
       return projectsActions
-        .updateFiles(updates)
+        .updateFiles(update)
         .then(() => {
           actions._setState({ status: "editing" })
           updateProject(actions, projectsActions.getState()[projectId], true)
@@ -229,20 +229,21 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return runProject(state, actions, debug)
     },
     importProjects: (projects: string[]) => (state, actions): Promise<void> => {
-      const importerId = state.project.id
+      const id = state.project.id
       actions._setState({ status: "loading" })
       return Promise.all(projects.map(projectsActions.fetch))
         .then(projects => {
-          return projectsActions.importProjects(
-            projects.map(project => ({
-              importerId,
-              importedName: project.details.name,
+          const payload: projects.ImportProjectsPayload = {
+            id,
+            projects: projects.map(project => ({
+              name: project.details.name,
               files: project.files
             }))
-          )
+          }
+          return projectsActions.importProjects(payload)
         })
         .then(result => {
-          updateProject(actions, projectsActions.getState[importerId])
+          updateProject(actions, projectsActions.getState[id])
         })
         .catch(e => {
           actions._setState({ status: "error" })
@@ -278,7 +279,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
 
       actions._setState({ status: "loading" })
       return projectsActions
-        .addFiles([file])
+        .addFiles({ id, files: [file] })
         .then(result => {
           updateProject(actions, projectsActions.getState[id])
           if (payload.type === "file") {
@@ -305,14 +306,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
         .filter(file => file.type === "file")
         .map(file => file.path)
 
-      const deleted = files.map(fileId => ({
-        projectId: id,
-        fileId
-      }))
-
       actions._setState({ status: "loading" })
       return projectsActions
-        .deleteFiles(deleted)
+        .deleteFiles({ id, files })
         .then(() => {
           updateProject(actions, projectsActions.getState[id])
           actions.sources.close(files)

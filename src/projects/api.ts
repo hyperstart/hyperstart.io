@@ -82,7 +82,7 @@ export interface UpdateFilesPayload {
   files: FileUpdate[]
 }
 
-export interface DeleteFilePayload {
+export interface DeleteFilesPayload {
   id: string
   files: string[]
 }
@@ -107,6 +107,6 @@ export interface Actions extends ModuleActions<State> {
   // ## Files
   addFiles(payload: AddFilesPayload): Promise<void>
   updateFiles(payload: UpdateFilesPayload): Promise<void>
-  deleteFiles(payload: DeleteFilePayload): Promise<void>
+  deleteFiles(payload: DeleteFilesPayload): Promise<void>
   importProjects(payload: ImportProjectsPayload): Promise<void>
 }

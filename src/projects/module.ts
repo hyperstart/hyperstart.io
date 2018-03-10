@@ -238,7 +238,7 @@ export function createProjects(
             throw e
           })
       },
-      deleteFiles: (payload: api.DeleteFilePayload) => (
+      deleteFiles: (payload: api.DeleteFilesPayload) => (
         state,
         actions
       ): Promise<void> => {

@@ -34,7 +34,6 @@ export function runProject(
             diagnostics,
             fileId: state.files.byPath[path]
           }
-          // TODO check file ID ?
           return result
         })
 
