@@ -1,4 +1,5 @@
-import { compare } from "lib/utils"
+import { compare, guid } from "lib/utils"
+import { set, merge } from "lib/immutable"
 
 import { QueryPayload, UpdatePayload, Where, UpdateResult } from "./api"
 
@@ -21,13 +22,28 @@ export function updateCache(
 ): UpdateCacheResult {
   const { toSet = [], toUpdate = [], toDelete = [] } = update
 
-  // TODO
+  let cache = { ...previousCache }
+  const result = { set: [], updated: [], deleted: [] }
 
-  const cache = { ...previousCache }
-  const result = { created: [], set: [], updated: [], deleted: [] }
-  toSet.forEach(toSet => {})
-  toUpdate.forEach(toUpdate => {})
-  toDelete.forEach(toDelete => {})
+  toSet.forEach(toSet => {
+    const { collection, document, id = guid() } = toSet
+    const col = cache[collection] || (cache[collection] = {})
+    cache = set(cache, [collection, id], document)
+    result.set.push({ collection, id, document })
+  })
+
+  toUpdate.forEach(toUpdate => {
+    const { collection, document, id } = toUpdate
+    const col = cache[collection] || (cache[collection] = {})
+    cache = merge(cache, [collection, id], document)
+    result.updated.push({ collection, id, document: cache[collection][id] })
+  })
+
+  toDelete.forEach(toDelete => {
+    const { collection, id } = toDelete
+    delete cache[collection][id]
+    result.deleted.push({ collection, id })
+  })
 
   return {
     cache,

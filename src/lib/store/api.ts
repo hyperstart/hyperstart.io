@@ -55,7 +55,7 @@ export interface UpdatePayload {
 export interface UpdatedDocument {
   collection: string
   id: string
-  entity: any
+  document: any
 }
 
 export interface DeletedDocument {
@@ -64,7 +64,6 @@ export interface DeletedDocument {
 }
 
 export interface UpdateResult {
-  created: UpdatedDocument[]
   set: UpdatedDocument[]
   updated: UpdatedDocument[]
   deleted: DeletedDocument[]
