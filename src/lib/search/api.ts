@@ -41,7 +41,7 @@ export interface SearchUpdate {
   paneText?: string
   fieldText?: string
   query?: string
-  state?: State
+  status?: Status
   currentPage?: number
   highestPage?: number
   results?: any[]
