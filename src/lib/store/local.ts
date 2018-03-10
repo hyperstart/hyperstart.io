@@ -1,5 +1,6 @@
-import { Store, Where, UpdatePayload } from "./api"
-import { Cache, queryCache, updateCache } from "./cache"
+import { Cache, Store, Where, UpdatePayload } from "./api"
+import { queryCache } from "./queryCache"
+import { updateCache } from "./updateCache"
 
 export function local(cache: Cache = {}): Store {
   return {

@@ -1,3 +1,18 @@
+// # Cache
+
+export interface Collection {
+  [id: string]: any
+}
+
+export interface Cache {
+  [collection: string]: Collection
+}
+
+export interface UpdateCacheResult {
+  cache: Cache
+  result: UpdateResult
+}
+
 // # Queries
 
 export type Operand = "<" | "<=" | "==" | ">=" | ">"

@@ -1,55 +1,7 @@
-import { compare, guid } from "lib/utils"
-import { set, merge } from "lib/immutable"
+import { compare } from "lib/utils"
+import { Cache, QueryPayload, Where } from "./api"
 
-import { QueryPayload, UpdatePayload, Where, UpdateResult } from "./api"
-
-export interface Collection {
-  [id: string]: any
-}
-
-export interface Cache {
-  [collection: string]: Collection
-}
-
-export interface UpdateCacheResult {
-  cache: Cache
-  result: UpdateResult
-}
-
-export function updateCache(
-  previousCache: Cache,
-  update: UpdatePayload
-): UpdateCacheResult {
-  const { toSet = [], toUpdate = [], toDelete = [] } = update
-
-  let cache = { ...previousCache }
-  const result = { set: [], updated: [], deleted: [] }
-
-  toSet.forEach(toSet => {
-    const { collection, document, id = guid() } = toSet
-    const col = cache[collection] || (cache[collection] = {})
-    cache = set(cache, [collection, id], document)
-    result.set.push({ collection, id, document })
-  })
-
-  toUpdate.forEach(toUpdate => {
-    const { collection, document, id } = toUpdate
-    const col = cache[collection] || (cache[collection] = {})
-    cache = merge(cache, [collection, id], document)
-    result.updated.push({ collection, id, document: cache[collection][id] })
-  })
-
-  toDelete.forEach(toDelete => {
-    const { collection, id } = toDelete
-    delete cache[collection][id]
-    result.deleted.push({ collection, id })
-  })
-
-  return {
-    cache,
-    result
-  }
-}
+// # Utilities
 
 function isMatch(document: any = {}, where: Where): boolean {
   const value = document[where.attribute]
@@ -90,6 +42,8 @@ function getEnd(results: any[], start: number, limit?: number): number {
   const result = start + limit
   return result >= results.length ? results.length : result
 }
+
+// # Query Cache
 
 export function queryCache<T>(cache: Cache, payload: QueryPayload): T[] {
   const collection = cache[payload.collection]
