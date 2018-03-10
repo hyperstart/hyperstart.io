@@ -66,26 +66,35 @@ export interface UpdatedProject {
   name?: string
 }
 
+export interface AddFilesPayload {
+  id: string
+  files: File[]
+}
+
 export interface FileUpdate {
-  projectId: string
   id: string
   name?: string
   content?: string
 }
 
-export interface DeletedFile {
-  projectId: string
-  fileId: string
+export interface UpdateFilesPayload {
+  id: string
+  files: FileUpdate[]
 }
 
-export interface DeletePayload {
-  files: DeletedFile[]
+export interface DeleteFilePayload {
+  id: string
+  files: string[]
 }
 
 export interface ImportedProject {
-  importerId: string
-  importedName: string
+  name: string
   files: Files
+}
+
+export interface ImportProjectsPayload {
+  id: string
+  projects: ImportedProject[]
 }
 
 export interface Actions extends ModuleActions<State> {
@@ -96,8 +105,8 @@ export interface Actions extends ModuleActions<State> {
   update(project: UpdatedProject): Promise<void>
   fetch(id: string): Promise<Project>
   // ## Files
-  addFiles(files: File[]): Promise<void>
-  updateFiles(updates: FileUpdate[]): Promise<void>
-  deleteFiles(files: DeletedFile[]): Promise<void>
-  importProjects(projects: ImportedProject[]): Promise<void>
+  addFiles(payload: AddFilesPayload): Promise<void>
+  updateFiles(payload: UpdateFilesPayload): Promise<void>
+  deleteFiles(payload: DeleteFilePayload): Promise<void>
+  importProjects(payload: ImportProjectsPayload): Promise<void>
 }
