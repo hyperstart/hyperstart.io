@@ -29,7 +29,7 @@ export interface QueryPayload {
 
 // # Updates
 
-export interface DocumentToCreate {
+export interface DocumentToSet {
   collection: string
   id?: string
   document: any
@@ -47,8 +47,7 @@ export interface DocumentToDelete {
 }
 
 export interface UpdatePayload {
-  toCreate?: DocumentToCreate[]
-  toSet?: DocumentToUpdate[]
+  toSet?: DocumentToSet[]
   toUpdate?: DocumentToUpdate[]
   toDelete?: DocumentToDelete[]
 }

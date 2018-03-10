@@ -16,20 +16,23 @@ export interface UpdateCacheResult {
 }
 
 export function updateCache(
-  cache: Cache,
+  previousCache: Cache,
   update: UpdatePayload
 ): UpdateCacheResult {
-  const { toCreate = [], toUpdate = [], toSet = [], toDelete = [] } = update
+  const { toSet = [], toUpdate = [], toDelete = [] } = update
 
   // TODO
 
-  const result = { ...cache }
-  toCreate.forEach(toCreate => {})
-  toUpdate.forEach(toUpdate => {})
+  const cache = { ...previousCache }
+  const result = { created: [], set: [], updated: [], deleted: [] }
   toSet.forEach(toSet => {})
+  toUpdate.forEach(toUpdate => {})
   toDelete.forEach(toDelete => {})
 
-  throw new Error("implement me!")
+  return {
+    cache,
+    result
+  }
 }
 
 function isMatch(document: any = {}, where: Where): boolean {

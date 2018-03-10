@@ -1,5 +1,5 @@
 import { ModuleImpl } from "lib/modules"
-import { Store, DocumentToCreate, DocumentToUpdate } from "lib/store"
+import { Store, DocumentToSet, DocumentToUpdate } from "lib/store"
 
 import * as api from "./api"
 import { createProject } from "./createProject"
@@ -40,7 +40,7 @@ export function createProjects(
       add: (project: api.Project) => (state, actions): Promise<api.Project> => {
         const { details, files } = project
         const id = details.id
-        const toCreate: DocumentToCreate[] = [
+        const toSet: DocumentToSet[] = [
           {
             collection: path(),
             document: <any>details,
@@ -63,7 +63,7 @@ export function createProjects(
           status: { loading: true, error: null }
         })
         return store
-          .update({ toCreate })
+          .update({ toSet })
           .then(() => {
             const result = {
               details,
