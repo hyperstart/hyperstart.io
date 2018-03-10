@@ -10,7 +10,8 @@ import * as api from "./api"
 
 const editForm = createForm()
 const createFileForm = createForm()
-const search = createSearch()
+// TODO
+const search = createSearch(null, null)
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
   state: {

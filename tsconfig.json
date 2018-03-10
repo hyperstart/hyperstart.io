@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "rootDir": ".",
-    "paths": {
-      "*": ["src/*"]
-    },
+    "rootDirs": ["src"],
+    "paths": {},
     "moduleResolution": "node",
     "target": "es5",
     "module": "es2015",
@@ -16,8 +15,10 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "removeComments": true,
     "declarationDir": "dist",
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "public"]
 }
