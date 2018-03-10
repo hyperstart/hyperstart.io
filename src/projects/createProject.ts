@@ -24,7 +24,6 @@ export function createProject(payload: Payload): Promise<Project> {
     owner: payload.owner,
     searches: getSearches(name),
     hidden: false,
-    // TODO later, this will be customizable
     mainFile: "index.js"
   }
   const files =

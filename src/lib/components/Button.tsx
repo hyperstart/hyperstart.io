@@ -12,7 +12,7 @@ export interface ButtonProps {
   active?: boolean
   disabled?: boolean
   loading?: boolean
-  className?: string
+  class?: string
   text?: string
   icon?: string
   iconRight?: boolean
@@ -40,7 +40,7 @@ export const getElementsForTextAndIcon = (
   return []
 }
 
-export const Button = (props: ButtonProps, children) => {
+export const Button = (props: ButtonProps, children?: any) => {
   const {
     size,
     block,
@@ -50,7 +50,6 @@ export const Button = (props: ButtonProps, children) => {
     active,
     disabled,
     loading,
-    className = "",
     text,
     icon,
     iconRight,
@@ -71,17 +70,17 @@ export const Button = (props: ButtonProps, children) => {
     <Tag
       class={
         "btn" +
-        (size ? "btn-" + size : "") +
-        (block ? " btn-block" : "") +
-        (primary ? " btn-primary" : link ? " btn-link" : "") +
-        (action === "circle"
-          ? " btn-action circle"
-          : action ? " btn-action" : "") +
-        (active ? " active" : "") +
-        (disabled ? " disabled" : "") +
-        (loading ? " loading" : "") +
-        " " +
-        className
+          (size ? "btn-" + size : "") +
+          (block ? " btn-block" : "") +
+          (primary ? " btn-primary" : link ? " btn-link" : "") +
+          (action === "circle"
+            ? " btn-action circle"
+            : action ? " btn-action" : "") +
+          (active ? " active" : "") +
+          (disabled ? " disabled" : "") +
+          (loading ? " loading" : "") +
+          " " +
+          props.class || ""
       }
       onclick={onclick}
       href={href}

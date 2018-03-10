@@ -22,7 +22,7 @@ function HeaderMenu(props: ProjectDetailsSectionProps) {
   }
   return (
     <div class="dropdown dropdown-right float-right">
-      <Button icon="bars" className="dropdown-toggle" />
+      <Button icon="bars" class="dropdown-toggle" />
       <ul class="menu">
         <li class="menu-item">
           <a

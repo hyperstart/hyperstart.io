@@ -13,7 +13,7 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right">
-      <Button icon="bars" className="dropdown-toggle" />
+      <Button icon="bars" class="dropdown-toggle" />
       <ul class="menu">
         <li class="menu-item">
           <a
@@ -33,7 +33,7 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
         </li>
         <li class="divider" />
         <li class="menu-item">
-          <a href="#" onclick={() => actions.openImportProjectDialog()}>
+          <a href="#" onclick={actions.openImportProjectDialog}>
             Import Artifact
           </a>
         </li>

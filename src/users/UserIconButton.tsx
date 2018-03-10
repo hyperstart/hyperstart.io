@@ -26,7 +26,7 @@ export function UserIconButton(props: UserIconButtonProps) {
           icon="caret-down"
           text={user.displayName + " "}
           iconRight={true}
-          className="dropdown-toggle"
+          class="dropdown-toggle"
         />
         <ul class="menu">
           <li class="menu-item">
@@ -78,7 +78,7 @@ export function UserIconButton(props: UserIconButtonProps) {
         icon="caret-down"
         text="Log In "
         iconRight={true}
-        className="dropdown-toggle"
+        class="dropdown-toggle"
       />
       <div
         class="menu"

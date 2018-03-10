@@ -3,14 +3,17 @@ import { ModuleImpl } from "lib/modules"
 
 import { State, Actions, FetchProjectPayload } from "./api"
 import { isLoading } from "./selectors"
-import { editor } from "editor"
-import { logger } from "logger"
-import { projects } from "projects"
-import { search } from "search"
-import { ui } from "ui"
-import { users } from "users"
+import { editor } from "editor/module"
+import { logger } from "logger/module"
+import { createProjects } from "projects/module"
+import { createSearch } from "lib/search/module"
+import { ui } from "ui/module"
+import { users } from "users/module"
 
 const router = createRouter()
+// TODO
+const projects = createProjects(null)
+const search = createSearch(null, [])
 
 export const app: ModuleImpl<State, Actions> = {
   state: {
@@ -32,12 +35,11 @@ export const app: ModuleImpl<State, Actions> = {
     users: users.actions,
 
     init: () => (_, actions) => {
-      // TODO
-      // actions.editor.init(actions)
-      // actions.logger.init(actions)
-      // actions.projects.init(actions)
       actions.router.init()
-      // actions.users.init(actions)
+      actions.logger.init(actions)
+      actions.users.init(actions)
+      actions.projects.init(actions)
+      actions.editor.init(actions)
     },
     createProject: () => (state, actions) => {
       const template = state.ui.createProject
