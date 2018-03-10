@@ -31,7 +31,6 @@ export interface OrderBy {
 export interface GetByIdPayload {
   collection: string
   id: string
-  refresh?: boolean
 }
 
 export interface QueryPayload {
