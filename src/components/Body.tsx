@@ -20,6 +20,7 @@ export function Body(props: BodyProps) {
       { path: "/projects/:id", view: ProjectEditorPage },
       { path: "/projects", view: ProjectSearchPage, exact: true },
       { path: "*", view: () => replace("/") && "" }
-    ]
+    ],
+    routeProps: props
   })
 }

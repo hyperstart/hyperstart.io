@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": "src",
     "rootDir": ".",
-    "rootDirs": ["src"],
     "paths": {},
     "moduleResolution": "node",
     "target": "es5",
@@ -11,12 +10,11 @@
     "jsx": "react",
     "jsxFactory": "h",
     "sourceMap": true,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "removeComments": true,
-    "declarationDir": "dist",
+    "allowJs": true,
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*"],

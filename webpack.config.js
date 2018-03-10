@@ -64,7 +64,7 @@ module.exports = function(env) {
       rollup: "rollup",
       typescript: "ts",
       // actual name not needed, just that this is an external
-      "monaco-editor": "anything",
+      "monaco-editor": "firebase",
       vs: "vs"
     },
     devServer: {

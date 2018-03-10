@@ -204,23 +204,20 @@ export interface Route {
   path: string
   view: (props) => any
   exact?: boolean
-  /**
-   * any extra prop is passed to the view.
-   */
-  [key: string]: any
 }
 
 export interface RoutesProps {
   routes: Route[]
+  routeProps?: any
 }
 
 export function Routes(props: RoutesProps) {
-  const { routes, ...rest } = props
+  const { routes, routeProps = {} } = props
   return routes.reduce((prev, next) => {
     if (prev) {
       return prev
     }
     const match = getMatch(location.pathname, next.path, next.exact)
-    return match ? next.view({ ...rest, match }) : null
+    return match ? next.view({ ...routeProps, match }) : null
   }, null)
 }

@@ -5,6 +5,8 @@ import { Header, Body } from "./components"
 
 import "./view.scss"
 
+let iteration = 0
+
 export function view(state: State, actions: Actions) {
   return (
     <main class="main">

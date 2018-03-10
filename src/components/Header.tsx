@@ -21,7 +21,7 @@ function CreateButton({ state, actions }: HeaderProps) {
   }
 
   return Button({
-    onclick: actions.ui.openCreateProject(),
+    onclick: actions.ui.openCreateProject,
     text: "create",
     class: "button"
   })
@@ -82,6 +82,7 @@ function DebugButton({ state, actions }: HeaderProps) {
   )
 }
 
+// TODO user
 export function Header(props: HeaderProps) {
   const { state, actions } = props
   return (

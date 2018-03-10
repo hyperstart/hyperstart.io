@@ -14,7 +14,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
 
   const createProject = state.ui.createProject
 
-  if (createProject) {
+  if (!createProject) {
     return <div />
   }
 
