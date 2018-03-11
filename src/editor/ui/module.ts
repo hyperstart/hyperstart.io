@@ -11,7 +11,7 @@ import * as api from "./api"
 const editForm = createForm()
 const createFileForm = createForm()
 // TODO
-const search = createSearch(null, null)
+const search = createSearch([])
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
   state: {

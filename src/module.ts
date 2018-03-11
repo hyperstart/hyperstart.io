@@ -45,7 +45,7 @@ export const module: ModuleImpl<State, Actions> = {
       actions.search.init(actions)
       actions.editor.init(actions)
 
-      actions.search.setSearchFn((text, range) => {
+      const searchFn = (text, range) => {
         if (!text || text.trim() === "") {
           return projectsStore.query({
             collection: COLLECTION,
@@ -63,7 +63,9 @@ export const module: ModuleImpl<State, Actions> = {
           first: range.value,
           limit: range.count
         })
-      })
+      }
+      actions.search.setSearchFn(searchFn)
+      actions.editor.ui.importProjectDialog.search.setSearchFn(searchFn)
     },
     createProject: () => (state, actions) => {
       const template = state.ui.createProject
