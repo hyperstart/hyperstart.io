@@ -4,6 +4,8 @@ import { replace } from "lib/router"
 
 import { State, Actions } from "../api"
 
+import "./CreateProjectModal.scss"
+
 export interface CreateProjectModalProps {
   state: State
   actions: Actions
@@ -37,7 +39,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
 
   const blankSelected = createProject.template === "blank"
   return (
-    <div class="modal active create-artifact-modal">
+    <div class="modal active create-project-modal">
       <a
         href="#"
         class="modal-overlay"

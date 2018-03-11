@@ -1,3 +1,5 @@
 dist
+public/bundle.js
+reports
 node_modules
 .cache
