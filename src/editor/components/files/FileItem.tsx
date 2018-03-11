@@ -54,7 +54,7 @@ function getFileSuffix(state: State, file: SourceNode): string {
 export const FileItem = (props: FileItemProps) => {
   const { state, actions, item } = props
   const onselect = e => {
-    actions.ui.select(item.id)
+    actions.sources.open({ sources: item.id })
   }
 
   const onpreview = (e: Event) => {
@@ -68,7 +68,8 @@ export const FileItem = (props: FileItemProps) => {
       <span>{" " + item.name + getFileSuffix(state, item)}</span>{" "}
       <span
         class="tooltip tooltip-bottom"
-        data-tooltip="View a read-only version of the file.\nUseful to copy/paste code in your project."
+        data-tooltip={`View a read-only version of the file.
+Useful to copy/paste code in your project.`}
       >
         <i class="fa fa-eye preview" aria-label="Preview" onclick={onpreview} />
       </span>

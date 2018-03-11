@@ -69,7 +69,7 @@ export function getSelectedSource(state: State): SourceNode | null {
   if (selected.length === 0) {
     return null
   }
-  const id = selected[selected.length - 1]
+  const id = selected[0]
   return <SourceNode>state.files.byId[id]
 }
 
