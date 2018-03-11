@@ -64,10 +64,17 @@ function updateProject(
 }
 
 const localStore = createProjects(local())
-
 let usersActions: users.Actions
 let projectsActions: projects.Actions
 let projectToOpen
+
+function getProjects(state: api.State, actions: api.Actions): projects.Actions {
+  if (state.status === "editing") {
+    return projectsActions
+  }
+
+  return actions.localStore
+}
 
 // internal actions
 interface Actions extends api.Actions {
@@ -186,7 +193,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return projectsActions
         .save(project)
         .then(() => {
-          updateProject(actions, project, state.status)
+          updateProject(actions, project, "editing")
           replace("/projects/" + id)
         })
         .catch(e => {
@@ -238,10 +245,14 @@ const _editor: ModuleImpl<api.State, Actions> = {
               files: project.files
             }))
           }
-          return projectsActions.importProjects(payload)
+          return getProjects(state, actions).importProjects(payload)
         })
         .then(result => {
-          updateProject(actions, projectsActions.getState()[id], state.status)
+          updateProject(
+            actions,
+            getProjects(state, actions).getState()[id],
+            state.status
+          )
         })
         .catch(e => {
           actions._setState({ status: "error" })
@@ -276,10 +287,14 @@ const _editor: ModuleImpl<api.State, Actions> = {
       const id = state.project.id
 
       actions._setState({ status: "loading" })
-      return projectsActions
+      return getProjects(state, actions)
         .addFiles({ id, files: [file] })
         .then(result => {
-          updateProject(actions, projectsActions.getState()[id], state.status)
+          updateProject(
+            actions,
+            getProjects(state, actions).getState()[id],
+            state.status
+          )
           if (payload.type === "file") {
             actions.sources.open({ sources: file.id })
           }
@@ -305,10 +320,14 @@ const _editor: ModuleImpl<api.State, Actions> = {
         .map(file => file.path)
 
       actions._setState({ status: "loading" })
-      return projectsActions
+      return getProjects(state, actions)
         .deleteFiles({ id, files })
         .then(() => {
-          updateProject(actions, projectsActions.getState()[id], state.status)
+          updateProject(
+            actions,
+            getProjects(state, actions).getState()[id],
+            state.status
+          )
           actions.sources.close(files)
           deleteModels(paths)
         })

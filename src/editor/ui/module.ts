@@ -34,7 +34,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     openImportProjectDialog: () => state => {
       return {
         importProjectDialog: {
-          search: {}
+          search: search.state
         }
       }
     },
