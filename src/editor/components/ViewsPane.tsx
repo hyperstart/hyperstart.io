@@ -75,6 +75,7 @@ export interface ViewsPaneProps {
   state: State
   actions: Actions
   currentUser: User | null
+  log: LogFn
 }
 
 export const ViewsPane = (props: ViewsPaneProps) => {

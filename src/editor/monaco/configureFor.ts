@@ -21,7 +21,7 @@ const configureCompiler = (): void => {
     outDir: "___OUTPUT___",
     sourceMap: true,
     alwaysStrict: true,
-    noEmitOnError: true,
+    noEmitOnError: false,
     forceConsistentCasingInFileNames: false,
     noImplicitReturns: false,
     noImplicitThis: false,
@@ -44,7 +44,6 @@ const configureCompiler = (): void => {
 const createModelsFor = (files: FileTree): void => {
   Object.keys(files.byId).forEach(id => {
     const file = files.byId[id]
-    console.log("Creating model for " + file.path)
     if (file.type === "file" && !hasModel(file.path)) {
       createModel(file.content, getLanguage(file), file.path)
     }

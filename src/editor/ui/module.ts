@@ -60,7 +60,14 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     createFileDialog: createFileForm.actions,
     openCreateFileModal: (payload: api.OpenFileModalPayload) => state => {
       return {
-        createFileDialog: { fields: {}, loading: false }
+        createFileDialog: {
+          fields: {
+            name: { value: "", original: "" },
+            type: { value: payload.type, original: payload.type },
+            parent: { value: payload.parent, original: payload.parent }
+          },
+          loading: false
+        }
       }
     },
     closeCreateFileModal: () => state => {

@@ -15,7 +15,14 @@ export function fileExists(
   name: string,
   parent?: string
 ): boolean {
-  // TODO
+  const files = state.files.byId
+  for (let id in files) {
+    const file = files[id]
+    if (file.name === name && file.parent == parent) {
+      return true
+    }
+  }
+
   return false
 }
 
@@ -37,12 +44,28 @@ export function isNotFound(file: any): file is FileNotFound {
   return file.notFound === true
 }
 
-export function getPreviewedFile(state: State): SourceNode | null {
-  const id = state.ui.previewedFile
-  if (!id) {
+export function getPreviewedFile(
+  state: State
+): SourceNode | FileNotFound | null {
+  const paths = window.location.pathname.substr(1).split("/")
+  if (paths.length < 3) {
     return null
   }
-  return (state.files.byId[id] as SourceNode) || null
+
+  paths.shift()
+  paths.shift()
+  const path = paths.join("/")
+  const id = state.files.byPath[path]
+  if (!id) {
+    return { notFound: true, path }
+  }
+
+  const result = state.files.byId[id] as SourceNode
+  if (!result || result.type !== "file") {
+    return { notFound: true, path }
+  }
+
+  return result
 }
 
 function compareRuns(r1: Run, r2: Run): number {

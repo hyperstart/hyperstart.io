@@ -51,14 +51,9 @@ function copyFiles(files: projects.FileTree): projects.Files {
 function updateProject(
   actions: Actions,
   project: projects.Project,
-  editable?: boolean
+  status: api.Status
 ) {
   const state = actions.getState()
-  const status =
-    typeof editable === "boolean"
-      ? editable ? "editing" : "read-only"
-      : state.status
-
   const files = projects.getFileTree(project.files)
   configureFor(files, false)
   actions._setState({
@@ -191,7 +186,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return projectsActions
         .save(project)
         .then(() => {
-          updateProject(actions, project, !!owner)
+          updateProject(actions, project, state.status)
           replace("/projects/" + id)
         })
         .catch(e => {
@@ -217,8 +212,11 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return projectsActions
         .updateFiles(update)
         .then(() => {
-          actions._setState({ status: "editing" })
-          updateProject(actions, projectsActions.getState()[projectId], true)
+          updateProject(
+            actions,
+            projectsActions.getState()[projectId],
+            "editing"
+          )
         })
         .catch(e => {
           actions._setState({ status: "error" })
@@ -243,7 +241,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
           return projectsActions.importProjects(payload)
         })
         .then(result => {
-          updateProject(actions, projectsActions.getState[id])
+          updateProject(actions, projectsActions.getState()[id], state.status)
         })
         .catch(e => {
           actions._setState({ status: "error" })
@@ -281,7 +279,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return projectsActions
         .addFiles({ id, files: [file] })
         .then(result => {
-          updateProject(actions, projectsActions.getState[id])
+          updateProject(actions, projectsActions.getState()[id], state.status)
           if (payload.type === "file") {
             actions.sources.open({ sources: file.id })
           }
@@ -310,7 +308,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return projectsActions
         .deleteFiles({ id, files })
         .then(() => {
-          updateProject(actions, projectsActions.getState[id])
+          updateProject(actions, projectsActions.getState()[id], state.status)
           actions.sources.close(files)
           deleteModels(paths)
         })

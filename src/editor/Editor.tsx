@@ -9,11 +9,13 @@ import { User } from "users"
 import { DebugPane, SourcesPane, ViewsPane } from "./components"
 import { hasDirtySources } from "./selectors"
 import { State, Actions } from "./api"
+import { LogFn } from "logger"
 
 export interface EditorProps {
   state: State
   actions: Actions
   currentUser: User | null
+  log: LogFn
 }
 
 const INTERCEPTOR = "__INTERCEPTOR"
