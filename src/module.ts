@@ -68,7 +68,9 @@ export const module: ModuleImpl<State, Actions> = {
       actions.editor.ui.importProjectDialog.search.setSearchFn(searchFn)
 
       addListener("projects/:id", match => {
-        // TODO
+        actions.logger.log(
+          actions.fetchProject({ id: match.params.id, open: true })
+        )
       })
     },
     createProject: () => (state, actions) => {
@@ -88,13 +90,7 @@ export const module: ModuleImpl<State, Actions> = {
       if (isLoading(state)) {
         return
       }
-      if (state.editor.status === "loading") {
-        return
-      }
-      if (
-        state.editor.status === "editing" &&
-        state.editor.project.id === payload.id
-      ) {
+      if (state.editor.project && state.editor.project.id === payload.id) {
         return
       }
 

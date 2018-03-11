@@ -11,14 +11,14 @@ export interface LogEntry {
 }
 
 export interface LogEvent {
-  event: Promise<any>
+  promise: Promise<any>
   loading?: string
-  success?: string
-  error?: string
+  success?: string | ((result: any) => string)
+  error?: string | ((result: any) => string)
 }
 
 export interface LogFn {
-  (entry: LogEntry | LogEvent)
+  (entry: LogEntry | LogEvent | Promise<any>)
 }
 
 // # State
@@ -31,6 +31,7 @@ export interface State {
 // # Actions
 
 export interface Actions extends ModuleActions<State> {
-  log(payload: LogEntry | LogEvent)
+  /** Returns the promise for LogEvent. */
+  log(payload: LogEntry | LogEvent | Promise<any>): any
   clearCurrent(entry?: LogEntry)
 }

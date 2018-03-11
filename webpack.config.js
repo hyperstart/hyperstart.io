@@ -10,6 +10,7 @@ const includePaths = [path.join(__dirname, "./src")]
 
 module.exports = function(env) {
   const plugins = []
+  let main
   if (env.build) {
     plugins.push(
       new BundleAnalyzerPlugin({
@@ -18,13 +19,17 @@ module.exports = function(env) {
         reportFilename: "../reports/report.html"
       })
     )
+
+    main = "./src/index.prod.ts"
+  } else {
+    main = "./src/index.dev.ts"
   }
 
   return {
     devtool: env.build ? undefined : "inline-source-map",
     context: __dirname,
     entry: {
-      main: "./src/index.ts"
+      main
     },
     output: {
       path: outPath,

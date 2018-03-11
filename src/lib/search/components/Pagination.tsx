@@ -1,16 +1,18 @@
 import { h } from "hyperapp"
 
 import { State, Actions } from "../api"
+import { LogFn } from "logger"
 
 export interface PaginationProps {
   state: State
   actions: Actions
   name: string
+  log: LogFn
   hidden?: boolean
 }
 
 export function Pagination(props: PaginationProps) {
-  const { state, actions, name, hidden } = props
+  const { state, actions, name, log, hidden } = props
   const search = state[name]
   const page = search.currentPage
   const prevDisabled = page === 0
@@ -41,7 +43,7 @@ export function Pagination(props: PaginationProps) {
           class="btn btn-link"
           disabled={nextDisabled}
           onclick={e => {
-            actions.nextPage(name)
+            log(actions.nextPage(name))
             window.scroll(0, 0)
             e.preventDefault()
           }}

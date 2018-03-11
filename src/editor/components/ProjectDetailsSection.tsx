@@ -4,15 +4,17 @@ import { Disable, Button } from "lib/components"
 import { normalize } from "lib/search"
 
 import { User } from "users"
+import { ProjectOwner, ProjectTitle } from "projects/components"
+import { LogFn } from "logger"
 
 import { State, Actions } from "../api"
 import { isEditable } from "../selectors"
-import { ProjectOwner, ProjectTitle } from "projects/components"
 
 export interface ProjectDetailsSectionProps {
   state: State
   actions: Actions
   currentUser: User | null
+  log: LogFn
 }
 
 function HeaderMenu(props: ProjectDetailsSectionProps) {
@@ -41,14 +43,16 @@ function HeaderMenu(props: ProjectDetailsSectionProps) {
 }
 
 function ProjectEditableStatusAction(props: ProjectDetailsSectionProps) {
-  const { state, actions, currentUser } = props
+  const { state, actions, currentUser, log } = props
   if (currentUser) {
     const onclick = (e: Event) => {
       e.preventDefault()
-      actions.setOwner({
-        id: currentUser.id,
-        displayName: currentUser.displayName
-      })
+      log(
+        actions.setOwner({
+          id: currentUser.id,
+          displayName: currentUser.displayName
+        })
+      )
     }
 
     return (
@@ -74,7 +78,7 @@ function ProjectEditableStatusText(props: ProjectDetailsSectionProps) {
 }
 
 export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
   const project = state.project
   if (isEditable(state) && state.ui.editForm) {
     const formState = state.ui.editForm
@@ -94,7 +98,7 @@ export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
     }
     const onsubmit = e => {
       e.preventDefault()
-      actions.submitEdits()
+      log(actions.submitEdits())
     }
 
     let info = null

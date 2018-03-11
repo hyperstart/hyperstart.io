@@ -7,15 +7,17 @@ import { Editor } from "editor/Editor"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./ProjectEditorPage"
+import { LogFn } from "logger"
 
 export interface ProjectEditorPageProps {
   state: State
   actions: Actions
   match: Match
+  log: LogFn
 }
 
 export function ProjectEditorPage(props: ProjectEditorPageProps) {
-  const { state, actions, match } = props
+  const { state, actions, log, match } = props
   const id = match.params.id
   if (!id) {
     replace("/")
@@ -26,7 +28,7 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
   if (editor.status !== "editing") {
     return (
       <div style={{ flex: "1 1 auto" }}>
-        {CreateProjectModal({ state, actions })}
+        {CreateProjectModal({ state, actions, log })}
       </div>
     )
   }

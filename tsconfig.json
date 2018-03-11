@@ -12,7 +12,6 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "removeComments": true,
     "allowJs": true,
     "typeRoots": ["node_modules/@types"]

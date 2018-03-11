@@ -4,12 +4,14 @@ import { State, Actions, SingleResultView } from "../api"
 import { Pagination } from "./Pagination"
 
 import "./SearchResults.scss"
+import { LogFn } from "logger"
 
 export interface SearchResultsProps {
   state: State
   actions: Actions
   resultView: SingleResultView
   name: string
+  log: LogFn
   aroundResults?: (props, children) => any | string
   singleResultViewProps?: any
   hideTopPagination?: boolean

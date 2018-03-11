@@ -1,6 +1,7 @@
 import { ModuleImpl } from "lib/modules"
 
 import * as api from "./api"
+import { getErrorMessage } from "lib/utils"
 
 // internal actions
 interface Actions extends api.Actions {
@@ -18,6 +19,18 @@ function isLogEntry(entry: any): entry is api.LogEntry {
   )
 }
 
+function getEvent(payload: api.LogEvent | Promise<any>): api.LogEvent {
+  if (payload instanceof Promise) {
+    return {
+      promise: payload,
+      success: "Action successful",
+      error: e => `Error: ${getErrorMessage(e)}`
+    }
+  }
+
+  return payload
+}
+
 const _logger: ModuleImpl<api.State, Actions> = {
   state: {
     entries: []
@@ -29,7 +42,10 @@ const _logger: ModuleImpl<api.State, Actions> = {
       current: entry,
       entries: state.entries.push(entry)
     }),
-    log: (payload: api.LogEntry | api.LogEvent) => (_, actions) => {
+    log: (payload: api.LogEntry | api.LogEvent | Promise<any>) => (
+      _,
+      actions
+    ) => {
       if (!payload) {
         return
       }
@@ -39,13 +55,22 @@ const _logger: ModuleImpl<api.State, Actions> = {
         return
       }
 
-      actions._log({ severity: "loading", message: payload.loading })
-      payload.event
-        .then(() => {
-          actions._log({ severity: "success", message: payload.success })
+      const event = getEvent(payload)
+
+      actions._log({ severity: "loading", message: event.loading })
+      return event.promise
+        .then(res => {
+          const message =
+            typeof event.success === "function"
+              ? event.success(res)
+              : event.success
+          actions._log({ severity: "success", message })
+          return res
         })
         .catch(e => {
-          actions._log({ severity: "error", message: payload.error })
+          const message =
+            typeof event.error === "function" ? event.error(e) : event.error
+          actions._log({ severity: "error", message })
           throw e
         })
     },

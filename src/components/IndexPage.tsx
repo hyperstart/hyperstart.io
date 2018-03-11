@@ -1,7 +1,10 @@
 import { h } from "hyperapp"
 
-import { State, Actions } from "api"
 import { ProjectsSearch } from "lib/search/ProjectsSearch"
+
+import { State, Actions } from "api"
+import { LogFn } from "logger"
+
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./IndexPage.scss"
@@ -9,10 +12,11 @@ import "./IndexPage.scss"
 export interface IndexPageProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export function IndexPage(props: IndexPageProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
 
   return (
     <div class="index-page">
@@ -37,8 +41,8 @@ export function IndexPage(props: IndexPageProps) {
           create a new project.
         </a>
       </p>
-      {ProjectsSearch({ state: state.search, actions: actions.search })}
-      {CreateProjectModal({ state, actions })}
+      {ProjectsSearch({ state: state.search, actions: actions.search, log })}
+      {CreateProjectModal(props)}
     </div>
   )
 }

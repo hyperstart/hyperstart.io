@@ -6,6 +6,7 @@ import { Project, Details } from "projects/api"
 import { ProjectTitle, ProjectOwner } from "projects/components"
 
 import { State, Actions } from "../api"
+import { LogFn } from "logger"
 
 function ProjectTableRow(
   project: Details,
@@ -46,10 +47,11 @@ function ProjectTable(props, children) {
 export interface ImportProjectModalProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export const ImportProjectModal = (props: ImportProjectModalProps) => {
-  const { state, actions } = props
+  const { state, actions, log } = props
   const dialog = state.ui.importProjectDialog
   if (!dialog) {
     return <div />
@@ -64,7 +66,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
     const project = dialog.selected
     if (project) {
       e.preventDefault()
-      actions.importProjects([project])
+      log(actions.importProjects([project]))
       actions.ui.closeImportProjectDialog()
     }
   }
@@ -93,6 +95,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             actions={searchActions}
             name="import-project"
             type="pane"
+            log={log}
             placeholder="Search for a project..."
             displaySearchButton={true}
           />
@@ -107,6 +110,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             hideBottomPagination={true}
             hideTopPagination={true}
             singleResultViewProps={props}
+            log={log}
           />
         </div>
         <div
@@ -117,6 +121,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             state={searchState}
             actions={searchActions}
             name="import-project"
+            log={log}
           />
           <div>
             <button class="btn" onclick={oncancel}>

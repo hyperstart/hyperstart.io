@@ -5,6 +5,7 @@ import { SourceNode } from "projects"
 import * as api from "./api"
 import { OUTPUT_TAB_ID } from "./constants"
 import { compile } from "./compile"
+import { LogFn } from "logger"
 
 export interface Actions extends api.Actions {
   _setMonacoLoaded()

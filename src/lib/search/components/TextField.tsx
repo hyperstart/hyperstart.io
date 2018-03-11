@@ -1,25 +1,27 @@
 import { h } from "hyperapp"
 
 import { State, Actions } from "../api"
+import { LogFn } from "logger"
 
 export interface TextFieldProps {
   state: State
   actions: Actions
   type: "field" | "pane"
   name: string
+  log: LogFn
   placeholder?: string
   displaySearchButton?: boolean
 }
 
 export function TextField(props: TextFieldProps) {
-  const { state, actions, name, type } = props
+  const { state, actions, log, name, type } = props
   const valueAttr = type === "field" ? "fieldText" : "paneText"
   const search = state[name] || {}
   return (
     <form
       onsubmit={(e: Event) => {
         e.preventDefault()
-        actions.search({ name, type })
+        log(actions.search({ name, type }))
       }}
     >
       <div class="input-group">

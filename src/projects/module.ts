@@ -61,9 +61,12 @@ export function createProjects(
         state,
         actions
       ): Promise<api.Project> => {
-        return createProject({ actions, template }).then(actions.add)
+        return createProject({ actions, template }).then(actions.save)
       },
-      add: (project: api.Project) => (state, actions): Promise<api.Project> => {
+      save: (project: api.Project) => (
+        state,
+        actions
+      ): Promise<api.Project> => {
         const { details, files } = project
         const id = details.id
         const toSet: store.DocumentToSet[] = [

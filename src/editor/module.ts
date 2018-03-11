@@ -8,6 +8,7 @@ import * as projects from "projects"
 import * as global from "api"
 import * as users from "users"
 import { createProjects } from "projects/module"
+import { LogFn } from "logger"
 
 import * as api from "./api"
 import * as monaco from "./monaco"
@@ -19,7 +20,6 @@ import { openProject } from "./openProject"
 import { getDirtySources } from "./selectors"
 import { runProject } from "./runProject"
 import { getEditorUrl } from "utils"
-import { getChildrenRecursive } from "projects"
 
 function copyFiles(files: projects.FileTree): projects.Files {
   const results: projects.Files = {}
@@ -189,7 +189,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
 
       actions._setState({ status: "loading" })
       return projectsActions
-        .add(project)
+        .save(project)
         .then(() => {
           updateProject(actions, project, !!owner)
           replace("/projects/" + id)
@@ -298,7 +298,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       const id = state.project.id
       const files = [file.id]
       if (file.type === "folder") {
-        getChildrenRecursive(state.files, file, files)
+        projects.getChildrenRecursive(state.files, file, files)
       }
 
       const paths = files

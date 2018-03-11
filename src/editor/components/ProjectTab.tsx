@@ -7,12 +7,13 @@ import { State, Actions } from "../api"
 import { ProjectDetailsSection } from "./ProjectDetailsSection"
 import { ImportProjectModal } from "./ImportProjectModal"
 import { ProjectFilesSection } from "./files"
+import { LogFn } from "logger"
 
 export interface ProjectTabProps {
   state: State
   actions: Actions
   currentUser: User | null
-  style?: any
+  log: LogFn
 }
 
 export const ProjectTab = (props: ProjectTabProps) => {

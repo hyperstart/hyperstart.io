@@ -1,6 +1,7 @@
 import { h } from "hyperapp"
 
 import { File, FileNode, FolderNode, SourceNode } from "projects"
+import { LogFn } from "logger"
 
 import { State, Actions } from "../../api"
 import { getPreviewedFile } from "../../selectors"
@@ -13,17 +14,18 @@ import { HeaderMenu } from "./HeaderMenu"
 export interface ProjectFilesSectionProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
-  const { state, actions } = props
+  const { state, actions, log } = props
   const file = getPreviewedFile(state)
 
   function createFile(type: "file" | "folder", name: string, parent?: File) {
-    actions.createFile({ type, name, parent })
+    log(actions.createFile({ type, name, parent }))
   }
   function onDeleteFile(file: FileNode) {
-    actions.deleteFile(file)
+    log(actions.deleteFile(file))
   }
 
   return (

@@ -9,6 +9,7 @@ import { PROJECT_TAB_ID, OUTPUT_TAB_ID } from "../constants"
 
 import { ProjectTab } from "./ProjectTab"
 import { OutputTab } from "./OutputTab"
+import { LogFn } from "logger"
 
 // # Tabs
 
@@ -48,9 +49,10 @@ interface ViewsPaneContentProps {
   actions: Actions
   tab: ViewTab
   currentUser: User | null
+  log: LogFn
 }
 
-const ViewsPaneContent = (props: ViewsPaneContentProps) => {
+function ViewsPaneContent(props: ViewsPaneContentProps) {
   if (!props.tab) {
     return "No tab selected."
   }

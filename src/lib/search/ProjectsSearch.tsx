@@ -8,6 +8,7 @@ import { ProjectOwner } from "projects/components"
 
 import { SearchPane } from "./SearchPane"
 import { State, Actions } from "./api"
+import { LogFn } from "logger"
 
 // # Search Project
 
@@ -52,13 +53,15 @@ function ProjectListRow(result: Details, index: number) {
 export interface ProjectsSearchProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export function ProjectsSearch(props: ProjectsSearchProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
   return SearchPane({
     state,
     actions,
+    log,
     name: "projects",
     resultView: ProjectListRow,
     placeholder: "Search existing projects..."

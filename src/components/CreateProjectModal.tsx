@@ -1,6 +1,7 @@
 import { h } from "hyperapp"
 
 import { replace } from "lib/router"
+import { LogFn } from "logger"
 
 import { State, Actions } from "../api"
 
@@ -9,10 +10,11 @@ import "./CreateProjectModal.scss"
 export interface CreateProjectModalProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export function CreateProjectModal(props: CreateProjectModalProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
 
   const createProject = state.ui.createProject
 
@@ -23,7 +25,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
   const onsubmit = (e: Event) => {
     if (createProject.template) {
       e.preventDefault()
-      actions.createProject()
+      log(actions.createProject())
     }
   }
 
