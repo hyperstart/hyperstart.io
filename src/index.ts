@@ -1,6 +1,6 @@
-import { h, app as ha } from "hyperapp"
+import { h, app } from "hyperapp"
 
-import { app } from "./app"
+import { module } from "./module"
 import { view } from "./view"
 
-ha(app.state, app.actions, view, document.getElementById("app")).init()
+app(module.state, module.actions, view, document.getElementById("app")).init()

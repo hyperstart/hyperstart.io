@@ -18,3 +18,8 @@ export const HYPERAPP_ID = "hyperapp"
  * The name of the hyperapp project.
  */
 export const HYPERAPP_NAME = "hyperapp"
+
+/**
+ * The collection that holds the projects.
+ */
+export const COLLECTION = "projects"

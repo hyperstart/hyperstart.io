@@ -1,4 +1,5 @@
 import { ModuleImpl } from "lib/modules"
+import { local } from "lib/store/local"
 import { replace } from "lib/router"
 import { set } from "lib/immutable"
 import { guid } from "lib/utils"
@@ -67,8 +68,7 @@ function updateProject(
   })
 }
 
-// TODO
-const localStore = createProjects(null)
+const localStore = createProjects(local())
 
 let usersActions: users.Actions
 let projectsActions: projects.Actions

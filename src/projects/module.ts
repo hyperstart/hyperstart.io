@@ -8,6 +8,7 @@ import { createProject } from "./createProject"
 import { SourceEditor } from "editor/components/SourceEditor"
 import { getErrorMessage } from "lib/utils"
 import { importProjects } from "projects/importProjects"
+import { COLLECTION } from "."
 
 interface SetStatusPayload {
   id: string
@@ -24,9 +25,9 @@ interface Actions extends api.Actions {
 
 function path(project?: string) {
   if (project) {
-    return `projects/${project}/files`
+    return `${COLLECTION}/${project}/files`
   }
-  return "projects"
+  return COLLECTION
 }
 
 function fetchDetails(

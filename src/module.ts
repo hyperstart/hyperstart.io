@@ -1,5 +1,6 @@
 import { create as createRouter, replace } from "lib/router"
 import { ModuleImpl } from "lib/modules"
+import { local } from "lib/store/local"
 
 import { State, Actions, FetchProjectPayload } from "./api"
 import { isLoading } from "./selectors"
@@ -9,13 +10,15 @@ import { createProjects } from "projects/module"
 import { createSearch } from "lib/search/module"
 import { ui } from "ui/module"
 import { users } from "users/module"
+import { COLLECTION } from "projects"
+import { getWords } from "lib/search"
 
 const router = createRouter()
-// TODO
-const projects = createProjects(null)
-const search = createSearch(null, [])
+const projectsStore = local()
+const projects = createProjects(projectsStore)
+const search = createSearch([])
 
-export const app: ModuleImpl<State, Actions> = {
+export const module: ModuleImpl<State, Actions> = {
   state: {
     editor: editor.state,
     logger: logger.state,
@@ -39,7 +42,28 @@ export const app: ModuleImpl<State, Actions> = {
       actions.logger.init(actions)
       actions.users.init(actions)
       actions.projects.init(actions)
+      actions.search.init(actions)
       actions.editor.init(actions)
+
+      actions.search.setSearchFn((text, range) => {
+        if (!text || text.trim() === "") {
+          return projectsStore.query({
+            collection: COLLECTION,
+            where: [{ attribute: "hidden", op: "==", value: false }],
+            first: range.value,
+            limit: range.count
+          })
+        }
+
+        const attribute = "searches." + getWords(text).join("-")
+        return projectsStore.query({
+          collection: COLLECTION,
+          where: [{ attribute, op: ">", value: 0 }],
+          orderBy: { attribute, descending: true },
+          first: range.value,
+          limit: range.count
+        })
+      })
     },
     createProject: () => (state, actions) => {
       const template = state.ui.createProject

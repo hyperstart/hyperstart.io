@@ -5,23 +5,6 @@ import * as api from "./api"
 
 // # Types
 
-export interface Range {
-  index: number
-  /** Not set if index === 0 */
-  value?: any
-  count: number
-}
-
-// No order by for now.
-// export interface OrderBy {
-//   attribute: string
-//   direction?: "ASC" | "DESC"
-// }
-
-export interface DoSearch {
-  (text: string, range: Range /*, orderBy?: OrderBy*/): Promise<any[]> | string
-}
-
 export interface InitialSearch {
   name: string
   resultsPerPage?: number
@@ -66,14 +49,17 @@ function checkSearchForNextPage(search: api.Search) {
 // # Module
 
 export function createSearch(
-  doSearch: DoSearch,
   searches: InitialSearch[]
 ): ModuleImpl<api.State, api.Actions> {
+  let searchFn: api.SearchFn
   return {
     state: {},
     actions: {
       // ## Internal
       init: () => {},
+      setSearchFn: fn => {
+        searchFn = fn
+      },
       getState: () => state => state,
       // ## Public
       search: (payload: api.SearchPayload) => (
@@ -86,7 +72,7 @@ export function createSearch(
           throw new Error("No search with name " + name)
         }
         const text = type === "pane" ? search.paneText : search.fieldText
-        const searchResult = doSearch(text, {
+        const searchResult = searchFn(text, {
           index: 0,
           count: search.resultsPerPage + 1
         })
@@ -138,7 +124,7 @@ export function createSearch(
         }
 
         // not searched yet: do the search
-        const searchResult = doSearch(search.query, {
+        const searchResult = searchFn(search.query, {
           index: offset + pageSize + 1,
           value: search.results[offset + pageSize],
           count: search.resultsPerPage

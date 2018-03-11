@@ -31,6 +31,23 @@ export interface State {
 
 // # Actions
 
+export interface Range {
+  index: number
+  /** Not set if index === 0 */
+  value?: any
+  count: number
+}
+
+// No order by for now.
+// export interface OrderBy {
+//   attribute: string
+//   direction?: "ASC" | "DESC"
+// }
+
+export interface SearchFn {
+  (text: string, range: Range /*, orderBy?: OrderBy*/): Promise<any[]> | string
+}
+
 export interface SearchPayload {
   name: string
   type: "field" | "pane"
@@ -51,6 +68,7 @@ export interface SearchUpdate {
 }
 
 export interface Actions extends ModuleActions<State> {
+  setSearchFn(searchFn: SearchFn)
   search(payload: SearchPayload): Promise<Search>
   nextPage(name: string): Promise<Search>
   previousPage(name: string)
