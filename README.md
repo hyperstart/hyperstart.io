@@ -35,7 +35,6 @@ This repository contains:
 # Overall conventions
 
 * All asynchronous actions return a `Promise`, even if not used by the components.
-* All modules are responsible to log their actions with the `logger` module.
 * Important sections of files are marked with `// # Section Name` (same as markdown titles), sub-sections are marked with `// ## Sub Section Name`, and so on...
   This is there because I plan on adding support for this to Hyperstart's editor and to move my dev env there (eventually).
 
