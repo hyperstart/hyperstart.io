@@ -22,8 +22,6 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
     return <div style={{ flex: "1 1 auto" }} />
   }
 
-  actions.fetchProject({ id, open: true })
-
   const editor = state.editor
   if (editor.status !== "editing") {
     return (
