@@ -10,6 +10,17 @@ export interface LogEntry {
   detailedMessage?: string
 }
 
+export interface LogEvent {
+  event: Promise<any>
+  loading?: string
+  success?: string
+  error?: string
+}
+
+export interface LogFn {
+  (entry: LogEntry | LogEvent)
+}
+
 // # State
 
 export interface State {
@@ -20,6 +31,6 @@ export interface State {
 // # Actions
 
 export interface Actions extends ModuleActions<State> {
-  log(entry: LogEntry): void
-  clearCurrent(entry?: LogEntry): void
+  log(payload: LogEntry | LogEvent)
+  clearCurrent(entry?: LogEntry)
 }
