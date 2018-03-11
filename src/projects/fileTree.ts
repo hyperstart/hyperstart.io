@@ -21,7 +21,7 @@ export interface SourceNode extends BaseFile {
 export interface FolderNode extends BaseFile {
   type: "folder"
   children: string[]
-  artifactId?: string
+  projectId?: string
   expanded?: boolean
 }
 
@@ -55,7 +55,7 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
       path: ""
     }
     if (file.projectId) {
-      result.artifactId = file.projectId
+      result.projectId = file.projectId
     }
     return result
   }

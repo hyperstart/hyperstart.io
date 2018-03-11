@@ -18,7 +18,7 @@ interface ViewTab {
   id: string
 }
 
-const ARTIFACT_TAB_NAME = "Project"
+const PROJECT_TAB_NAME = "Project"
 const PREVIEW_TAB_NAME = "Output"
 
 const getTabs = (state: State): ViewTab[] => {
@@ -26,7 +26,7 @@ const getTabs = (state: State): ViewTab[] => {
     return [
       {
         id: PROJECT_TAB_ID,
-        name: ARTIFACT_TAB_NAME
+        name: PROJECT_TAB_NAME
       },
       {
         id: OUTPUT_TAB_ID,
@@ -37,7 +37,7 @@ const getTabs = (state: State): ViewTab[] => {
   return [
     {
       id: PROJECT_TAB_ID,
-      name: ARTIFACT_TAB_NAME
+      name: PROJECT_TAB_NAME
     }
   ]
 }

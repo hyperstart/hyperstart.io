@@ -76,7 +76,7 @@ export function Editor(props: EditorProps) {
 
   return (
     <SplitPane
-      key="artifact-editor-div"
+      key="project-editor-div"
       oncreate={oncreate}
       ondestroy={ondestroy}
     >

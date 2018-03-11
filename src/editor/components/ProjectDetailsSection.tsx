@@ -122,7 +122,7 @@ export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
                   (info ? "is-success " : "") +
                   (loading ? "disabled" : "")
                 }
-                placeholder="Artifact Name"
+                placeholder="Project Name"
                 value={value}
                 oninput={oninput}
               />
@@ -147,7 +147,7 @@ export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
   }
 
   return (
-    <div class="mx-2 artifact-details">
+    <div class="mx-2 project-details">
       <h1>
         <ProjectTitle project={project} />
         <HeaderMenu {...props} />

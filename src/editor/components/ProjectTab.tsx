@@ -24,7 +24,7 @@ export const ProjectTab = (props: ProjectTabProps) => {
   }
 
   return (
-    <div class="view-pane-tab artifact-tab">
+    <div class="view-pane-tab project-tab">
       {ProjectDetailsSection(props)}
       {ProjectFilesSection(props)}
       {ImportProjectModal(props)}

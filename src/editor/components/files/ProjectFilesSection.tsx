@@ -29,7 +29,7 @@ export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
   }
 
   return (
-    <div class="m-2 artifact-files">
+    <div class="m-2 project-files">
       <h2>Files {HeaderMenu(props)}</h2>
       {file ? FilePreview({ state, actions, file }) : FileTree(props)}
       <DeleteFileModal

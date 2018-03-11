@@ -4,7 +4,7 @@ import { getSearches } from "lib/search"
 import { importProjects } from "./importProjects"
 import { createBlankFiles, createHyperappFiles } from "./createFiles"
 import { Actions, File, Owner, Project, Details, Template } from "./api"
-import { HYPERAPP_ID, HYPERAPP_NAME, LOCAL_ARTIFACT_ID } from "./constants"
+import { HYPERAPP_ID, HYPERAPP_NAME, LOCAL_PROJECT_ID } from "./constants"
 
 export interface Payload {
   actions: Actions
@@ -16,7 +16,7 @@ export interface Payload {
 export function createProject(payload: Payload): Promise<Project> {
   const { actions, name = "new-project", owner, template } = payload
   const local = !owner
-  const id = local ? LOCAL_ARTIFACT_ID : payload.owner.id + "-" + guid()
+  const id = local ? LOCAL_PROJECT_ID : payload.owner.id + "-" + guid()
 
   const details: Details = {
     id,

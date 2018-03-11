@@ -39,7 +39,7 @@ const importFiles = (
   })
 }
 
-const ATTRS = ["type", "content", "url", "artifactId"]
+const ATTRS = ["type", "content", "url", "projectId"]
 
 function areFilesEquals(file1: File, file2: File): boolean {
   for (const attr of ATTRS) {
@@ -130,8 +130,8 @@ export const importProjects = (
 
   const foldersToExclude = [DEPENDENCIES_FOLDER]
 
-  imports.forEach(artifact => {
-    const names = artifact.name.split("/")
+  imports.forEach(project => {
+    const names = project.name.split("/")
     let path = DEPENDENCIES_FOLDER
     let root = dependencies
     for (const name of names) {
@@ -145,7 +145,7 @@ export const importProjects = (
         parent
       })
     }
-    const toImportTree = getFileTree(artifact.files)
+    const toImportTree = getFileTree(project.files)
     toImportTree.roots.forEach(fileId => {
       const toImport = toImportTree.byId[fileId]
 
@@ -155,7 +155,7 @@ export const importProjects = (
         result,
         path + "/" + toImport.path,
         toImport,
-        artifact.files,
+        project.files,
         toImportTree,
         root.id
       )

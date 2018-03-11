@@ -34,7 +34,7 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
         <li class="divider" />
         <li class="menu-item">
           <a href="#" onclick={actions.openImportProjectDialog}>
-            Import Artifact
+            Import Project
           </a>
         </li>
       </ul>
