@@ -14,7 +14,7 @@ This repository contains:
 * [typescript](https://github.com/Microsoft/TypeScript)
 * [hyperapp](https://github.com/hyperapp/hyperapp)
 * [spectre.css](https://github.com/picturepan2/spectre)
-* [parcel](https://github.com/parcel-bundler/parcel)
+* [webpack](https://github.com/webpack/webpack)
 
 # Overall Structure
 
