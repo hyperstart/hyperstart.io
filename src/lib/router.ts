@@ -33,7 +33,7 @@ export interface Match {
   params: any
 }
 
-function getMatch(location: string, path: string, exact: boolean) {
+function getMatch(location: string, path: string, exact: boolean): Match {
   const params = {}
   if (location === path) {
     return { location, path, params }
@@ -82,18 +82,18 @@ window.onpopstate = e => {
   }
 }
 
-export interface RouteChangeInterceptor {
+export interface Interceptor {
   /**
    * return false if prevent route change
    */
   (newUrl: string): boolean
 }
 
-export function addInterceptor(interceptor: RouteChangeInterceptor): void {
+export function addInterceptor(interceptor: Interceptor): void {
   INTERCEPTORS.push(interceptor)
 }
 
-export function removeInterceptor(interceptor: RouteChangeInterceptor): void {
+export function removeInterceptor(interceptor: Interceptor): void {
   const index = INTERCEPTORS.findIndex(i => i === interceptor)
   if (index >= 0) {
     INTERCEPTORS.splice(index)
@@ -104,13 +104,24 @@ export function removeInterceptor(interceptor: RouteChangeInterceptor): void {
 
 const LISTENERS = []
 
-export function listen(path, listener, exact) {
+export interface Listener {
+  (match: Match)
+}
+
+export function addListener(path: string, listener: Listener, exact?: boolean) {
   LISTENERS.push(() => {
     const result = getMatch(window.location.pathname, path, exact)
     if (result) {
       listener(result)
     }
   })
+}
+
+export function removeListener(listener: Listener) {
+  const index = LISTENERS.findIndex(i => i === listener)
+  if (index >= 0) {
+    LISTENERS.splice(index)
+  }
 }
 
 // # Module

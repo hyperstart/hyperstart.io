@@ -1,4 +1,4 @@
-import { create as createRouter, replace } from "lib/router"
+import { addListener, create as createRouter, replace } from "lib/router"
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 
@@ -66,6 +66,10 @@ export const module: ModuleImpl<State, Actions> = {
       }
       actions.search.setSearchFn(searchFn)
       actions.editor.ui.importProjectDialog.search.setSearchFn(searchFn)
+
+      addListener("projects/:id", match => {
+        // TODO
+      })
     },
     createProject: () => (state, actions) => {
       const template = state.ui.createProject
@@ -82,16 +86,16 @@ export const module: ModuleImpl<State, Actions> = {
     },
     fetchProject: (payload: FetchProjectPayload) => (state, actions) => {
       if (isLoading(state)) {
-        return null
+        return
       }
       if (state.editor.status === "loading") {
-        return null
+        return
       }
       if (
         state.editor.status === "editing" &&
         state.editor.project.id === payload.id
       ) {
-        return null
+        return
       }
 
       return actions.projects.fetch(payload.id).then(project => {
