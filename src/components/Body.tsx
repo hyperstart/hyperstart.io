@@ -14,6 +14,7 @@ export interface BodyProps {
 }
 
 export function Body(props: BodyProps) {
+  const { state, actions } = props
   return Routes({
     routes: [
       { path: "/", view: IndexPage, exact: true },
@@ -21,6 +22,6 @@ export function Body(props: BodyProps) {
       { path: "/projects", view: ProjectSearchPage, exact: true },
       { path: "*", view: () => replace("/") && "" }
     ],
-    routeProps: props
+    routeProps: { state, actions, log: actions.logger.log }
   })
 }

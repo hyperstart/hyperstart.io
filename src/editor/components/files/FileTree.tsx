@@ -15,11 +15,11 @@ interface NodeViewProps {
   state: State
   actions: Actions
   path: string
-  file: FileNode
+  item: FileNode
 }
 
 const NodeView = (props: NodeViewProps) => {
-  if (props.file.type === "file") {
+  if (props.item.type === "file") {
     return FileItem(props as any)
   }
   return FolderItem(props as any)

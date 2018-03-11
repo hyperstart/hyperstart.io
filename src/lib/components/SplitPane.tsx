@@ -1,5 +1,7 @@
 import { h } from "hyperapp"
 
+import "./SplitPane.scss"
+
 // # Component
 
 export interface SplitPaneProps {
@@ -34,11 +36,11 @@ export function SplitPane(props: SplitPaneProps, children: any[]) {
     "flex-basis": pane1Percent + "%"
   }
 
-  children[0].props.style = children[0].props.style
-    ? { ...children[0].props.style, ...style0 }
+  children[0].attributes.style = children[0].attributes.style
+    ? { ...children[0].attributes.style, ...style0 }
     : style0
-  children[1].props.style = children[1].props.style
-    ? { ...children[1].props.style, ...style1 }
+  children[1].attributes.style = children[1].attributes.style
+    ? { ...children[1].attributes.style, ...style1 }
     : style1
 
   return (

@@ -40,6 +40,7 @@ export function openProject(
     selectedState: [],
     logs: []
   }
+
   return {
     compilationOutput: null,
     debug,

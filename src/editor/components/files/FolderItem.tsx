@@ -13,7 +13,7 @@ function stopPropagation(e: Event) {
 interface FolderDropdownProps {
   state: State
   actions: Actions
-  file: FolderNode
+  item: FolderNode
 }
 
 const FolderDropdown = (props: FolderDropdownProps) => {
@@ -28,7 +28,7 @@ const FolderDropdown = (props: FolderDropdownProps) => {
           <a
             href="#"
             onclick={() =>
-              actions.openCreateFileModal({ type: "file", parent: props.file })
+              actions.openCreateFileModal({ type: "file", parent: props.item })
             }
           >
             New File
@@ -40,7 +40,7 @@ const FolderDropdown = (props: FolderDropdownProps) => {
             onclick={() =>
               actions.openCreateFileModal({
                 type: "folder",
-                parent: props.file
+                parent: props.item
               })
             }
           >
@@ -49,7 +49,7 @@ const FolderDropdown = (props: FolderDropdownProps) => {
         </li>
         <li class="divider" />
         <li class="menu-item">
-          <a href="#" onclick={() => actions.openDeleteFileModal(props.file)}>
+          <a href="#" onclick={() => actions.openDeleteFileModal(props.item)}>
             Delete
           </a>
         </li>
@@ -63,14 +63,14 @@ const FolderDropdown = (props: FolderDropdownProps) => {
 export interface FolderItemProps {
   state: State
   actions: Actions
-  file: FolderNode
+  item: FolderNode
 }
 
 export const FolderItem = (props: FolderItemProps) => {
-  const { state, actions, file } = props
+  const { state, actions, item } = props
 
   const Tooltip =
-    file.name === DEPENDENCIES_FOLDER && !file.parent ? (
+    item.name === DEPENDENCIES_FOLDER && !item.parent ? (
       <span
         class="tooltip tooltip-bottom"
         data-tooltip="This folder contains all the projects that \nhave been imported (via File's dropdown \nmenu). All projects in this folder can be \nimported from inside your sources."
@@ -80,7 +80,7 @@ export const FolderItem = (props: FolderItemProps) => {
     ) : null
   return (
     <div class="file c-hand">
-      <Icon name={file.expanded ? "folder-open-o" : "folder-o"} /> {file.name}{" "}
+      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
       {Tooltip}
       {FolderDropdown(props)}
     </div>

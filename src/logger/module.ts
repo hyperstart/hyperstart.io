@@ -40,7 +40,7 @@ const _logger: ModuleImpl<api.State, Actions> = {
     getState: () => state => state,
     _log: (entry: api.LogEntry) => state => ({
       current: entry,
-      entries: state.entries.push(entry)
+      entries: state.entries.concat(entry)
     }),
     log: (payload: api.LogEntry | api.LogEvent | Promise<any>) => (
       _,

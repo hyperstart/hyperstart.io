@@ -13,7 +13,7 @@ const stopPropagation = (e: Event) => {
 interface FileDropdownProps {
   state: State
   actions: Actions
-  file: SourceNode
+  item: SourceNode
 }
 
 const FileDropdown = (props: FileDropdownProps) => {
@@ -26,7 +26,7 @@ const FileDropdown = (props: FileDropdownProps) => {
         <li class="menu-item">
           <a
             href="#"
-            onclick={() => props.actions.ui.openDeleteFileModal(props.file)}
+            onclick={() => props.actions.ui.openDeleteFileModal(props.item)}
           >
             Delete
           </a>
@@ -41,7 +41,7 @@ const FileDropdown = (props: FileDropdownProps) => {
 export interface FileItemProps {
   state: State
   actions: Actions
-  file: SourceNode
+  item: SourceNode
 }
 
 function getFileSuffix(state: State, file: SourceNode): string {
@@ -52,20 +52,20 @@ function getFileSuffix(state: State, file: SourceNode): string {
 }
 
 export const FileItem = (props: FileItemProps) => {
-  const { state, actions, file } = props
+  const { state, actions, item } = props
   const onselect = e => {
-    actions.ui.select(file.id)
+    actions.ui.select(item.id)
   }
 
   const onpreview = (e: Event) => {
     e.stopPropagation()
-    actions.previewFile(file)
+    actions.previewFile(item)
   }
 
   return (
     <div class="file c-hand" onclick={onselect}>
       <i class="fa fa-file-text-o" aria-hidden="true" />
-      <span>{" " + file.name + getFileSuffix(state, file)}</span>{" "}
+      <span>{" " + item.name + getFileSuffix(state, item)}</span>{" "}
       <span
         class="tooltip tooltip-bottom"
         data-tooltip="View a read-only version of the file.\nUseful to copy/paste code in your project."

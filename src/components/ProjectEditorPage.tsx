@@ -25,7 +25,7 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
   }
 
   const editor = state.editor
-  if (editor.status !== "editing") {
+  if (editor.status === "closed" || editor.status === "error") {
     return (
       <div style={{ flex: "1 1 auto" }}>
         {CreateProjectModal({ state, actions, log })}

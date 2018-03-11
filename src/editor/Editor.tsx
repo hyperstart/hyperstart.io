@@ -22,6 +22,7 @@ const UNLOAD = "__UNLOAD"
 
 export function Editor(props: EditorProps) {
   const { state, actions } = props
+
   if (!state.project) {
     return <div />
   }

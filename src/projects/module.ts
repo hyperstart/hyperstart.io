@@ -101,6 +101,7 @@ export function createProjects(
             }
 
             actions._setProject(result)
+
             return result
           })
           .catch(e => {

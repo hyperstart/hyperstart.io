@@ -32,6 +32,7 @@ export const SourcesPane = (props: SourcesPaneProps) => {
   })
 
   const selected = getSelectedSource(state)
+  const selectedId = selected ? selected.id : null
   const hideDirty = !isEditable(state)
 
   const tabItems = state.sources.opened.map(id => {
@@ -58,7 +59,7 @@ export const SourcesPane = (props: SourcesPaneProps) => {
     }
 
     return (
-      <TabItem active={id === selected.id}>
+      <TabItem active={id === selectedId}>
         <a href="#" onclick={onClick}>
           {SourceName(source, parent, names[source.name] > 1)}
           {!hideDirty && source.original !== source.content ? " *" : ""}
