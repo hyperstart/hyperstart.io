@@ -23,7 +23,6 @@ export function openProject(
   }
 
   const files = getFileTree(project.files)
-
   configureFor(files, true)
   const index = files.byPath[project.details.mainFile]
   const sources = {

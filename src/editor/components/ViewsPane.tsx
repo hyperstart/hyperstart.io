@@ -11,6 +11,8 @@ import { ProjectTab } from "./ProjectTab"
 import { OutputTab } from "./OutputTab"
 import { LogFn } from "logger"
 
+import "./ViewsPane.scss"
+
 // # Tabs
 
 interface ViewTab {

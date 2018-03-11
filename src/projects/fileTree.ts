@@ -73,7 +73,7 @@ const sort = (files: FileTree, nodes: string[]): void => {
 }
 
 const computePath = (files: FileTree, file: FileNode): string => {
-  if (file.path !== "") {
+  if (file.path) {
     return file.path
   }
 

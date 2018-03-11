@@ -65,8 +65,12 @@ export function isSelected(state: State, appState: AppState): boolean {
 }
 
 export function getSelectedSource(state: State): SourceNode | null {
-  // TODO implement
-  return null
+  const selected = state.sources.selected
+  if (selected.length === 0) {
+    return null
+  }
+  const id = selected[selected.length - 1]
+  return <SourceNode>state.files.byId[id]
 }
 
 export function getSource(state: State, path: string): SourceNode | null {
