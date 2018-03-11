@@ -16,7 +16,7 @@ import { getWords } from "lib/search"
 const router = createRouter()
 const projectsStore = local()
 const projects = createProjects(projectsStore)
-const search = createSearch([])
+const search = createSearch([{ name: "projects" }])
 
 export const module: ModuleImpl<State, Actions> = {
   state: {

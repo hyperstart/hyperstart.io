@@ -72,7 +72,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
   const searchState = dialog.search
   const searchActions = actions.ui.importProjectDialog.search
   return (
-    <div class="modal active import-artifact-modal">
+    <div class="modal active import-project-modal">
       <a
         href="#"
         class="modal-overlay"
@@ -91,7 +91,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
           <TextField
             state={searchState}
             actions={searchActions}
-            name="import-artifact"
+            name="import-project"
             type="pane"
             placeholder="Search for a project..."
             displaySearchButton={true}
@@ -101,7 +101,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
           <SearchResults
             state={searchState}
             actions={searchActions}
-            name="import-artifact"
+            name="import-project"
             aroundResults={ProjectTable}
             resultView={ProjectTableRow}
             hideBottomPagination={true}
@@ -116,7 +116,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
           <Pagination
             state={searchState}
             actions={searchActions}
-            name="import-artifact"
+            name="import-project"
           />
           <div>
             <button class="btn" onclick={oncancel}>

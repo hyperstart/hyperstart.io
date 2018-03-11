@@ -46,14 +46,30 @@ function checkSearchForNextPage(search: api.Search) {
   }
 }
 
+function getSearch(data: InitialSearch): api.Search {
+  return {
+    name: data.name,
+    query: data.query || "",
+    status: "not-started",
+    resultsPerPage: data.resultsPerPage || 25,
+    paneText: data.paneText,
+    fieldText: data.fieldText
+  }
+}
+
 // # Module
 
 export function createSearch(
   searches: InitialSearch[]
 ): ModuleImpl<api.State, api.Actions> {
   let searchFn: api.SearchFn
+
+  const state = {}
+  searches.forEach(search => {
+    state[search.name] = getSearch(search)
+  })
   return {
-    state: {},
+    state,
     actions: {
       // ## Internal
       init: () => {},
