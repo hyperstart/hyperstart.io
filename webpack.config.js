@@ -25,6 +25,10 @@ module.exports = function(env) {
     main = "./src/index.dev.ts"
   }
 
+  const configs = require("./config/" + env.target)
+  console.log("Building for config: " + JSON.stringify(configs, null, 2))
+  // plugins.push(new webpack.DefinePlugin(config))
+
   return {
     devtool: env.build ? undefined : "inline-source-map",
     context: __dirname,
@@ -68,7 +72,7 @@ module.exports = function(env) {
       firebaseui: "firebaseui",
       rollup: "rollup",
       typescript: "ts",
-      // actual name not needed, just that this is an external
+      // actual name not needed, just that this is an external and it exists
       "monaco-editor": "firebase",
       vs: "vs"
     },
