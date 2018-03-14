@@ -81,7 +81,7 @@ export const module: ModuleImpl<State, Actions> = {
         return null
       }
       actions.ui.closeCreateProject()
-      const projectActions = state.users.currentUser
+      const projectActions = state.users.user
         ? actions.projects
         : actions.editor.localStore
       return projectActions.createAndSave(template).then(project => {

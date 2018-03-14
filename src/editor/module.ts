@@ -108,7 +108,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       monaco.initialize().then(() => {
         actions._setMonacoLoaded()
         if (projectToOpen) {
-          const user = usersActions.getState().currentUser
+          const user = usersActions.getState().user
           actions._setState(
             openProject(state, actions, projectToOpen, user ? user.id : null)
           )
@@ -121,7 +121,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
     // ## Project
     open: (project: projects.Project) => (state, actions) => {
       if (state.monacoLoaded) {
-        const user = usersActions.getState().currentUser
+        const user = usersActions.getState().user
         return openProject(state, actions, project, user ? user.id : null)
       } else {
         projectToOpen = project

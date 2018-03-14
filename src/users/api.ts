@@ -1,14 +1,11 @@
-import firebase from "firebase"
-
 import { ModuleActions } from "api"
 
-// # Authentication
+// # State
 
-export interface AuthenticationListener {
-  (user?: User): void
+export interface Error {
+  code: number
+  message: string
 }
-
-// # User
 
 export interface User {
   id: string
@@ -17,19 +14,33 @@ export interface User {
   emailVerified: boolean
 }
 
-// # State
-
 export interface State {
-  currentUser?: User
-  usersById: {
-    [id: string]: User
-  }
+  authenticated: boolean
+  loading: boolean
+  user?: User
+  error?: Error
 }
 
 // # Actions
 
+export interface Listener {
+  (user?: User): void
+}
+
+export interface SignUpPayload {
+  email: string
+  password: string
+}
+
+export interface SignInPayload {
+  email: string
+  password: string
+}
+
 export interface Actions extends ModuleActions<State> {
-  initFirebase(listeners: AuthenticationListener[]): void
-  setUser(user?: firebase.User): void
-  logout(): Promise<void>
+  initAuthentication(listeners: Listener[])
+  resetIdentity()
+  signUp(payload: SignUpPayload): Promise<void>
+  signIn(payload: SignInPayload): Promise<void>
+  signOut(): Promise<void>
 }

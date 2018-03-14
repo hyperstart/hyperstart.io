@@ -4,11 +4,15 @@ import { ModuleImpl } from "lib/modules"
 
 import * as api from "./api"
 
-declare const firebaseui
+interface Actions extends api.Actions {
+  _set(payload: Partial<api.State>)
+  _setError(error?: api.Error)
+  _onUserChanged(user: firebase.User)
+}
 
-let ui
+const auth = firebase.auth()
 
-const toUser = (user?: firebase.User): api.User | null => {
+function toUser(user?: firebase.User): api.User | null {
   return user
     ? {
         displayName: user.displayName,
@@ -19,43 +23,55 @@ const toUser = (user?: firebase.User): api.User | null => {
     : null
 }
 
-export const users: ModuleImpl<api.State, api.Actions> = {
+const _users: ModuleImpl<api.State, Actions> = {
+  // # State
   state: {
-    usersById: {}
+    authenticated: false,
+    loading: false
   },
+  // # Actions
   actions: {
+    // ## Internal
+    _set: payload => payload,
+    _setError: error => ({ error }),
+    _onUserChanged: (user: firebase.User) => {
+      return {
+        user,
+        authenticated: !!user,
+        checked: true
+      }
+    },
+    // ## Public
     init: () => {},
     getState: () => state => state,
-    initFirebase: (listeners: api.AuthenticationListener[]) => (
-      state,
-      actions
-    ) => {
-      firebase.auth().onAuthStateChanged(user => {
-        actions.setUser(user)
+    initAuthentication: (listeners: api.Listener[]) => (_, actions) => {
+      auth.onAuthStateChanged(user => {
+        actions._onUserChanged(user)
         const user2 = toUser(user)
-        listeners.forEach(listener => listener(user2))
+        listeners.map(listener => listener(user2))
       })
-
-      ui = new firebaseui.auth.AuthUI(firebase.auth())
     },
-    setUser: (user?: firebase.User) => state => {
-      if (user) {
-        const currentUser = toUser(user)
-        return {
-          currentUser,
-          usersById: { ...state.usersById, [currentUser.id]: currentUser }
-        }
+    resetIdentity: () => {
+      return {
+        user: null,
+        error: null
       }
-
-      return { currentUser: null }
     },
-    logout: () => (state, actions): Promise<void> => {
-      return firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          actions.setUser(null)
-        })
+    signUp: (payload: api.SignUpPayload) => (_, actions): Promise<void> => {
+      actions._set({ error: null })
+      return auth
+        .createUserWithEmailAndPassword(payload.email, payload.password)
+        .catch(actions._setError)
+    },
+    signIn: (payload: api.SignInPayload) => (_, actions): Promise<void> => {
+      actions._set({ error: null })
+      return auth
+        .signInWithEmailAndPassword(payload.email, payload.password)
+        .catch(actions._setError)
+    },
+    signOut: (): Promise<void> => {
+      return auth.signOut()
     }
   }
 }
+export const users: ModuleImpl<api.State, api.Actions> = _users

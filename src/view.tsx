@@ -6,9 +6,10 @@ import { Header, Body } from "./components"
 import "./view.scss"
 
 export function view(state: State, actions: Actions) {
+  const log = actions.logger.log
   return (
     <main class="main">
-      {Header({ state, actions })}
+      {Header({ state, actions, log })}
       {Body({ state, actions })}
     </main>
   )

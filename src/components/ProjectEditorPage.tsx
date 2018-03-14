@@ -33,7 +33,7 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
     )
   }
 
-  const currentUser = state.users.currentUser
+  const currentUser = state.users.user
   return Editor({
     state: state.editor,
     actions: actions.editor,
