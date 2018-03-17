@@ -14,7 +14,7 @@ export interface UserIconButtonProps {
 export function UserIconButton(props: UserIconButtonProps) {
   const { state, actions } = props
   const user = state.user
-  if (state.authenticated) {
+  if (user) {
     const logout = (e: Event) => {
       actions.signOut()
       e.preventDefault()
@@ -39,7 +39,6 @@ export function UserIconButton(props: UserIconButtonProps) {
     )
   }
 
-  // TODO
   return (
     <div class="dropdown dropdown-right">
       <Button
@@ -49,6 +48,31 @@ export function UserIconButton(props: UserIconButtonProps) {
         iconRight={true}
         class="dropdown-toggle"
       />
+      <ul class="menu">
+        <li class="menu-item">
+          <a
+            href="#"
+            onclick={actions.showSignUpModal}
+            style={{ color: "black" }}
+          >
+            Sign Up
+          </a>
+          <a
+            href="#"
+            onclick={actions.showSignInModal}
+            style={{ color: "black" }}
+          >
+            Sign In with Email
+          </a>
+          <a
+            href="#"
+            onclick={() => console.log("TODO")}
+            style={{ color: "black" }}
+          >
+            Sign In with Google
+          </a>
+        </li>
+      </ul>
     </div>
   )
 }
