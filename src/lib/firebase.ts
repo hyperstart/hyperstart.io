@@ -1,5 +1,9 @@
 import firebase from "firebase"
 
-export function initialize() {
-  // TODO
+// set in config/<dev|prod>.js
+
+declare const FIREBASE_CONFIG
+
+export function initializeFirebase() {
+  firebase.initializeApp(FIREBASE_CONFIG)
 }

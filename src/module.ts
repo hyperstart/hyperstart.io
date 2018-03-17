@@ -1,6 +1,7 @@
 import { addListener, create as createRouter, replace } from "lib/router"
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
+import { initializeFirebase } from "lib/firebase"
 
 import { State, Actions, FetchProjectPayload } from "./api"
 import { isLoading } from "./selectors"
@@ -38,6 +39,8 @@ export const module: ModuleImpl<State, Actions> = {
     users: users.actions,
 
     init: () => (_, actions) => {
+      initializeFirebase()
+
       actions.router.init()
       actions.logger.init(actions)
       actions.users.init(actions)
