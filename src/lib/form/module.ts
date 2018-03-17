@@ -2,10 +2,12 @@ import { ModuleImpl } from "lib/modules"
 
 import * as api from "./api"
 
-export function createForm(): ModuleImpl<api.State, api.Actions> {
+export function createForm(
+  fields: api.FormFields = {}
+): ModuleImpl<api.State, api.Actions> {
   return {
     state: {
-      fields: {},
+      fields,
       loading: false
     },
     actions: {
