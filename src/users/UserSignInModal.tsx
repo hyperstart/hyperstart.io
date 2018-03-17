@@ -18,32 +18,43 @@ export function UserSignInModal(props: UserSignInModalProps) {
   }
 
   return (
-    <Modal
-      active={true}
-      close={actions.hideSignInModal}
-      title="Sign In with Email"
+    <form
+      oncreate={e => e.elements[0].focus()}
+      onsubmit={e => {
+        e.preventDefault()
+        // TODO
+      }}
     >
-      <form
-        oncreate={e => e.elements[0].focus()}
-        onsubmit={e => {
-          e.preventDefault()
-          // TODO
-        }}
+      <Modal
+        active={true}
+        close={actions.hideSignInModal}
+        title="Sign In with Email"
+        Footer={() => (
+          <div>
+            <button class="btn" onclick={actions.hideSignInModal}>
+              Cancel
+            </button>{" "}
+            <button class="btn btn-primary" type="submit">
+              Submit
+            </button>
+          </div>
+        )}
       >
         <Field
           state={state.signInModal}
           actions={actions.signInModal}
-          placeholder="Email"
+          label="Email"
           name="email"
           type="text"
         />
         <Field
           state={state.signInModal}
           actions={actions.signInModal}
+          label="Password"
           name="password"
           type="password"
         />
-      </form>
-    </Modal>
+      </Modal>
+    </form>
   )
 }

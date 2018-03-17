@@ -2,7 +2,7 @@ import { h } from "hyperapp"
 
 import { State, Actions } from "api"
 
-import { UserSignInModal } from "users"
+import { UserSignInModal, UserSignUpModal } from "users"
 
 export interface FooterProps {
   state: State
@@ -11,5 +11,10 @@ export interface FooterProps {
 
 export function Footer(props: FooterProps) {
   const { state, actions } = props
-  return <UserSignInModal state={state.users} actions={actions.users} />
+  return (
+    <div>
+      <UserSignInModal state={state.users} actions={actions.users} />
+      <UserSignUpModal state={state.users} actions={actions.users} />
+    </div>
+  )
 }
