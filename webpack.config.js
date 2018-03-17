@@ -26,8 +26,7 @@ module.exports = function(env) {
   }
 
   const configs = require("./config/" + env.target)
-  console.log("Building for config: " + JSON.stringify(configs, null, 2))
-  // plugins.push(new webpack.DefinePlugin(config))
+  plugins.push(new webpack.DefinePlugin(configs))
 
   return {
     devtool: env.build ? undefined : "inline-source-map",
