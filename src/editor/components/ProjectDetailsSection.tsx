@@ -15,6 +15,7 @@ export interface ProjectDetailsSectionProps {
   actions: Actions
   currentUser: User | null
   log: LogFn
+  loading: boolean
 }
 
 function HeaderMenu(props: ProjectDetailsSectionProps) {
@@ -78,14 +79,13 @@ function ProjectEditableStatusText(props: ProjectDetailsSectionProps) {
 }
 
 export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
-  const { state, actions, log } = props
+  const { state, actions, log, loading } = props
   const project = state.project
   if (isEditable(state) && state.ui.editForm) {
     const formState = state.ui.editForm
     const formActions = actions.ui.editForm
-    const value = formState.fields["name"].value
-    const error = formState.fields["name"].error
-    const loading = formState.loading
+    const value = formState["name"].value
+    const error = formState["name"].error
     const oninput = e => {
       const name = e.target.value
       if (name !== value) {

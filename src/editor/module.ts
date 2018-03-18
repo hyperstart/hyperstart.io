@@ -142,7 +142,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       const form = state.ui.editForm
       const formActions = actions.ui.editForm
       const id = state.project.id
-      const name = form.fields["name"].value
+      const name = form["name"].value
       if (!name || name.trim() === "") {
         formActions.setField({
           field: "name",
@@ -151,7 +151,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
         return Promise.reject("Validation error(s).")
       }
 
-      formActions.set({ loading: true })
       formActions.setField({ field: "name", error: null })
       actions._setState({ status: "loading" })
       return projectsActions

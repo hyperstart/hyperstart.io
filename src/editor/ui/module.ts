@@ -21,7 +21,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     editForm: editForm.actions,
     startEdit: (project: projects.Details) => state => {
       return {
-        editForm: { fields: {}, loading: false }
+        editForm: {}
       }
     },
     stopEdit: () => state => {
@@ -61,12 +61,9 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     openCreateFileModal: (payload: api.OpenFileModalPayload) => state => {
       return {
         createFileDialog: {
-          fields: {
-            name: { value: "", original: "" },
-            type: { value: payload.type, original: payload.type },
-            parent: { value: payload.parent, original: payload.parent }
-          },
-          loading: false
+          name: { value: "", original: "" },
+          type: { value: payload.type, original: payload.type },
+          parent: { value: payload.parent, original: payload.parent }
         }
       }
     },

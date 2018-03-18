@@ -8,6 +8,7 @@ import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./ProjectEditorPage"
 import { LogFn } from "logger"
+import { isLoading } from "selectors"
 
 export interface ProjectEditorPageProps {
   state: State
@@ -33,11 +34,13 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
     )
   }
 
+  const loading = isLoading(state)
   const currentUser = state.users.user
   return Editor({
     state: state.editor,
     actions: actions.editor,
     currentUser,
-    log
+    log,
+    loading
   })
 }

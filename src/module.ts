@@ -48,6 +48,9 @@ export const module: ModuleImpl<State, Actions> = {
       actions.search.init(actions)
       actions.editor.init(actions)
 
+      // TODO
+      actions.users.initAuthentication([])
+
       const searchFn = (text, range) => {
         if (!text || text.trim() === "") {
           return projectsStore.query({

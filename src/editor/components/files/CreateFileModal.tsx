@@ -19,9 +19,9 @@ export const CreateFileModal = (props: CreateFileModalProps) => {
   if (!modalState) {
     return <div />
   }
-  const parent = modalState.fields["parent"]
-  const name = modalState.fields["name"]
-  const type = modalState.fields["type"]
+  const parent = modalState["parent"]
+  const name = modalState["name"]
+  const type = modalState["type"]
   const oninput = e => {
     const value = e.target.value
     if (name.value !== value) {

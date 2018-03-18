@@ -52,6 +52,7 @@ interface ViewsPaneContentProps {
   tab: ViewTab
   currentUser: User | null
   log: LogFn
+  loading: boolean
 }
 
 function ViewsPaneContent(props: ViewsPaneContentProps) {
@@ -76,6 +77,7 @@ export interface ViewsPaneProps {
   actions: Actions
   currentUser: User | null
   log: LogFn
+  loading: boolean
 }
 
 export const ViewsPane = (props: ViewsPaneProps) => {

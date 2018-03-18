@@ -14,6 +14,7 @@ export interface ProjectTabProps {
   actions: Actions
   currentUser: User | null
   log: LogFn
+  loading: boolean
 }
 
 export const ProjectTab = (props: ProjectTabProps) => {

@@ -16,6 +16,7 @@ export interface EditorProps {
   actions: Actions
   currentUser: User | null
   log: LogFn
+  loading: boolean
 }
 
 const INTERCEPTOR = "__INTERCEPTOR"
