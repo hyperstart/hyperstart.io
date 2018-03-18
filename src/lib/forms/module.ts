@@ -7,28 +7,19 @@ export function createForms(): ModuleImpl<api.State, api.Actions> {
     state: {},
     actions: {
       setForm: (payload: api.FormUpdate) => state => {
-        const { form, ...values } = payload
+        const { form, fields } = payload
         return {
-          [form]: {
-            ...state[form],
-            ...values
-          }
+          [form]: { ...state[form], ...fields }
         }
       },
       setField: (payload: api.FormFieldUpdate) => state => {
         const { form, field, ...values } = payload
-        const prev = state[form] || { loading: false, fields: {} }
-        const prevField = prev.fields[field]
+        const prev = state[form] || {}
+        const prevField = prev[field]
         return {
           [form]: {
-            loading: prev.loading,
-            fields: {
-              ...prev.fields,
-              [field]: {
-                ...prevField,
-                ...values
-              }
-            }
+            ...prev,
+            [field]: { ...prevField, ...values }
           }
         }
       }

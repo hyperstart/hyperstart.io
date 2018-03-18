@@ -3,32 +3,17 @@ import { ModuleImpl } from "lib/modules"
 import * as api from "./api"
 
 export function createForm(
-  fields: api.FormFields = {}
+  state: api.State = {}
 ): ModuleImpl<api.State, api.Actions> {
   return {
-    state: {
-      fields,
-      loading: false
-    },
+    state,
     actions: {
       set: (form: api.FormUpdate) => state => {
-        return {
-          ...state,
-          ...form
-        }
+        return { ...state, ...form }
       },
       setField: (payload: api.FormFieldUpdate) => state => {
         const { field, ...values } = payload
-        const fields = {
-          ...state.fields,
-          [field]: {
-            ...state.fields[field],
-            ...values
-          }
-        }
-        return {
-          fields
-        }
+        return { [field]: { ...state[field], ...values } }
       }
     }
   }

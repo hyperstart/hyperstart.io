@@ -7,20 +7,14 @@ export interface FormField {
   info?: string
 }
 
-export interface FormFields {
-  [name: string]: FormField
-}
-
 export interface State {
-  fields: FormFields
-  loading: boolean
+  [name: string]: FormField
 }
 
 // # Actions
 
 export interface FormUpdate {
-  fields?: FormFields
-  loading?: boolean
+  [name: string]: FormField
 }
 
 export interface FormFieldUpdate {

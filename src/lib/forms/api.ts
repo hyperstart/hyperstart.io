@@ -1,10 +1,9 @@
-import { FormFields } from "lib/form/api"
+import { FormField } from "lib/form/api"
 
 // # State
 
 export interface Form {
-  fields: FormFields
-  loading: boolean
+  [field: string]: FormField
 }
 
 export interface State {
@@ -15,8 +14,7 @@ export interface State {
 
 export interface FormUpdate {
   form: string
-  fields?: FormFields
-  loading?: boolean
+  fields: Form
 }
 
 export interface FormFieldUpdate {
