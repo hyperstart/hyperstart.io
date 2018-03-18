@@ -1,7 +1,6 @@
 import { h } from "hyperapp"
 
-import { Modal } from "lib/components"
-import { Field } from "lib/form"
+import { ModalForm } from "lib/form"
 
 import { State, Actions } from "./api"
 
@@ -17,44 +16,16 @@ export function UserSignInModal(props: UserSignInModalProps) {
     return <div />
   }
 
-  return (
-    <form
-      oncreate={e => e.elements[0].focus()}
-      onsubmit={e => {
-        e.preventDefault()
-        // TODO
-      }}
-    >
-      <Modal
-        active={true}
-        close={actions.hideSignInModal}
-        title="Sign In with Email"
-        Footer={() => (
-          <div>
-            <button class="btn" onclick={actions.hideSignInModal}>
-              Cancel
-            </button>{" "}
-            <button class="btn btn-primary" type="submit">
-              Submit
-            </button>
-          </div>
-        )}
-      >
-        <Field
-          state={state.signInModal}
-          actions={actions.signInModal}
-          label="Email"
-          name="email"
-          type="text"
-        />
-        <Field
-          state={state.signInModal}
-          actions={actions.signInModal}
-          label="Password"
-          name="password"
-          type="password"
-        />
-      </Modal>
-    </form>
-  )
+  return ModalForm({
+    state: state.signInModal,
+    actions: actions.signInModal,
+    active: true,
+    close: actions.hideSignInModal,
+    title: "Sign in with email",
+    submit: actions.signIn,
+    fields: [
+      { name: "email", label: "Email", type: "text" },
+      { name: "password", label: "Password", type: "password" }
+    ]
+  })
 }

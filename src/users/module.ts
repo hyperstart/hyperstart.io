@@ -5,10 +5,16 @@ import { createForm } from "lib/form/module"
 
 import * as api from "./api"
 
+interface FirebaseAuthError {
+  code: string
+  message: string
+}
+
 interface Actions extends api.Actions {
   _set(payload: Partial<api.State>)
-  _setError(error?: api.Error)
   _onUserChanged(user: firebase.User)
+  _errorOnSignIn(error: FirebaseAuthError)
+  _errorOnSignUp(error: FirebaseAuthError)
 }
 
 function toUser(user?: firebase.User): api.User | null {
@@ -32,6 +38,19 @@ const signInForm = createForm({
   password: { original: "", value: "" }
 })
 
+function checkNotEmpty(state, actions, field) {
+  const value = state[field].value
+  if (value === "") {
+    actions.setField({ field, error: "Must not be empty." })
+    return true
+  } else {
+    actions.setField({ field, error: null })
+  }
+  return false
+}
+
+let googleProvider
+
 const _users: ModuleImpl<api.State, Actions> = {
   // # State
   state: {
@@ -41,13 +60,22 @@ const _users: ModuleImpl<api.State, Actions> = {
   actions: {
     // ## Internal
     _set: payload => payload,
-    _setError: error => ({ error }),
     _onUserChanged: (user: firebase.User) => {
       return {
         user,
         authenticated: !!user,
         checked: true
       }
+    },
+    _errorOnSignIn: (err: FirebaseAuthError) => (_, actions) => {
+      const { message: error, code } = err
+      const field = code === "auth/wrong-password" ? "password" : "email"
+      actions.signInModal.setField({ field, error })
+    },
+    _errorOnSignUp: (err: FirebaseAuthError) => (_, actions) => {
+      const { message: error, code } = err
+      const field = code === "auth/weak-password" ? "password" : "email"
+      actions.signUpModal.setField({ field, error })
     },
     // ## Public
     init: () => ({ signInModal: null, signUpModal: null }),
@@ -65,28 +93,74 @@ const _users: ModuleImpl<api.State, Actions> = {
         error: null
       }
     },
-    signUp: (payload: api.SignUpPayload) => (_, actions): Promise<void> => {
-      actions._set({ error: null })
+    signUp: () => (state, actions): Promise<void> => {
+      if (!state.signUpModal) {
+        throw new Error("No signUpModal in state.")
+      }
+      const form = state.signUpModal
+      let error = checkNotEmpty(form, actions.signUpModal, "email")
+      error = checkNotEmpty(form, actions.signUpModal, "password") || error
+      error =
+        checkNotEmpty(form, actions.signUpModal, "confirmPassword") || error
+      if (error) {
+        return
+      }
+
+      const email = form.email.value
+      const password = form.password.value
+      const confirmPassword = form.confirmPassword.value
+      if (password !== confirmPassword) {
+        actions.signUpModal.setField({
+          field: "confirmPassword",
+          error: "Does not match the password."
+        })
+        return
+      }
+
       return firebase
         .auth()
-        .createUserWithEmailAndPassword(payload.email, payload.password)
-        .catch(actions._setError)
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          actions.hideSignUpModal()
+        })
+        .catch(actions._errorOnSignUp)
     },
-    signIn: (payload: api.SignInPayload) => (_, actions): Promise<void> => {
-      actions._set({ error: null })
+    signIn: () => (state, actions): Promise<void> => {
+      if (!state.signInModal) {
+        throw new Error("No signInModal in state.")
+      }
+      const form = state.signInModal
+      let error = checkNotEmpty(form, actions.signInModal, "email")
+      error = checkNotEmpty(form, actions.signInModal, "password") || error
+      if (error) {
+        return
+      }
+
+      const email = form.email.value
+      const password = form.password.value
+
       return firebase
         .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
-        .catch(actions._setError)
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          actions.hideSignUpModal()
+        })
+        .catch(actions._errorOnSignIn)
+    },
+    signInWithGoogle: () => (state, actions) => {
+      if (!googleProvider) {
+        googleProvider = new firebase.auth.GoogleAuthProvider()
+      }
+      return firebase.auth().signInWithPopup(googleProvider)
     },
     signOut: (): Promise<void> => {
       return firebase.auth().signOut()
     },
-    //
+    // ### Sign In
     signInModal: signInForm.actions,
     showSignInModal: () => ({ signInModal: signInForm.state }),
     hideSignInModal: () => ({ signInModal: null }),
-    //
+    // ### Sign Up
     signUpModal: signUpForm.actions,
     showSignUpModal: () => ({ signUpModal: signUpForm.state }),
     hideSignUpModal: () => ({ signUpModal: null })

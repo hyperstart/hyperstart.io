@@ -66,7 +66,7 @@ export function UserIconButton(props: UserIconButtonProps) {
           </a>
           <a
             href="#"
-            onclick={() => console.log("TODO")}
+            onclick={actions.signInWithGoogle}
             style={{ color: "black" }}
           >
             Sign In with Google
