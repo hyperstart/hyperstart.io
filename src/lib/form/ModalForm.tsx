@@ -9,7 +9,6 @@ export interface ModalFieldProps {
   name: string
   placeholder?: string
   label?: string
-  id?: string
   class?: string
   type: string
 }
@@ -22,10 +21,24 @@ export interface ModalFormProps {
   submit()
   close()
   fields: ModalFieldProps[]
+  size?: "sm" | "lg"
+  horizontal?: string[]
 }
 
 export function ModalForm(props: ModalFormProps) {
-  const { state, actions, active, close, title, fields } = props
+  const {
+    state,
+    actions,
+    fields,
+    horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"],
+    close
+  } = props
+
+  const cancel = (e: Event) => {
+    e.preventDefault()
+    close()
+  }
+
   return (
     <form
       oncreate={e => e.elements[0].focus()}
@@ -33,14 +46,16 @@ export function ModalForm(props: ModalFormProps) {
         e.preventDefault()
         props.submit()
       }}
+      class={horizontal ? "form-horizontal" : ""}
     >
       <Modal
-        active={active}
-        close={close}
-        title={title}
+        active={props.active}
+        close={props.close}
+        title={props.title}
+        size={props.size}
         Footer={() => (
           <div>
-            <button class="btn" onclick={close}>
+            <button class="btn" onclick={cancel}>
               Cancel
             </button>{" "}
             <button class="btn btn-primary" type="submit">
@@ -49,7 +64,7 @@ export function ModalForm(props: ModalFormProps) {
           </div>
         )}
       >
-        {fields.map(f => Field({ ...f, state, actions }))}
+        {fields.map(f => Field({ ...f, state, actions, horizontal }))}
       </Modal>
     </form>
   )
