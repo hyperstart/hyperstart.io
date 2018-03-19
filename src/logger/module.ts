@@ -38,8 +38,14 @@ const _logger: ModuleImpl<api.State, Actions> = {
   actions: {
     init: () => {},
     getState: () => state => state,
-    _log: (entry: api.LogEntry) => state => {
-      // TODO clear after 2 seconds
+    _log: (entry: api.LogEntry) => (state, actions) => {
+      // clear success entries after a while
+      if (entry && entry.severity === "success") {
+        setTimeout(() => {
+          actions.clearCurrent(entry)
+        }, 3000)
+      }
+
       return {
         current: entry,
         entries: state.entries.concat(entry)
