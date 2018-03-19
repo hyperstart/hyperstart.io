@@ -109,16 +109,20 @@ export interface Listener {
 }
 
 export function addListener(path: string, listener: Listener, exact?: boolean) {
-  LISTENERS.push(() => {
+  const l: any = () => {
     const result = getMatch(window.location.pathname, path, exact)
     if (result) {
       listener(result)
     }
-  })
+  }
+  l.__LISTENER = listener
+  LISTENERS.push(l)
+
+  l()
 }
 
 export function removeListener(listener: Listener) {
-  const index = LISTENERS.findIndex(i => i === listener)
+  const index = LISTENERS.findIndex(l => l.__LISTENER === listener)
   if (index >= 0) {
     LISTENERS.splice(index)
   }
@@ -149,7 +153,7 @@ export function create(): Module {
       update: () => ({ location: window.location.pathname }),
       init: () => (_, actions) => {
         LISTENERS.push(actions.update)
-        return { location: window.location.pathname }
+        LISTENERS.forEach(u => u())
       }
     }
   }
