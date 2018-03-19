@@ -30,8 +30,12 @@ export interface State {
 
 // # Actions
 
+export type LogPayloadObject = LogEntry | LogEvent | Promise<any>
+
+export type LogPayload = LogPayloadObject | (() => LogPayloadObject)
+
 export interface Actions extends ModuleActions<State> {
   /** Returns the promise for LogEvent. */
-  log(payload: LogEntry | LogEvent | Promise<any>): any
+  log(payload: LogPayload): any
   clearCurrent(entry?: LogEntry)
 }

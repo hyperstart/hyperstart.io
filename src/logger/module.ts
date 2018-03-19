@@ -38,16 +38,20 @@ const _logger: ModuleImpl<api.State, Actions> = {
   actions: {
     init: () => {},
     getState: () => state => state,
-    _log: (entry: api.LogEntry) => state => ({
-      current: entry,
-      entries: state.entries.concat(entry)
-    }),
-    log: (payload: api.LogEntry | api.LogEvent | Promise<any>) => (
-      _,
-      actions
-    ) => {
+    _log: (entry: api.LogEntry) => state => {
+      // TODO clear after 2 seconds
+      return {
+        current: entry,
+        entries: state.entries.concat(entry)
+      }
+    },
+    log: (payload: api.LogPayload) => (_, actions) => {
       if (!payload) {
         return
+      }
+
+      if (typeof payload === "function") {
+        payload = payload()
       }
 
       if (isLogEntry(payload)) {

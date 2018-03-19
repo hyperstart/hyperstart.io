@@ -7,9 +7,15 @@ export function local(cache: Cache = {}): Store {
     getById(payload) {
       const collection = cache[payload.collection]
       if (!collection) {
-        return Promise.resolve(null)
+        return Promise.reject(
+          "Cannot find collection with name " + payload.collection
+        )
       }
-      return Promise.resolve(collection[payload.id] || null)
+      const result = collection[payload.id]
+      if (!result) {
+        return Promise.reject("Cannot find resource with id " + payload.id)
+      }
+      return Promise.resolve(result)
     },
     query(payload) {
       return Promise.resolve(queryCache(cache, payload))
