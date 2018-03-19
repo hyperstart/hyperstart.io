@@ -57,11 +57,12 @@ export function createProjects(
         return set(state, [id, "status"], { loading, error })
       },
       // # Projects
-      createAndSave: (template: api.Template) => (
+      createAndSave: (payload: api.CreateProjectPayload) => (
         state,
         actions
       ): Promise<api.Project> => {
-        return createProject({ actions, template }).then(actions.save)
+        const { template, owner } = payload
+        return createProject({ actions, template, owner }).then(actions.save)
       },
       save: (project: api.Project) => (
         state,
@@ -145,7 +146,7 @@ export function createProjects(
       },
       fetch: (id: string) => (state, actions): Promise<api.Project> => {
         const project = state[id]
-        if (project.files) {
+        if (project && project.files) {
           return Promise.resolve(project)
         }
 
@@ -155,7 +156,7 @@ export function createProjects(
         })
 
         let details: api.Details
-        fetchDetails(store, state, id)
+        return fetchDetails(store, state, id)
           .then(result => {
             details = result
             return store.query({ collection: path(id) })
