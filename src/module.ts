@@ -11,11 +11,12 @@ import { createProjects } from "projects/module"
 import { createSearch } from "lib/search/module"
 import { ui } from "ui/module"
 import { users } from "users/module"
-import { COLLECTION } from "projects"
+import { AuthListener } from "users"
+import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
 
 const router = createRouter()
-const projectsStore = local()
+const projectsStore = local({ projects: {} })
 const projects = createProjects(projectsStore)
 const search = createSearch([{ name: "projects" }])
 
@@ -48,8 +49,27 @@ export const module: ModuleImpl<State, Actions> = {
       actions.search.init(actions)
       actions.editor.init(actions)
 
-      // TODO
-      actions.users.initAuthentication([])
+      const authListener: AuthListener = user => {
+        const state = actions.editor.getState()
+        const project = state.project
+        if (
+          user &&
+          project &&
+          (!project.owner || project.owner.id === user.id)
+        ) {
+          // currently editing an artifact locally, save it on login
+          actions.logger.log(
+            actions.editor.setOwner({
+              id: user.id,
+              displayName: user.displayName
+            })
+          )
+        } else if (!user && project && state.status === "editing") {
+          // currently editing own artifact, switch to local mode.
+          actions.logger.log(actions.editor.setOwner(null))
+        }
+      }
+      actions.users.initAuthentication([authListener])
 
       const searchFn = (text, range) => {
         if (!text || text.trim() === "") {
@@ -87,10 +107,14 @@ export const module: ModuleImpl<State, Actions> = {
         return null
       }
       actions.ui.closeCreateProject()
+      const user = state.users.user
+      const owner: Owner = user
+        ? { id: user.id, displayName: user.displayName }
+        : null
       const projectActions = state.users.user
         ? actions.projects
         : actions.editor.localStore
-      return projectActions.createAndSave(template).then(project => {
+      return projectActions.createAndSave({ template, owner }).then(project => {
         actions.editor.open(project)
         replace("/projects/" + project.details.id)
       })
