@@ -29,13 +29,13 @@ function toUser(user?: firebase.User): api.User | null {
 }
 
 const signUpForm = createForm({
-  email: { original: "", value: "" },
-  password: { original: "", value: "" },
-  confirmPassword: { original: "", value: "" }
+  email: "",
+  password: "",
+  confirmPassword: ""
 })
 const signInForm = createForm({
-  email: { original: "", value: "" },
-  password: { original: "", value: "" }
+  email: "",
+  password: ""
 })
 
 function checkNotEmpty(state, actions, field) {
@@ -62,7 +62,7 @@ const _users: ModuleImpl<api.State, Actions> = {
     _set: payload => payload,
     _onUserChanged: (user: firebase.User) => {
       return {
-        user,
+        user: toUser(user),
         authenticated: !!user,
         checked: true
       }
@@ -80,7 +80,7 @@ const _users: ModuleImpl<api.State, Actions> = {
     // ## Public
     init: () => ({ signInModal: null, signUpModal: null }),
     getState: () => state => state,
-    initAuthentication: (listeners: api.Listener[]) => (_, actions) => {
+    initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
       firebase.auth().onAuthStateChanged(user => {
         actions._onUserChanged(user)
         const user2 = toUser(user)

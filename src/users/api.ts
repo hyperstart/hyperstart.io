@@ -21,13 +21,13 @@ export interface State {
 
 // # Actions
 
-export interface Listener {
+export interface AuthListener {
   (user?: User): void
 }
 
 export interface Actions extends ModuleActions<State> {
   // ## Authentication
-  initAuthentication(listeners: Listener[])
+  initAuthentication(listeners: AuthListener[])
   resetIdentity()
   signUp(): Promise<void>
   signIn(): Promise<void>

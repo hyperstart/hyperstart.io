@@ -1,6 +1,6 @@
 import { ModuleImpl } from "lib/modules"
 import { get, merge, set } from "lib/immutable"
-import { createForm } from "lib/form/module"
+import { createForm, createFormState } from "lib/form/module"
 import { createSearch } from "lib/search/module"
 
 import * as projects from "projects"
@@ -21,7 +21,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     editForm: editForm.actions,
     startEdit: (project: projects.Details) => state => {
       return {
-        editForm: {}
+        editForm: createFormState({ name: project.name })
       }
     },
     stopEdit: () => state => {
