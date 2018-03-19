@@ -38,7 +38,9 @@ function SaveButton({ state, actions }: HeaderProps) {
 
   return Button({
     disabled:
-      hasDirtySources(state.editor) || isLoading(state) || status === "loading",
+      !hasDirtySources(state.editor) ||
+      isLoading(state) ||
+      status === "loading",
     onclick: actions.editor.saveAllSources,
     text: "Save",
     class: "button"
