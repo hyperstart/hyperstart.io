@@ -96,7 +96,7 @@ const resolveId = (
   // try all possible suffixes
   for (const suffix of suffixes) {
     const resolved = path + suffix
-    if (getSource(state, resolved)) {
+    if (getSource(state, resolved, false)) {
       return resolved
     }
   }
@@ -122,10 +122,11 @@ export const resolve = (state: State, result: CompileOutput): any => {
           throw new Error("Cannot find module " + importee)
         }
       }
+
       return resolved
     },
     load(id: string): string {
-      return getSource(state, id).content
+      return getSource(state, id, true).content || ""
     }
   }
 }

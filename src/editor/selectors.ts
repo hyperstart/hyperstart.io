@@ -96,11 +96,23 @@ export function getSelectedSource(state: State): SourceNode | null {
   return <SourceNode>state.files.byId[id]
 }
 
-export function getSource(state: State, path: string): SourceNode | null {
+export function getSource(
+  state: State,
+  path: string,
+  failOnNull: boolean
+): SourceNode | null {
   const id = state.files.byPath[path]
   const result = id ? state.files.byId[id] : null
   if (result && result.type === "file") {
     return result
+  }
+  if (failOnNull) {
+    throw new Error(
+      "Error while loading source at " +
+        path +
+        ". Source: " +
+        JSON.stringify(result)
+    )
   }
   return null
 }

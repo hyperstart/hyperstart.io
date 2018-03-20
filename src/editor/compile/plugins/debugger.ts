@@ -67,13 +67,6 @@ export function app(initialState, actionsTemplate, view, container) {
 }
 `
 
-/*
-{
-    type: "INITIALIZED",
-    state: state
-  }
-*/
-
 export const debug = (state: State, result: CompileOutput): any => {
   return {
     name: "hyperstart-debug",
@@ -90,7 +83,7 @@ export const debug = (state: State, result: CompileOutput): any => {
         return debuggerSource
       }
       if (id === ACTUAL_HYPERAPP_PATH) {
-        return getSource(state, HYPERAPP_PATH).content
+        return getSource(state, HYPERAPP_PATH, true).content || ""
       }
     }
   }
