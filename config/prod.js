@@ -9,5 +9,11 @@ module.exports = {
     databaseURL: "https://hyperstart-production.firebaseio.com",
     projectId: "hyperstart-production",
     storageBucket: "hyperstart-production.appspot.com"
-  })
+  }),
+  STORE_CONFIG: JSON.stringify({
+    type: "firestore"
+    // type: "local",
+  }),
+  // the ID of the hyperapp project
+  HYPERAPP_ID: JSON.stringify("fmfmjUkXGLadI3w4RHw5DtEBLbm1-UHIORL8Sf8VPkcEi")
 }

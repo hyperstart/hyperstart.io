@@ -4,7 +4,10 @@ import { getSearches } from "lib/search"
 import { importProjects } from "./importProjects"
 import { createBlankFiles, createHyperappFiles } from "./createFiles"
 import { Actions, File, Owner, Project, Details, Template } from "./api"
-import { HYPERAPP_ID, HYPERAPP_NAME, LOCAL_PROJECT_ID } from "./constants"
+import { HYPERAPP_NAME, LOCAL_PROJECT_ID } from "./constants"
+
+// set in configs/
+declare const HYPERAPP_ID: string
 
 export interface Payload {
   actions: Actions
@@ -26,6 +29,7 @@ export function createProject(payload: Payload): Promise<Project> {
     hidden: false,
     mainFile: "index.js"
   }
+
   const files =
     template === "hyperapp" ? createHyperappFiles() : createBlankFiles()
 

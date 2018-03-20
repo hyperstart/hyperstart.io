@@ -1,7 +1,6 @@
 import { addListener, create as createRouter, replace } from "lib/router"
-import { ModuleImpl } from "lib/modules"
-import { local } from "lib/store/local"
 import { initializeFirebase } from "lib/firebase"
+import { ModuleImpl } from "lib/modules"
 
 import { State, Actions, FetchProjectPayload } from "./api"
 import { isLoading } from "./selectors"
@@ -14,9 +13,10 @@ import { users } from "users/module"
 import { AuthListener } from "users"
 import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
+import { getProjectsStore } from "getProjectsStore"
 
 const router = createRouter()
-const projectsStore = local({ projects: {} })
+const projectsStore = getProjectsStore()
 const projects = createProjects(projectsStore)
 const search = createSearch([{ name: "projects" }])
 

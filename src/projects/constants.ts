@@ -9,12 +9,6 @@ export const DEPENDENCIES_FOLDER = "dependencies"
 export const LOCAL_PROJECT_ID = "local"
 
 /**
- * The ID of the hyperapp project.
- * TODO set during build
- */
-export const HYPERAPP_ID = "hyperapp"
-
-/**
  * The name of the hyperapp project.
  */
 export const HYPERAPP_NAME = "hyperapp"
