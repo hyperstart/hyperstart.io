@@ -110,8 +110,9 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
       runs[id] = { ...runs[id], collapsed: !runs[id].collapsed }
       return { runs }
     },
-    toggleAction: (runId: string, actionId: number) => state => {
-      const path = [runId, "actions", actionId, "collapsed"]
+    toggleAction: (payload: api.ToggleActionPayload) => state => {
+      const { run, actionId } = payload
+      const path = [run, "actions", actionId, "collapsed"]
       const collapsed = get(state.runs, path)
       const runs = set(state.runs, path, !collapsed)
       return { runs }
