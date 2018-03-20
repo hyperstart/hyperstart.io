@@ -174,9 +174,18 @@ const _editor: ModuleImpl<api.State, Actions> = {
     },
     setOwner: (owner: projects.Owner) => (state, actions): Promise<void> => {
       const currentId = state.project.id
-      const id = owner
-        ? currentId.startsWith(owner.id) ? currentId : owner.id + "-" + guid()
-        : currentId
+
+      if (!owner) {
+        actions._setState({ status: "read-only" })
+        return projectsActions
+          .fetch(currentId)
+          .then(actions.localStore.save)
+          .then(() => {})
+      }
+
+      const id = currentId.startsWith(owner.id)
+        ? currentId
+        : owner.id + "-" + guid()
 
       const project: projects.Project = {
         details: {
