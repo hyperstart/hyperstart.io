@@ -17,10 +17,18 @@ interface Actions extends api.Actions {
   _errorOnSignUp(error: FirebaseAuthError)
 }
 
+function getDisplayNameFromEmail(email: string = ""): string {
+  const segments = email.split("@")
+  if (segments.length < 1 || segments[0] === "") {
+    return "Anonymous"
+  }
+  return segments[0]
+}
+
 function toUser(user?: firebase.User): api.User | null {
   return user
     ? {
-        displayName: user.displayName,
+        displayName: user.displayName || getDisplayNameFromEmail(user.email),
         email: user.email,
         emailVerified: user.emailVerified,
         id: user.uid
@@ -143,7 +151,7 @@ const _users: ModuleImpl<api.State, Actions> = {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          actions.hideSignUpModal()
+          actions.hideSignInModal()
         })
         .catch(actions._errorOnSignIn)
     },
