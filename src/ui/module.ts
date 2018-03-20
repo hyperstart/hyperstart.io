@@ -9,8 +9,8 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // nothing
   },
   actions: {
-    openCreateProject: (template: Template) => ({
-      createProject: { template }
+    openCreateProject: () => ({
+      createProject: { template: "hyperapp" }
     }),
     closeCreateProject: () => ({ createProject: null }),
     selectCreateProjectTemplate: (template: Template) => ({
