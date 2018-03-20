@@ -3,3 +3,4 @@ public/bundle.js
 reports
 node_modules
 .DS_Store
+.firebaserc

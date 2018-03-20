@@ -13,6 +13,12 @@
     "build": "npm run build:dev",
     "build:dev": "webpack -p --env.target=dev --env.build",
     "build:prod": "webpack -p --env.target=prod --env.build",
+    "firebase:deploy": "npm run firebase:deploy:dev",
+    "firebase:deploy:dev": "firebase use dev && firebase deploy",
+    "firebase:deploy:prod": "firebase use prod && firebase deploy",
+    "deploy": "npm run deploy:dev",
+    "deploy:dev": "npm run build:dev && npm run firebase:deploy:dev",
+    "deploy:prod": "npm run build:prod && npm run firebase:deploy:prod",
     "report": "open reports/report.html"
   },
   "dependencies": {
