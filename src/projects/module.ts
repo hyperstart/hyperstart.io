@@ -150,11 +150,7 @@ export function createProjects(
           return Promise.resolve(project)
         }
 
-        actions._setProject({
-          details: project ? project.details : { id, name: null, searches: {} },
-          status: { loading: true }
-        })
-
+        actions._setStatus({ id, loading: true })
         let details: api.Details
         return fetchDetails(store, state, id)
           .then(result => {

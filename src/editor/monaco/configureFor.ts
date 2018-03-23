@@ -4,7 +4,7 @@ import { FileTree } from "projects"
 
 import { State } from "../api"
 import { getLanguage } from "./languages"
-import { createModel, hasModel } from "./modelStore"
+import { createModel, hasModel, deleteAllModels } from "./modelStore"
 
 const configureCompiler = (): void => {
   const compilerDefaults: monaco.languages.typescript.CompilerOptions = {
@@ -53,6 +53,7 @@ const createModelsFor = (files: FileTree): void => {
 export const configureFor = (files: FileTree, newlyOpened: boolean): void => {
   if (newlyOpened) {
     configureCompiler()
+    deleteAllModels()
   }
   createModelsFor(files)
 }
