@@ -15,5 +15,5 @@ module.exports = {
     // type: "local",
   }),
   // the ID of the hyperapp project
-  HYPERAPP_ID: JSON.stringify("fmfmjUkXGLadI3w4RHw5DtEBLbm1-UHIORL8Sf8VPkcEi")
+  HYPERAPP_ID: JSON.stringify("NYAw2ak7y3R75uHzHWydyk5cViH3-nt_aSLzPVvYX")
 }
