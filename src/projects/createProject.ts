@@ -10,14 +10,14 @@ import { HYPERAPP_NAME, LOCAL_PROJECT_ID } from "./constants"
 declare const HYPERAPP_ID: string
 
 export interface Payload {
-  actions: Actions
+  fetch: (id: string) => Promise<Project>
   name?: string
   owner?: Owner
   template: Template
 }
 
 export function createProject(payload: Payload): Promise<Project> {
-  const { actions, name = "new-project", owner, template } = payload
+  const { fetch, name = "new-project", owner, template } = payload
   const local = !owner
   const id = local ? LOCAL_PROJECT_ID : payload.owner.id + "-" + guid()
 
@@ -35,7 +35,7 @@ export function createProject(payload: Payload): Promise<Project> {
 
   if (template === "hyperapp") {
     let hyperappFiles: StringMap<File>
-    return actions.fetch(HYPERAPP_ID).then(hyperapp => {
+    return fetch(HYPERAPP_ID).then(hyperapp => {
       return {
         details,
         files: importProjects(files, [

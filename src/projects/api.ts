@@ -60,11 +60,6 @@ export interface State {
 
 // # Actions
 
-export interface CreateProjectPayload {
-  template: Template
-  owner?: Owner
-}
-
 export interface UpdatedProject {
   id: string
   owner?: Owner
@@ -104,7 +99,6 @@ export interface ImportProjectsPayload {
 
 export interface Actions extends ModuleActions<State> {
   // ## Projects
-  createAndSave(payload: CreateProjectPayload): Promise<Project>
   save(project: Project): Promise<Project>
   update(project: UpdatedProject): Promise<void>
   fetch(id: string): Promise<Project>

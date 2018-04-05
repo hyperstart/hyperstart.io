@@ -14,6 +14,7 @@ import { AuthListener } from "users"
 import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
+import { createProject } from "projects/createProject"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -111,13 +112,23 @@ export const module: ModuleImpl<State, Actions> = {
       const owner: Owner = user
         ? { id: user.id, displayName: user.displayName }
         : null
+
       const projectActions = state.users.user
         ? actions.projects
         : actions.editor.localStore
-      return projectActions.createAndSave({ template, owner }).then(project => {
-        actions.editor.open(project)
-        replace("/projects/" + project.details.id)
-      })
+
+      return createProject({ fetch: actions.projects.fetch, template, owner })
+        .then(project => {
+          if (state.users.user) {
+            return actions.projects.save(project)
+          } else {
+            return actions.editor.localStore.save(project)
+          }
+        })
+        .then(project => {
+          actions.editor.open(project)
+          replace("/projects/" + project.details.id)
+        })
     },
     fetchProject: (payload: FetchProjectPayload) => (state, actions) => {
       if (isLoading(state)) {

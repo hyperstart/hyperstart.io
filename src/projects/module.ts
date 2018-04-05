@@ -57,13 +57,6 @@ export function createProjects(
         return set(state, [id, "status"], { loading, error })
       },
       // # Projects
-      createAndSave: (payload: api.CreateProjectPayload) => (
-        state,
-        actions
-      ): Promise<api.Project> => {
-        const { template, owner } = payload
-        return createProject({ actions, template, owner }).then(actions.save)
-      },
       save: (project: api.Project) => (
         state,
         actions
