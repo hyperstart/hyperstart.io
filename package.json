@@ -9,7 +9,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --hot --progress --colors --env.target=dev",
+    "start": "npm run start:local",
+    "start:local":
+      "webpack-dev-server --hot --progress --colors --env.target=local",
+    "start:dev":
+      "webpack-dev-server --hot --progress --colors --env.target=dev",
     "build": "npm run build:dev",
     "build:dev": "webpack -p --env.target=dev --env.build",
     "build:prod": "webpack -p --env.target=prod --env.build",
