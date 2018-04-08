@@ -5,8 +5,6 @@ import { ProjectsSearch } from "lib/search/ProjectsSearch"
 import { State, Actions } from "api"
 import { LogFn } from "logger"
 
-import { CreateProjectModal } from "./CreateProjectModal"
-
 import "./IndexPage.scss"
 
 export interface IndexPageProps {
@@ -42,7 +40,6 @@ export function IndexPage(props: IndexPageProps) {
         </a>
       </p>
       {ProjectsSearch({ state: state.search, actions: actions.search, log })}
-      {CreateProjectModal(props)}
     </div>
   )
 }

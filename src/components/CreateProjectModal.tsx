@@ -10,11 +10,11 @@ import "./CreateProjectModal.scss"
 export interface CreateProjectModalProps {
   state: State
   actions: Actions
-  log: LogFn
 }
 
 export function CreateProjectModal(props: CreateProjectModalProps) {
-  const { state, actions, log } = props
+  const { state, actions } = props
+  const log = actions.logger.log
 
   const createProject = state.ui.createProject
 

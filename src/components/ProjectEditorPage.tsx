@@ -14,11 +14,10 @@ export interface ProjectEditorPageProps {
   state: State
   actions: Actions
   match: Match
-  log: LogFn
 }
 
 export function ProjectEditorPage(props: ProjectEditorPageProps) {
-  const { state, actions, log, match } = props
+  const { state, actions, match } = props
   const id = match.params.id
   if (!id) {
     replace("/")
@@ -27,11 +26,7 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
 
   const editor = state.editor
   if (editor.status === "closed" || editor.status === "error") {
-    return (
-      <div style={{ flex: "1 1 auto" }}>
-        {CreateProjectModal({ state, actions, log })}
-      </div>
-    )
+    return <div style={{ flex: "1 1 auto" }}> </div>
   }
 
   const loading = isLoading(state)
@@ -40,7 +35,7 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
     state: state.editor,
     actions: actions.editor,
     currentUser,
-    log,
+    log: actions.logger.log,
     loading
   })
 }
