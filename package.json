@@ -10,10 +10,8 @@
   "private": true,
   "scripts": {
     "start": "npm run start:local",
-    "start:local":
-      "webpack-dev-server --hot --progress --colors --env.target=local",
-    "start:dev":
-      "webpack-dev-server --hot --progress --colors --env.target=dev",
+    "start:local": "webpack-dev-server --hot --progress --colors --env.target=local",
+    "start:dev": "webpack-dev-server --hot --progress --colors --env.target=dev",
     "build": "npm run build:dev",
     "build:dev": "webpack -p --env.target=dev --env.build",
     "build:prod": "webpack -p --env.target=prod --env.build",
@@ -28,8 +26,6 @@
   "dependencies": {
     "firebase": "4.10.1",
     "hyperapp": "1.1.2",
-    "hyperapp-context": "0.1.0",
-    "hyperapp-redux-devtools": "^1.1.6",
     "marked": "0.3.17",
     "monaco-editor": "0.10.1",
     "spectre.css": "0.5.1",
@@ -37,6 +33,7 @@
   },
   "devDependencies": {
     "awesome-typescript-loader": "3.2.3",
+    "hyperapp-devtools": "0.2.3",
     "css-loader": "0.28.7",
     "firebase-tools": "3.17.6",
     "node-sass": "4.5.3",
