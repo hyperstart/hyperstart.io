@@ -29,11 +29,11 @@
     "marked": "0.3.17",
     "monaco-editor": "0.10.1",
     "spectre.css": "0.5.1",
-    "typescript": "2.7.2"
+    "typescript": "2.8.1"
   },
   "devDependencies": {
     "awesome-typescript-loader": "3.2.3",
-    "hyperapp-devtools": "0.2.3",
+    "hyperapp-devtools": "0.2.4",
     "css-loader": "0.28.7",
     "firebase-tools": "3.17.6",
     "node-sass": "4.5.3",
