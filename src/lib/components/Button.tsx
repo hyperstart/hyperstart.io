@@ -18,6 +18,7 @@ export interface ButtonProps {
   iconRight?: boolean
   href?: string
   onclick?(e: Event): void
+  tabindex?: number
 }
 
 export const getElementsForTextAndIcon = (
@@ -56,7 +57,8 @@ export const Button = (props: ButtonProps, children?: any) => {
     href,
     onclick = e => {
       e.preventDefault()
-    }
+    },
+    tabindex
   } = props
   const Tag = href ? "a" : "button"
 
@@ -66,28 +68,33 @@ export const Button = (props: ButtonProps, children?: any) => {
   //   children
   // )
 
-  return (
-    <Tag
-      class={
-        "btn" +
-          (size ? "btn-" + size : "") +
-          (block ? " btn-block" : "") +
-          (primary ? " btn-primary" : link ? " btn-link" : "") +
-          (action === "circle"
-            ? " btn-action circle"
-            : action ? " btn-action" : "") +
-          (active ? " active" : "") +
-          (disabled ? " disabled" : "") +
-          (loading ? " loading" : "") +
-          " " +
-          props.class || ""
-      }
-      onclick={onclick}
-      href={href}
-    >
-      {!children || (Array.isArray(children) && children.length === 0)
-        ? getElementsForTextAndIcon(text, icon, iconRight)
-        : children}
-    </Tag>
+  const tagProps = {
+    class:
+      "btn" +
+        (size ? "btn-" + size : "") +
+        (block ? " btn-block" : "") +
+        (primary ? " btn-primary" : link ? " btn-link" : "") +
+        (action === "circle"
+          ? " btn-action circle"
+          : action ? " btn-action" : "") +
+        (active ? " active" : "") +
+        (disabled ? " disabled" : "") +
+        (loading ? " loading" : "") +
+        " " +
+        props.class || "",
+    onclick,
+    href
+  }
+
+  if (typeof tabindex === "number") {
+    tagProps["tabindex"] = tabindex
+  }
+
+  return h(
+    Tag,
+    tagProps,
+    !children || (Array.isArray(children) && children.length === 0)
+      ? getElementsForTextAndIcon(text, icon, iconRight)
+      : children
   )
 }

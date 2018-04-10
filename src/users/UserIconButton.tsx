@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { Button } from "lib/components"
+import { Button, Icon } from "lib/components"
 
 import { State, Actions } from "./api"
 
@@ -21,13 +21,10 @@ export function UserIconButton(props: UserIconButtonProps) {
     }
     return (
       <div class="dropdown dropdown-right">
-        <Button
-          primary={true}
-          icon="caret-down"
-          text={user.displayName + " "}
-          iconRight={true}
-          class="dropdown-toggle"
-        />
+        <a class="btn btn-primary dropdown-toggle" tabindex="0">
+          {user.displayName + " "}
+          <Icon name="caret-down" />
+        </a>
         <ul class="menu">
           <li class="menu-item">
             <a href="#" onclick={logout} style={{ color: "black" }}>
@@ -41,13 +38,9 @@ export function UserIconButton(props: UserIconButtonProps) {
 
   return (
     <div class="dropdown dropdown-right">
-      <Button
-        primary={true}
-        icon="caret-down"
-        text="User "
-        iconRight={true}
-        class="dropdown-toggle"
-      />
+      <a class="btn btn-primary dropdown-toggle" tabindex="0">
+        User <Icon name="caret-down" />
+      </a>
       <ul class="menu">
         <li class="menu-item">
           <a
