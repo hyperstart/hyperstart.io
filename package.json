@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "awesome-typescript-loader": "3.2.3",
-    "hyperapp-devtools": "0.2.4",
+    "hyperapp-devtools": "0.2.5",
     "css-loader": "0.28.7",
     "firebase-tools": "3.17.6",
     "node-sass": "4.5.3",
