@@ -4,7 +4,7 @@ import { SourceNode, FileNode } from "projects/fileTree"
 import { DEPENDENCIES_FOLDER, HYPERAPP_NAME } from "projects"
 
 import { State, FileNotFound } from "./api"
-import { AppState, Run } from "./debug/api"
+import { Run } from "./debug/api"
 
 export function isEditable(state: State): boolean {
   return state.status === "editing"
@@ -76,15 +76,6 @@ export function getRuns(runs: StringMap<Run>): Run[] {
   return Object.keys(runs)
     .map(key => runs[key])
     .sort(compareRuns)
-}
-
-export function getSelectedState(state: State): AppState | null {
-  const selected = state.debug.selectedState
-  return selected.length > 0 ? selected[0] : null
-}
-
-export function isSelected(state: State, appState: AppState): boolean {
-  return getSelectedState(state) === appState
 }
 
 export function getSelectedSource(state: State): SourceNode | null {

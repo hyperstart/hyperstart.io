@@ -1,22 +1,14 @@
-import { StringMap } from "lib/utils"
-
-export interface PanelProps {
-  // nothing
-}
-
 // # State
-
-export interface AppState {
-  state: any
-  actionData?: any
-  actionResult?: any
-  previousState?: any
-}
 
 export interface AppAction {
   name: string
-  states: AppState[]
+  done: boolean
+  actions: AppAction[]
+  previousState: any | null
   collapsed: boolean
+  nextState?: any
+  actionData?: any
+  actionResult?: any
 }
 
 export interface Run {
@@ -26,52 +18,64 @@ export interface Run {
   collapsed: boolean
 }
 
-export type AppEvent = InitEvent | ActionEvent | RuntimeEvent
+export interface Runs {
+  [id: string]: Run
+}
 
 export interface InitEvent {
-  type: "INITIALIZE"
-  id: string
+  runId: string
   timestamp: number
   state: any
 }
 
 export interface ActionEvent {
-  type: "ACTION"
-  id: string
+  callDone: boolean
+  runId: string
   action: string
-  data: any
-  result: any
+  data?: any
+  result?: any
 }
 export interface RuntimeEvent {
-  type: "RUNTIME"
   message: any
   level: "info" | "warn" | "error"
 }
 
+export type PaneDisplay = "fullscreen" | "over-sources"
+
+export type ValueDisplay = "state" | "result" | "data" | "debugger-state"
+
+export interface SelectedAction {
+  run: string
+  path: number[]
+}
+
 export interface State {
-  runs: StringMap<Run>
+  runs: Runs
   logs: RuntimeEvent[]
   paneShown: boolean
-  // only 1 element, this is done to avoid wiring of the state
-  selectedState: AppState[]
+  paneDisplay: PaneDisplay
+  selectedAction: SelectedAction | null
   collapseRepeatingActions: boolean
-  showFullState: boolean
+  valueDisplay: ValueDisplay
 }
 
 // # Actions
 
 export interface ToggleActionPayload {
   run: string
-  actionId: number
+  path: number[]
 }
 
 export interface Actions {
-  log(event: AppEvent)
-  select(state: AppState | null)
+  log(event: RuntimeEvent)
+  logInit(event: InitEvent)
+  logAction(event: ActionEvent)
+  select(action: SelectedAction | null)
   showPane(shown: boolean)
+  setPaneDisplay(paneDisplay: PaneDisplay)
+  setValueDisplay(valueDisplay: ValueDisplay)
   toggleRun(run: string)
   toggleAction(payload: ToggleActionPayload)
   toggleCollapseRepeatingActions()
-  toggleShowFullState()
   deleteRun(id: string)
 }

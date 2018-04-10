@@ -33,7 +33,6 @@ const _OutputTab = (props: OutputTabProps) => {
       iframe.contentWindow.document.write(state.compilationOutput.iframeSource)
     } catch (e) {
       actions.debug.log({
-        type: "RUNTIME",
         level: "error",
         message: getErrorMessage(e)
       })

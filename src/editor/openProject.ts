@@ -36,7 +36,7 @@ export function openProject(
     ...state.debug,
     runs: {},
     paneShown: false,
-    selectedState: [],
+    selectedAction: null,
     logs: []
   }
 

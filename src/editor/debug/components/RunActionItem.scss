@@ -1,0 +1,35 @@
+@import "./index.scss";
+
+.run-action-item-count {
+  color: orange;
+}
+
+.run-action-item {
+  margin: 0rem;
+  width: 100%;
+
+  .item-link {
+    display: block;
+    color: black;
+
+    &:hover {
+      background-color: $secondary-color;
+      text-decoration: none;
+      color: black;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+
+    &.selected {
+      background-color: $secondary-color-dark;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .icon:hover {
+    color: $primary-color;
+  }
+}
