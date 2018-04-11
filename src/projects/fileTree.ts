@@ -168,3 +168,21 @@ export const getChildrenRecursive = (
 
   return result
 }
+
+export function getFile(node: FileNode): File {
+  const result: File = {
+    id: node.id,
+    name: node.name,
+    parent: node.parent,
+    type: node.type
+  }
+
+  if (node.type === "file") {
+    result.content = node.content
+    result.url = node.url
+  } else {
+    result.projectId = node.projectId
+  }
+
+  return result
+}

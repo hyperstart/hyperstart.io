@@ -1,7 +1,7 @@
 import { StringMap } from "lib/utils"
 
-import { SourceNode, FileNode } from "projects/fileTree"
-import { DEPENDENCIES_FOLDER, HYPERAPP_NAME } from "projects"
+import { SourceNode, FileNode, getFile } from "projects/fileTree"
+import { DEPENDENCIES_FOLDER, HYPERAPP_NAME, Files } from "projects"
 
 import { State, FileNotFound } from "./api"
 import { Run } from "./debug/api"
@@ -116,4 +116,15 @@ export function isDebuggable(state: State): boolean {
   const path = DEPENDENCIES_FOLDER + "/" + HYPERAPP_NAME + "/index.js"
   const id = state.files.byPath[path]
   return !!id
+}
+
+export function getFiles(state: State): Files {
+  const result: Files = {}
+
+  const files = state.files.byId
+  Object.keys(files).forEach(id => {
+    result[id] = getFile(files[id])
+  })
+
+  return result
 }

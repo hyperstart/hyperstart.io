@@ -6,11 +6,12 @@ import { SearchField } from "lib/search/SearchField"
 
 import { Status, LogFn } from "logger"
 import { State, Actions } from "api"
-import { isLoading } from "selectors"
+import { isLoading, getEditedProject } from "selectors"
 import { hasDirtySources, isDebuggable } from "editor/selectors"
 import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
+import { forkProject } from "forkProject"
 
 export interface HeaderProps {
   state: State
@@ -87,6 +88,23 @@ function DebugButton({ state, actions }: HeaderProps) {
   )
 }
 
+function ForkButton({ state, actions }: HeaderProps) {
+  const status = state.editor.status
+  const toFork = getEditedProject(state, true)
+  if (status === "closed" || !toFork) {
+    return null
+  }
+
+  return Button({
+    disabled: isLoading(state) || status === "loading",
+    onclick: () => {
+      forkProject(state, actions, toFork)
+    },
+    text: "Fork",
+    class: "fork-button"
+  })
+}
+
 export function Header(props: HeaderProps) {
   const { state, actions, log } = props
   return (
@@ -104,6 +122,7 @@ export function Header(props: HeaderProps) {
         {Status({ state: state.logger, actions: actions.logger })}
       </section>
       <section class="navbar-section">
+        {ForkButton(props)}
         {SearchField({
           state: state.search,
           actions: actions.search,
@@ -111,7 +130,8 @@ export function Header(props: HeaderProps) {
           onSearch: () => {
             push("/projects")
           },
-          name: "projects"
+          name: "projects",
+          placeholder: "Search projects..."
         })}
         {UserIconButton({ state: state.users, actions: actions.users })}
       </section>

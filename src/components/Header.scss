@@ -1,4 +1,11 @@
 .header {
   flex-shrink: 0;
   padding: 0.3rem;
+
+  .fork-button {
+    margin-right: 0.4rem;
+  }
+  .user-icon-button {
+    margin-left: 0.4rem;
+  }
 }

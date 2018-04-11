@@ -55,12 +55,12 @@ export function ModalForm(props: ModalFormProps) {
         size={props.size}
         Footer={() => (
           <div>
-            <button class="btn" onclick={cancel}>
+            <button class="btn" onclick={cancel} type="button">
               Cancel
             </button>{" "}
-            <button class="btn btn-primary" type="submit">
+            <input class="btn btn-primary" type="submit">
               Submit
-            </button>
+            </input>
           </div>
         )}
       >

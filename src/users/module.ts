@@ -98,6 +98,7 @@ const _users: ModuleImpl<api.State, Actions> = {
     getState: () => state => state,
     initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
       firebase.auth().onAuthStateChanged(user => {
+        console.log("Auth state changed ", user)
         actions._onUserChanged(user)
         const user2 = toUser(user)
         listeners.map(listener => listener(user2))
@@ -159,7 +160,8 @@ const _users: ModuleImpl<api.State, Actions> = {
       return firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
+        .then(val => {
+          console.log("signed in", val)
           actions.hideSignInModal()
           logEvent("login", { method: "Email" })
         })
