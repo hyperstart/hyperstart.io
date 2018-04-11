@@ -12,6 +12,53 @@ export interface CreateProjectModalProps {
   actions: Actions
 }
 
+export interface TemplateCardProps {
+  selected: boolean
+  select: (e: Event) => void
+}
+
+export function BlankTemplateCard(props: TemplateCardProps) {
+  return (
+    <div
+      class={"card" + (props.selected ? " active" : "")}
+      onclick={props.select}
+    >
+      <div class="card-header">
+        <h5 class="card-title">Blank</h5>
+      </div>
+      <div class="card-body">
+        Selecting this template will create a minimal project that contains 3
+        files (css, html, and javascript) and is ready to run.
+      </div>
+    </div>
+  )
+}
+
+export function HyperappTemplateCard(props: TemplateCardProps) {
+  return (
+    <div
+      class={"card" + (props.selected ? " active" : "")}
+      onclick={props.select}
+    >
+      <div class="card-header">
+        <h5 class="card-title">Hyperapp</h5>
+      </div>
+      <div class="card-body">
+        Selecting this template will create a project pre-configured for{" "}
+        <a
+          href="https://github.com/hyperapp/hyperapp"
+          target="_blank"
+          onclick={(e: Event) => {
+            e.stopPropagation()
+          }}
+        >
+          Hyperapp
+        </a>.
+      </div>
+    </div>
+  )
+}
+
 export function CreateProjectModal(props: CreateProjectModalProps) {
   const { state, actions } = props
   const log = actions.logger.log
@@ -60,39 +107,11 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
         </div>
         <div class="modal-body">
           <div style={{ display: "flex" }}>
-            <div
-              class={"card" + (blankSelected ? " active" : "")}
-              onclick={selectBlank}
-            >
-              <div class="card-header">
-                <h5 class="card-title">Blank</h5>
-              </div>
-              <div class="card-body">
-                Selecting this template will create a minimal project that
-                contains 3 files (css, html, and javascript) and is ready to
-                run.
-              </div>
-            </div>
-            <div
-              class={"card" + (blankSelected ? "" : " active")}
-              onclick={selectHyperapp}
-            >
-              <div class="card-header">
-                <h5 class="card-title">Hyperapp</h5>
-              </div>
-              <div class="card-body">
-                Selecting this template will create a project pre-configured for{" "}
-                <a
-                  href="https://github.com/hyperapp/hyperapp"
-                  target="_blank"
-                  onclick={(e: Event) => {
-                    e.stopPropagation()
-                  }}
-                >
-                  Hyperapp
-                </a>.
-              </div>
-            </div>
+            <BlankTemplateCard selected={blankSelected} select={selectBlank} />
+            <HyperappTemplateCard
+              selected={!blankSelected}
+              select={selectHyperapp}
+            />
           </div>
         </div>
         <div class="modal-footer">

@@ -6,33 +6,57 @@
   align-self: center;
   flex-grow: 1;
 }
+
 .py-6 {
   padding-top: 24px;
   padding-bottom: 24px;
 }
+
 .py-10 {
   padding-top: 40px;
   padding-bottom: 40px;
 }
+
 .hero-header {
   padding-top: 0 !important;
   font-weight: 700;
   font-style: normal;
   font-size: 44px;
 }
+
 .hero-subheader {
   font-weight: 300;
   font-size: 23px !important;
   line-height: 1.1em;
 }
+
 .jumbotron-home {
   padding-top: 5%;
 }
+
 .jumbotron {
   padding: 2rem 1rem;
   margin-bottom: 2rem;
   border-radius: 0.3rem;
 }
+
 .set-primary {
   color: $primary-color;
+}
+
+.create-project {
+  font-size: 0.8rem;
+
+  .card {
+    width: 280px;
+    margin: 11px;
+    padding: 1px;
+
+    &.active {
+      background-color: $bg-color;
+      border: 3px solid $primary-color-dark;
+      padding: 0px;
+      margin: 10px;
+    }
+  }
 }

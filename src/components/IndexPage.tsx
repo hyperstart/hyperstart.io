@@ -1,6 +1,7 @@
 import { h } from "hyperapp"
 
 import { ProjectsSearch } from "lib/search/ProjectsSearch"
+import { Button } from "lib/components"
 
 import { State, Actions } from "api"
 import { UserSignUpForm } from "users"
@@ -8,13 +9,31 @@ import { LogFn } from "logger"
 
 import "./IndexPage.scss"
 
-import { Button } from "lib/components"
 import { createProject } from "createProject"
+import { BlankTemplateCard, HyperappTemplateCard } from "./CreateProjectModal"
 
 export interface IndexPageProps {
   state: State
   actions: Actions
   log: LogFn
+}
+
+function SignUpForm(props: IndexPageProps) {
+  const { state, actions, log } = props
+
+  if (state.users) {
+    return (
+      <div class="create-project">
+        <h3>Create a project</h3>
+        <div style={{ display: "flex" }}>
+          <BlankTemplateCard selected={false} select={() => {}} />
+          <HyperappTemplateCard selected={true} select={() => {}} />
+        </div>
+      </div>
+    )
+  }
+
+  return <UserSignUpForm state={state.users} actions={actions.users} />
 }
 
 export function IndexPage(props: IndexPageProps) {
@@ -48,7 +67,7 @@ export function IndexPage(props: IndexPageProps) {
               </h2>
             </div>
             <div class="col-4 hide-md text-left py-10 mx-auto centered hero-subheader">
-              <UserSignUpForm state={state.users} actions={actions.users} />
+              <SignUpForm state={state} actions={actions} log={log} />
             </div>
           </div>
         </div>
