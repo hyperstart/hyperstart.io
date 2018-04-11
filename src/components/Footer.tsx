@@ -22,6 +22,7 @@ export function Footer(props: FooterProps) {
           <a
             href="https://github.com/hyperstart/hyperstart.io"
             class="text-light"
+            target="_blank"
           >
             Github
           </a>{" "}
@@ -29,6 +30,7 @@ export function Footer(props: FooterProps) {
           <a
             href="https://hyperapp.slack.com/messages/C9CDF88P9"
             class="text-light"
+            target="_blank"
           >
             Slack
           </a>
