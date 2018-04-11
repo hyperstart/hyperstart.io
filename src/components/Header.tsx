@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { Link } from "lib/router"
+import { Link, push } from "lib/router"
 import { Button } from "lib/components"
 import { SearchField } from "lib/search/SearchField"
 
@@ -108,6 +108,9 @@ export function Header(props: HeaderProps) {
           state: state.search,
           actions: actions.search,
           log,
+          onSearch: () => {
+            push("/projects")
+          },
           name: "projects"
         })}
         {UserIconButton({ state: state.users, actions: actions.users })}

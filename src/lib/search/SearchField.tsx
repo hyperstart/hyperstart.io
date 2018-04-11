@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { State, Actions, SingleResultView } from "./api"
+import { State, Actions, Search, SingleResultView } from "./api"
 import { TextField, SearchResults } from "./components"
 import { LogFn } from "logger"
 
@@ -9,6 +9,7 @@ export interface SearchFieldProps {
   actions: Actions
   name: string
   log: LogFn
+  onSearch?: (search: Search) => void
   placeholder?: string
 }
 
