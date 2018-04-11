@@ -37,14 +37,19 @@ export function app(initialState, actionsTemplate, view, container) {
         typeof action === "function"
           ? function(data) {
               return function(state, actions) {
+                send({
+                  type: "ACTION_START",
+                  id,
+                  action: namedspacedName,
+                  data: data
+                })
                 var result = action(data)
                 result =
                   typeof result === "function" ? result(state, actions) : result
                 send({
-                  type: "ACTION",
+                  type: "ACTION_DONE",
                   id,
                   action: namedspacedName,
-                  data: data,
                   result
                 })
                 return result

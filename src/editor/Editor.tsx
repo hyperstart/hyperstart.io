@@ -64,7 +64,32 @@ export function Editor(props: EditorProps) {
       ) {
         const data = JSON.parse(e.data)
         data.timestamp = new Date().getTime()
-        actions.debug.log(data)
+
+        switch (data.type) {
+          case "INITIALIZE":
+            actions.debug.logInit({
+              runId: data.id,
+              state: data.state,
+              timestamp: new Date().getTime()
+            })
+            break
+          case "ACTION_START":
+            actions.debug.logAction({
+              runId: data.id,
+              callDone: false,
+              action: data.action,
+              data: data.data
+            })
+            break
+          case "ACTION_DONE":
+            actions.debug.logAction({
+              runId: data.id,
+              callDone: true,
+              action: data.action,
+              result: data.result
+            })
+            break
+        }
       }
     }
     window.addEventListener("message", e[IFRAME_LISTENER])
