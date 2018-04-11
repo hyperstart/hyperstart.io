@@ -15,8 +15,8 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
-    gtag('config', 'UA-112102241-1');
+    window.TRACK_ID = 'UA-112102241-1'
+    gtag('config', window.TRACK_ID, { 'send_page_view': false });
   </script>
 
   <!-- Firebase -->

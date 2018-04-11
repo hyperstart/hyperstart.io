@@ -13,5 +13,7 @@ module.exports = {
     type: "firestore"
   }),
   // the ID of the hyperapp project
-  HYPERAPP_ID: JSON.stringify("R2gEktncHKhVcHcqtY23RdJONPo1-vF63AhjbT0C8")
+  HYPERAPP_ID: JSON.stringify("R2gEktncHKhVcHcqtY23RdJONPo1-vF63AhjbT0C8"),
+  // the current environment
+  ENVIRONMENT: JSON.stringify("dev")
 }

@@ -15,8 +15,7 @@ import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "projects/createProject"
-
-declare const gtag
+import { log } from "analytics"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -102,12 +101,8 @@ export const module: ModuleImpl<State, Actions> = {
         )
       })
 
-      let first = true
-      addListener("*", () => {
-        if (!first) {
-          gtag("event", "page_view")
-        }
-        first = false
+      addListener("*", match => {
+        log("config", { page_path: match.location })
       })
     },
     createProject: () => (state, actions) => {

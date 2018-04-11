@@ -410,5 +410,7 @@ module.exports = {
     }
   }),
   // the ID of the hyperapp project
-  HYPERAPP_ID: JSON.stringify("hyperapp")
+  HYPERAPP_ID: JSON.stringify("hyperapp"),
+  // the current environment
+  ENVIRONMENT: JSON.stringify("local")
 }
