@@ -30,7 +30,7 @@ export interface Actions extends ModuleActions<State> {
   // ## Authentication
   initAuthentication(listeners: AuthListener[])
   resetIdentity()
-  signUp(): Promise<void>
+  signUp(source: "form" | "modal"): Promise<void>
   signIn(): Promise<void>
   signInWithGoogle(): Promise<void>
   signOut(): Promise<void>

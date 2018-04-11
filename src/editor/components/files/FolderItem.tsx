@@ -73,7 +73,7 @@ export const FolderItem = (props: FolderItemProps) => {
     item.name === DEPENDENCIES_FOLDER && !item.parent ? (
       <span
         class="tooltip tooltip-bottom"
-        data-tooltip="This folder contains all the projects that \nhave been imported (via File's dropdown \nmenu). All projects in this folder can be \nimported from inside your sources."
+        data-tooltip={`This folder contains all the projects that \nhave been imported (via File's dropdown \nmenu). All projects in this folder can be \nimported from inside your sources.`}
       >
         <i class="fa fa-question-circle-o preview" aria-hidden="true" />
       </span>

@@ -1,5 +1,5 @@
 import * as api from "./api"
-import { Project, getFileTree } from "projects"
+import { Project, getFileTree, FileTree } from "projects"
 
 import { configureFor } from "./monaco"
 import { PROJECT_TAB_ID } from "./constants"
@@ -11,6 +11,22 @@ import * as ui from "./ui"
 
 const isEditable = (project: Project, currentUser: string): boolean =>
   project.details.owner && currentUser === project.details.owner.id
+
+function getSources(files: FileTree, mainFile: string): sources.State {
+  const index = files.byPath[mainFile]
+
+  if (!mainFile || !index) {
+    return {
+      opened: [],
+      selected: []
+    }
+  }
+
+  return {
+    opened: [index],
+    selected: [index]
+  }
+}
 
 export function openProject(
   state: api.State,
@@ -25,10 +41,8 @@ export function openProject(
   const files = getFileTree(project.files)
   configureFor(files, true)
   const index = files.byPath[project.details.mainFile]
-  const sources = {
-    opened: [index],
-    selected: [index]
-  }
+  const sources = getSources(files, project.details.mainFile)
+
   const ui = {
     selectedViewPaneTab: PROJECT_TAB_ID
   }
