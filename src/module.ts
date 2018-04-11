@@ -15,7 +15,7 @@ import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "projects/createProject"
-import { log } from "analytics"
+import { config } from "analytics"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -102,7 +102,7 @@ export const module: ModuleImpl<State, Actions> = {
       })
 
       addListener("*", match => {
-        log("config", { page_path: match.location })
+        config({ page_path: match.location })
       })
     },
     createProject: () => (state, actions) => {

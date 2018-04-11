@@ -5,7 +5,7 @@ import { ProjectsSearch } from "lib/search/ProjectsSearch"
 import { State, Actions } from "api"
 import { CreateProjectModal } from "./CreateProjectModal"
 
-import "./ProjectSearchPage"
+import "./ProjectSearchPage.scss"
 
 export interface ProjectSearchPageProps {
   state: State

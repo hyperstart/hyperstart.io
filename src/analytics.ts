@@ -4,8 +4,14 @@ declare const ENVIRONMENT
 declare const TRACK_ID
 declare const gtag
 
-export function log(name: string, parameters: any) {
+export function config(parameters?: any) {
   if (ENVIRONMENT === "prod") {
-    gtag(name, TRACK_ID, parameters)
+    gtag("config", TRACK_ID, parameters)
+  }
+}
+
+export function event(action?: any, parameters?: any) {
+  if (ENVIRONMENT === "prod") {
+    gtag("event", action, parameters)
   }
 }

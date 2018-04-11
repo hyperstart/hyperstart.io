@@ -1,10 +1,11 @@
-.runs-pane {
+.debug-runs-pane {
   flex: 0 0 40%;
   border: 1px solid #666666;
   margin: 0rem;
   align-items: stretch;
 
-  .runs-pane-runs {
+  .debug-runs-pane-runs {
     margin: 0.2rem 0rem 0.4rem 0.2rem;
+    flex-direction: column;
   }
 }

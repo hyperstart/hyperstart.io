@@ -4,6 +4,7 @@ import "./RunsPaneItem.scss"
 
 import { State, Actions, Run } from "../api"
 import { RunActionItemList } from "./RunActionItemList"
+import { Icon } from "lib/components"
 
 export interface RunsPaneItemProps {
   state: State
@@ -16,10 +17,30 @@ export function RunsPaneItem(props: RunsPaneItemProps) {
   const { state, actions, run, current } = props
   const date = new Date(run.timestamp).toLocaleTimeString()
   const collapsed = run.collapsed
+  const expandIcon = (
+    <Icon name={collapsed ? "caret-right" : "caret-down"} class="fa-fw" />
+  )
+
+  const onclick = () => {
+    actions.toggleRun(run.id)
+  }
+
+  let closeButton
+  if (!current) {
+    closeButton = (
+      <button
+        class="btn btn-clear float-right"
+        onclick={() => actions.deleteRun(run.id)}
+      />
+    )
+  }
 
   return (
-    <li class="run-pane-item" key={run.timestamp}>
-      <h6>Run - {date}</h6>
+    <li class="debug-run-pane-item" key={run.timestamp}>
+      <div class="run" onclick={onclick}>
+        {expandIcon} Debug from {date}
+        {closeButton}
+      </div>
       {RunActionItemList({
         state,
         actions,

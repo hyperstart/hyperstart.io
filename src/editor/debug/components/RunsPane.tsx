@@ -16,13 +16,11 @@ export function RunsPane(props: RunsPaneProps) {
   const items = []
   const lastId = runs.length - 1
   runs.forEach((run, i) => {
-    items.unshift(
-      RunsPaneItem({ state, actions, run, current: i === lastId })
-    )
+    items.unshift(RunsPaneItem({ state, actions, run, current: i === lastId }))
   })
   return (
-    <div class="runs-pane scrollable">
-      <ul class="runs-pane-runs scrollable-content">{items}</ul>
+    <div class="debug-runs-pane scrollable">
+      <ul class="debug-runs-pane-runs scrollable-content">{items}</ul>
     </div>
   )
 }
