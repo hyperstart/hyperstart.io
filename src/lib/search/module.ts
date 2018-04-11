@@ -2,6 +2,7 @@ import { ModuleImpl } from "lib/modules"
 import { getErrorMessage } from "lib/utils"
 
 import * as api from "./api"
+import { logEvent } from "analytics"
 
 // # Types
 
@@ -113,6 +114,7 @@ export function createSearch(
 
         return searchResult
           .then(results => {
+            logEvent("search", { method: { text } })
             const hasNext = results.length > search.resultsPerPage
             actions.update({ name, status: "success", results, hasNext })
             return actions.getState()[name]

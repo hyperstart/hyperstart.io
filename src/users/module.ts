@@ -4,6 +4,7 @@ import { ModuleImpl } from "lib/modules"
 import { createForm } from "lib/form/module"
 
 import * as api from "./api"
+import { logEvent } from "analytics"
 
 interface FirebaseAuthError {
   code: string
@@ -137,6 +138,7 @@ const _users: ModuleImpl<api.State, Actions> = {
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           actions.hideSignUpModal()
+          logEvent("signup", { method: "Email" })
         })
         .catch(actions._errorOnSignUp)
     },
@@ -159,6 +161,7 @@ const _users: ModuleImpl<api.State, Actions> = {
         .signInWithEmailAndPassword(email, password)
         .then(() => {
           actions.hideSignInModal()
+          logEvent("login", { method: "Email" })
         })
         .catch(actions._errorOnSignIn)
     },
@@ -166,7 +169,10 @@ const _users: ModuleImpl<api.State, Actions> = {
       if (!googleProvider) {
         googleProvider = new firebase.auth.GoogleAuthProvider()
       }
-      return firebase.auth().signInWithPopup(googleProvider)
+      return firebase
+        .auth()
+        .signInWithPopup(googleProvider)
+        .then(() => logEvent("login", { method: "Google" }))
     },
     signOut: (): Promise<void> => {
       return firebase.auth().signOut()

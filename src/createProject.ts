@@ -2,6 +2,7 @@ import { Template, Owner } from "projects"
 import { State, Actions } from "api"
 import { createProject as create } from "projects/createProject"
 import { replace } from "lib/router"
+import { logEvent } from "analytics"
 
 export function createProject(
   state: State,
@@ -25,6 +26,7 @@ export function createProject(
       .then(project => {
         actions.editor.open(project)
         replace("/projects/" + project.details.id)
+        logEvent("create_project", { method: "Index" })
       })
   )
 }

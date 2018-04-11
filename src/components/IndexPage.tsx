@@ -29,7 +29,7 @@ export function IndexPage(props: IndexPageProps) {
               <h1 class="hero-header py-6 px-2">
                 Code JavaScript apps faster using Hyperapp
               </h1>
-              <h2 class="hero-subheader hero-subheader-home py-6 px-2">
+              <h2 class="hero-subheader py-6 px-2">
                 Hyperstart allows you to create and share JavaScript projects,
                 ranging from code snippets to fully-fledged projects, with zero
                 setup. Use{" "}
@@ -39,7 +39,7 @@ export function IndexPage(props: IndexPageProps) {
                 and our integrated devtools to speed up your project development
                 cycle.
               </h2>
-              <h2 class="hero-subheader hero-subheader-home pb-30">
+              <h2 class="hero-subheader px-2 pb-30">
                 Create an account for free and try it out &nbsp;
                 <i
                   class="fa fa-long-arrow-right set-primary"
@@ -47,7 +47,7 @@ export function IndexPage(props: IndexPageProps) {
                 />
               </h2>
             </div>
-            <div class="col-4 text-left py-10 mx-auto centered">
+            <div class="col-4 text-left py-10 mx-auto centered hero-subheader">
               <UserSignUpForm state={state.users} actions={actions.users} />
             </div>
           </div>
