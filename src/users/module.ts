@@ -98,7 +98,6 @@ const _users: ModuleImpl<api.State, Actions> = {
     getState: () => state => state,
     initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
       firebase.auth().onAuthStateChanged(user => {
-        console.log("Auth state changed ", user)
         actions._onUserChanged(user)
         const user2 = toUser(user)
         listeners.map(listener => listener(user2))
@@ -110,15 +109,16 @@ const _users: ModuleImpl<api.State, Actions> = {
         error: null
       }
     },
-    signUp: () => (state, actions): Promise<void> => {
-      if (!state.signUpModal) {
-        throw new Error("No signUpModal in state.")
+    signUp: (source: "form" | "modal") => (state, actions): Promise<void> => {
+      const form = source === "form" ? state.signUpForm : state.signUpModal
+      const formActions =
+        source === "form" ? actions.signUpForm : actions.signUpModal
+      if (!form) {
+        throw new Error("No form in state for " + source)
       }
-      const form = state.signUpModal
-      let error = checkNotEmpty(form, actions.signUpModal, "email")
-      error = checkNotEmpty(form, actions.signUpModal, "password") || error
-      error =
-        checkNotEmpty(form, actions.signUpModal, "confirmPassword") || error
+      let error = checkNotEmpty(form, formActions, "email")
+      error = checkNotEmpty(form, formActions, "password") || error
+      error = checkNotEmpty(form, formActions, "confirmPassword") || error
       if (error) {
         return
       }
@@ -127,7 +127,7 @@ const _users: ModuleImpl<api.State, Actions> = {
       const password = form.password.value
       const confirmPassword = form.confirmPassword.value
       if (password !== confirmPassword) {
-        actions.signUpModal.setField({
+        formActions.setField({
           field: "confirmPassword",
           error: "Does not match the password."
         })

@@ -17,7 +17,7 @@ export function UserSignUpForm(props: UserSignUpFormProps) {
     actions: actions.signUpForm,
     active: true,
     title: "Register for an Account",
-    submit: actions.signUp,
+    submit: () => actions.signUp("form"),
     fieldSize: "lg",
     fields: [
       { name: "email", placeholder: "Email", type: "text" },

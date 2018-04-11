@@ -22,7 +22,7 @@ export function UserSignUpModal(props: UserSignUpModalProps) {
     active: true,
     close: actions.hideSignUpModal,
     title: "Sign up with email/password",
-    submit: actions.signUp,
+    submit: () => actions.signUp("modal"),
     fields: [
       { name: "email", label: "Email", type: "text" },
       { name: "password", label: "Password", type: "password" },

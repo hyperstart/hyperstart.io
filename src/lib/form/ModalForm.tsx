@@ -18,7 +18,7 @@ export interface ModalFormProps {
   actions: Actions
   active: boolean
   title: string
-  submit()
+  submit(state: State)
   close()
   fields: ModalFieldProps[]
   size?: "sm" | "lg"
@@ -44,7 +44,7 @@ export function ModalForm(props: ModalFormProps) {
       oncreate={e => e.elements[0].focus()}
       onsubmit={e => {
         e.preventDefault()
-        props.submit()
+        props.submit(state)
       }}
       class={horizontal ? "form-horizontal" : ""}
     >
