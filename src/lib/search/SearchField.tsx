@@ -12,6 +12,7 @@ export interface SearchFieldProps {
   onSearch?: (search: Search) => void
   placeholder?: string
   displaySearchButton?: boolean
+  class?: string
 }
 
 export function SearchField(props: SearchFieldProps) {

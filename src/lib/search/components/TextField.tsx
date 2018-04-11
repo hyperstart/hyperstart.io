@@ -12,6 +12,7 @@ export interface TextFieldProps {
   placeholder?: string
   displaySearchButton?: boolean
   onSearch?: (search: Search) => void
+  class?: string
 }
 
 export function TextField(props: TextFieldProps) {
@@ -31,6 +32,7 @@ export function TextField(props: TextFieldProps) {
         }
         log(action)
       }}
+      class={props.class || ""}
     >
       <div class="input-group">
         <input

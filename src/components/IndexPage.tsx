@@ -25,7 +25,7 @@ export function IndexPage(props: IndexPageProps) {
       <div class="jumbotron jumbotron-home">
         <div clas="container">
           <div class="columns">
-            <div class="col-6 text-left px-2">
+            <div class="col-6 col-md-12 text-left px-2">
               <h1 class="hero-header py-6 px-2">
                 Code JavaScript apps faster using Hyperapp
               </h1>
@@ -39,7 +39,7 @@ export function IndexPage(props: IndexPageProps) {
                 and our integrated devtools to speed up your project development
                 cycle.
               </h2>
-              <h2 class="hero-subheader px-2 pb-30">
+              <h2 class="hero-subheader px-2 pb-30 hide-md">
                 Create an account for free and try it out &nbsp;
                 <i
                   class="fa fa-long-arrow-right set-primary"
@@ -47,7 +47,7 @@ export function IndexPage(props: IndexPageProps) {
                 />
               </h2>
             </div>
-            <div class="col-4 text-left py-10 mx-auto centered hero-subheader">
+            <div class="col-4 hide-md text-left py-10 mx-auto centered hero-subheader">
               <UserSignUpForm state={state.users} actions={actions.users} />
             </div>
           </div>
@@ -58,7 +58,7 @@ export function IndexPage(props: IndexPageProps) {
           <div class="column col-12">
             <h2 class="text-center">Features</h2>
           </div>
-          <div class="column col-4 centered p-2">
+          <div class="column col-4 col-md-12 centered p-2">
             <i
               class="fa fa-cogs fa-5x text-center col-12 m-2"
               aria-hidden="true"
@@ -83,7 +83,7 @@ export function IndexPage(props: IndexPageProps) {
             </a>
           </div>
 
-          <div class="column col-4 centered p-2">
+          <div class="column col-4 col-md-12 centered p-2">
             <i
               class="fa fa-repeat fa-5x text-center col-12 m-2"
               aria-hidden="true"
@@ -96,7 +96,7 @@ export function IndexPage(props: IndexPageProps) {
             <a href="#search">Search for an existing project.</a>
           </div>
 
-          <div class="column col-4 centered p-2">
+          <div class="column col-4 col-md-12 centered p-2">
             <i
               class="fa fa-pencil-square-o fa-5x text-center col-12 m-2"
               aria-hidden="true"
@@ -112,7 +112,7 @@ export function IndexPage(props: IndexPageProps) {
             <a href="/blog">Start learning Hyperapp.</a>
           </div>
 
-          <div class="column col-12 text-center py-10">
+          <div class="column col-12 hide-md text-center py-10">
             <Button
               primary={true}
               text="Create an Account to Save Your Projects"
@@ -130,7 +130,7 @@ export function IndexPage(props: IndexPageProps) {
           <a name="search" />
           <div class="column col-12 p-2">
             <h2 class="text-center p-2">Explore Existing Projects</h2>
-            <div class="col-8 centered text-left">
+            <div class="col-8 col-md-12 centered text-left">
               <p class="p-2">
                 Try typing "Hyperapp" into the search below to see our own
                 Hyperapp examples and learn how to use the framework, or search

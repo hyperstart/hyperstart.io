@@ -58,9 +58,9 @@ export function ModalForm(props: ModalFormProps) {
             <button class="btn" onclick={cancel} type="button">
               Cancel
             </button>{" "}
-            <input class="btn btn-primary" type="submit">
+            <button class="btn btn-primary" type="submit">
               Submit
-            </input>
+            </button>
           </div>
         )}
       >

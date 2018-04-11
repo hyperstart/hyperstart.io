@@ -26,7 +26,7 @@ function CreateButton({ state, actions }: HeaderProps) {
 
   return Button({
     onclick: actions.ui.openCreateProject,
-    text: "Create a Project",
+    text: window.innerWidth < 840 ? "Create" : "Create a Project",
     class: "button"
   })
 }
@@ -134,7 +134,8 @@ export function Header(props: HeaderProps) {
             push("/projects")
           },
           name: "projects",
-          placeholder: "Search projects..."
+          placeholder: "Search projects...",
+          class: "hide-md"
         })}
         {UserIconButton({ state: state.users, actions: actions.users })}
       </section>
