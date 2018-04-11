@@ -21,7 +21,7 @@ export interface IndexPageProps {
 function SignUpForm(props: IndexPageProps) {
   const { state, actions, log } = props
 
-  if (state.users) {
+  if (state.users.user) {
     return (
       <div class="create-project">
         <h3>Create a project</h3>
