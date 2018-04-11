@@ -25,7 +25,7 @@ function CreateButton({ state, actions }: HeaderProps) {
 
   return Button({
     onclick: actions.ui.openCreateProject,
-    text: "create",
+    text: "Create a Project",
     class: "button"
   })
 }
@@ -92,7 +92,7 @@ export function Header(props: HeaderProps) {
   return (
     <header class="header navbar bg-dark">
       <section class="navbar-section">
-        <Link href="/" class="navbar-brand mr-2 text-light">
+        <Link href="/" class="navbar-brand mr-2 p-2 text-light">
           Hyperstart
         </Link>
         {CreateButton(props)}

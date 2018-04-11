@@ -70,7 +70,7 @@ export const Button = (props: ButtonProps, children?: any) => {
     <Tag
       class={
         "btn" +
-          (size ? "btn-" + size : "") +
+          (size ? " btn-" + size : "") +
           (block ? " btn-block" : "") +
           (primary ? " btn-primary" : link ? " btn-link" : "") +
           (action === "circle"
