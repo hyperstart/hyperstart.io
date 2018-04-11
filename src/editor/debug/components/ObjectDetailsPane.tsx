@@ -3,7 +3,7 @@ import { h } from "hyperapp"
 import "./ObjectDetailsPane.scss"
 
 import { State, Actions, Run, AppAction } from "../api"
-import { getSelectedAction } from "../selectors";
+import { getSelectedAction } from "../selectors"
 
 interface PaneProps {
   state: State
@@ -11,50 +11,39 @@ interface PaneProps {
   action: AppAction
 }
 
-function PaneData(props: PaneProps) {
-  const { action } = props
-
+function Pane(content: string) {
   return (
     <div class="object-details-pane scrollable">
-      <pre class="scrollable-content">
-        {JSON.stringify(action.actionData, null, 2)}
-      </pre>
+      <pre class="scrollable-content">{content}</pre>
     </div>
   )
+}
+
+function PaneData(props: PaneProps) {
+  if (!props.action) {
+    return Pane("")
+  }
+  return Pane(JSON.stringify(props.action.actionData, null, 2))
 }
 
 function PaneResult(props: PaneProps) {
-  const { action } = props
-
-  return (
-    <div class="object-details-pane scrollable">
-      <pre class="scrollable-content">
-        {JSON.stringify(action.actionResult, null, 2)}
-      </pre>
-    </div>
-  )
+  if (!props.action) {
+    return Pane("")
+  }
+  return Pane(JSON.stringify(props.action.actionResult, null, 2))
 }
 
 function PaneState(props: PaneProps) {
-  const { action } = props
-
-  return (
-    <div class="object-details-pane scrollable">
-      <pre class="scrollable-content">
-        {JSON.stringify(action.nextState, null, 2)}
-      </pre>
-    </div>
-  )
+  if (!props.action) {
+    return Pane("")
+  }
+  return Pane(JSON.stringify(props.action.nextState, null, 2))
 }
 
 function PaneDebuggerState(props: PaneProps) {
   const { state } = props
 
-  return (
-    <div class="object-details-pane scrollable">
-      <pre class="scrollable-content">{JSON.stringify(state, null, 2)}</pre>
-    </div>
-  )
+  return Pane(JSON.stringify(props.state, null, 2))
 }
 
 export interface ObjectDetailsPaneProps {
