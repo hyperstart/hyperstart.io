@@ -6,15 +6,18 @@ import * as api from "./api"
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
   state: {
-    // nothing
+    createProjectTemplate: "hyperapp"
   },
   actions: {
-    openCreateProject: () => ({
-      createProject: { template: "hyperapp" }
+    openCreateProjectModal: () => ({
+      createProjectModal: { template: "hyperapp" }
     }),
-    closeCreateProject: () => ({ createProject: null }),
-    selectCreateProjectTemplate: (template: Template) => ({
-      createProject: { template }
+    closeCreateProjectModal: () => ({ createProjectModal: null }),
+    selectCreateProjectModalTemplate: (template: Template) => ({
+      createProjectModal: { template }
+    }),
+    selectCreateProjectTemplate: (createProjectTemplate: Template) => ({
+      createProjectTemplate
     })
   }
 }

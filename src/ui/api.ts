@@ -3,19 +3,22 @@ import { Template } from "projects/api"
 
 // # State
 
-export interface CreateProjectDialog {
+export interface CreateProjectModal {
   template: Template
 }
 
 export interface State {
-  createProject?: CreateProjectDialog
+  createProjectModal?: CreateProjectModal
+  createProjectTemplate: Template
 }
 
 // # Actions
 
 export interface Actions {
-  // ## Create Project Dialog
-  openCreateProject()
+  // ## Create Project Modal
+  openCreateProjectModal()
+  selectCreateProjectModalTemplate(template: Template)
+  closeCreateProjectModal()
+  // ## Create Project
   selectCreateProjectTemplate(template: Template)
-  closeCreateProject()
 }

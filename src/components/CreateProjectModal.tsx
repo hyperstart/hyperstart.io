@@ -63,7 +63,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
   const { state, actions } = props
   const log = actions.logger.log
 
-  const createProject = state.ui.createProject
+  const createProject = state.ui.createProjectModal
 
   if (!createProject) {
     return <div />
@@ -78,12 +78,12 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
 
   const selectBlank = (e: Event) => {
     e.preventDefault()
-    actions.ui.selectCreateProjectTemplate("blank")
+    actions.ui.selectCreateProjectModalTemplate("blank")
   }
 
   const selectHyperapp = (e: Event) => {
     e.preventDefault()
-    actions.ui.selectCreateProjectTemplate("hyperapp")
+    actions.ui.selectCreateProjectModalTemplate("hyperapp")
   }
 
   const blankSelected = createProject.template === "blank"
@@ -93,7 +93,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
         href="#"
         class="modal-overlay"
         aria-label="Close"
-        onclick={actions.ui.closeCreateProject}
+        onclick={actions.ui.closeCreateProjectModal}
       />
       <div class="modal-container">
         <div class="modal-header">
@@ -101,7 +101,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
             href="#"
             class="btn btn-clear float-right"
             aria-label="Close"
-            onclick={actions.ui.closeCreateProject}
+            onclick={actions.ui.closeCreateProjectModal}
           />
           <h3 class="modal-title">Please select a template</h3>
         </div>
@@ -115,7 +115,7 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn" onclick={actions.ui.closeCreateProject}>
+          <button class="btn" onclick={actions.ui.closeCreateProjectModal}>
             Cancel
           </button>{" "}
           <button

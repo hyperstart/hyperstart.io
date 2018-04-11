@@ -106,13 +106,13 @@ export const module: ModuleImpl<State, Actions> = {
       })
     },
     createProject: () => (state, actions) => {
-      const template = state.ui.createProject
-        ? state.ui.createProject.template
+      const template = state.ui.createProjectModal
+        ? state.ui.createProjectModal.template
         : null
       if (!template) {
         return null
       }
-      actions.ui.closeCreateProject()
+      actions.ui.closeCreateProjectModal()
       const user = state.users.user
       const owner: Owner = user
         ? { id: user.id, displayName: user.displayName }

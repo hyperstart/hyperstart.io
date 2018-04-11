@@ -22,13 +22,24 @@ function SignUpForm(props: IndexPageProps) {
   const { state, actions, log } = props
 
   if (state.users.user) {
+    const blankTemplate = state.ui.createProjectTemplate === "blank"
+    const create = () => {
+      createProject(state, actions, state.ui.createProjectTemplate)
+    }
     return (
       <div class="create-project">
         <h3>Create a project</h3>
         <div style={{ display: "flex" }}>
-          <BlankTemplateCard selected={false} select={() => {}} />
-          <HyperappTemplateCard selected={true} select={() => {}} />
+          <BlankTemplateCard
+            selected={blankTemplate}
+            select={() => actions.ui.selectCreateProjectTemplate("blank")}
+          />
+          <HyperappTemplateCard
+            selected={!blankTemplate}
+            select={() => actions.ui.selectCreateProjectTemplate("hyperapp")}
+          />
         </div>
+        <Button primary={true} text="Create" onclick={create} />
       </div>
     )
   }
@@ -158,7 +169,7 @@ export function IndexPage(props: IndexPageProps) {
                   href="#"
                   onclick={e => {
                     e.preventDefault()
-                    props.actions.ui.openCreateProject()
+                    props.actions.ui.openCreateProjectModal()
                   }}
                 >
                   create your own project

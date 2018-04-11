@@ -25,7 +25,7 @@ function CreateButton({ state, actions }: HeaderProps) {
   }
 
   return Button({
-    onclick: actions.ui.openCreateProject,
+    onclick: actions.ui.openCreateProjectModal,
     text: window.innerWidth < 840 ? "Create" : "Create a Project",
     class: "button"
   })
