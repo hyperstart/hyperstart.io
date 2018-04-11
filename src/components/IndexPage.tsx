@@ -24,7 +24,7 @@ function SignUpForm(props: IndexPageProps) {
   if (state.users.user) {
     return (
       <div class="create-project">
-        <h3>Create a project</h3>
+        <h3 class="text-center">Create a project</h3>
         <div style={{ display: "flex" }}>
           <BlankTemplateCard selected={false} select={() => {}} />
           <HyperappTemplateCard selected={true} select={() => {}} />
@@ -44,11 +44,11 @@ export function IndexPage(props: IndexPageProps) {
       <div class="jumbotron jumbotron-home">
         <div clas="container">
           <div class="columns">
-            <div class="col-6 col-md-12 text-left px-2">
-              <h1 class="hero-header py-6 px-2">
+            <div class="col-6 col-md-12 px-2">
+              <h1 class="hero-header text-center py-6 px-2">
                 Code JavaScript apps faster using Hyperapp
               </h1>
-              <h2 class="hero-subheader py-6 px-2">
+              <h5 class="py-6 px-2 text-justify">
                 Hyperstart allows you to create and share JavaScript projects,
                 ranging from code snippets to fully-fledged projects, with zero
                 setup. Use{" "}
@@ -57,16 +57,16 @@ export function IndexPage(props: IndexPageProps) {
                 </a>{" "}
                 and our integrated devtools to speed up your project development
                 cycle.
-              </h2>
-              <h2 class="hero-subheader px-2 pb-30 hide-md">
+              </h5>
+              <h5 class="px-2 pb-30 hide-md">
                 Create an account for free and try it out &nbsp;
                 <i
                   class="fa fa-long-arrow-right set-primary"
                   aria-hidden="true"
                 />
-              </h2>
+              </h5>
             </div>
-            <div class="col-4 hide-md text-left py-10 mx-auto centered hero-subheader">
+            <div class="col-4 hide-md text-left py-10 mx-auto centered">
               <SignUpForm state={state} actions={actions} log={log} />
             </div>
           </div>
