@@ -39,7 +39,15 @@ function SignUpForm(props: IndexPageProps) {
             select={() => actions.ui.selectCreateProjectTemplate("hyperapp")}
           />
         </div>
-        <Button primary={true} text="Create" onclick={create} />
+        <div class="padding-card">
+          <Button
+            primary={true}
+            size="lg"
+            block={true}
+            text="Create"
+            onclick={create}
+          />
+        </div>
       </div>
     )
   }
@@ -77,7 +85,7 @@ export function IndexPage(props: IndexPageProps) {
                 />
               </h5>
             </div>
-            <div class="col-4 hide-md text-left py-10 mx-auto centered">
+            <div class="col-4 hide-md text-center py-10 mx-auto centered">
               <SignUpForm state={state} actions={actions} log={log} />
             </div>
           </div>

@@ -28,8 +28,8 @@ export function BlankTemplateCard(props: TemplateCardProps) {
       </div>
       <div class="card-body text-left">
         <p>
-          Selecting this template will create a minimal project that contains 3
-          files (css, html, and javascript) and is ready to run.
+          Selecting this template will create a minimal project with JS, CSS and
+          HTML.
         </p>
       </div>
     </div>
