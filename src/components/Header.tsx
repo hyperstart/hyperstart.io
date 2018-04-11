@@ -90,8 +90,11 @@ function DebugButton({ state, actions }: HeaderProps) {
 
 function ForkButton({ state, actions }: HeaderProps) {
   const status = state.editor.status
+  if (status === "closed" || status === "error") {
+    return null
+  }
   const toFork = getEditedProject(state, true)
-  if (status === "closed" || !toFork) {
+  if (!toFork) {
     return null
   }
 
