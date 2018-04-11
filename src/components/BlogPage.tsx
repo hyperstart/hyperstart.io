@@ -8,7 +8,7 @@ export function BlogPage(props: BlogPageProps) {
   //const text = "world"
   return (
     <iframe
-      style={{ "flex-grow": "1" }}
+      style={{ "flex-grow": "1", "border-style": "none" }}
       src="https://hyperstart.github.io/blog/"
     />
   )
