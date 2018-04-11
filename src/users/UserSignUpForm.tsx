@@ -16,12 +16,21 @@ export function UserSignUpForm(props: UserSignUpFormProps) {
     state: state.signUpForm,
     actions: actions.signUpForm,
     active: true,
-    title: "Sign up with email/password",
+    title: "Register for an Account",
     submit: actions.signUp,
+    fieldSize: "lg",
     fields: [
-      { name: "email", label: "Email", type: "text" },
-      { name: "password", label: "Password", type: "password" },
-      { name: "confirmPassword", label: "Confirm Password", type: "password" }
+      { name: "email", placeholder: "Email", type: "text" },
+      {
+        name: "password",
+        placeholder: "Password",
+        type: "password"
+      },
+      {
+        name: "confirmPassword",
+        placeholder: "Confirm Password",
+        type: "password"
+      }
     ]
   })
 }

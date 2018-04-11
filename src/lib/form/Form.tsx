@@ -20,7 +20,7 @@ export interface FormProps {
   title: string
   submit()
   fields: FormFieldProps[]
-  size?: "sm" | "lg"
+  fieldSize?: "sm" | "lg"
   horizontal?: string[]
 }
 
@@ -29,9 +29,10 @@ export function Form(props: FormProps) {
     state,
     actions,
     fields,
-    horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"]
+    horizontal = ["col-sm-12", "col-12 col-sm-12 py-1"],
+    fieldSize
   } = props
-
+  const className = fieldSize ? "input-" + fieldSize : ""
   return (
     <form
       oncreate={e => e.elements[0].focus()}
@@ -42,10 +43,12 @@ export function Form(props: FormProps) {
       class={horizontal ? "form-horizontal" : ""}
     >
       <h3>{props.title}</h3>
-      {fields.map(f => Field({ ...f, state, actions, horizontal }))}
-      <div>
-        <button class="btn btn-primary" type="submit">
-          Submit
+      {fields.map(f =>
+        Field({ ...f, state, actions, horizontal, class: className })
+      )}
+      <div class="text-right py-6">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          Register
         </button>
       </div>
     </form>
