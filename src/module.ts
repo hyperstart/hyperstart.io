@@ -16,6 +16,8 @@ import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "projects/createProject"
 
+declare const gtag
+
 const router = createRouter()
 const projectsStore = getProjectsStore()
 const projects = createProjects(projectsStore)
@@ -98,6 +100,14 @@ export const module: ModuleImpl<State, Actions> = {
         actions.logger.log(
           actions.fetchProject({ id: match.params.id, open: true })
         )
+      })
+
+      let first = true
+      addListener("*", () => {
+        if (!first) {
+          gtag("event", "page_view")
+        }
+        first = false
       })
     },
     createProject: () => (state, actions) => {
