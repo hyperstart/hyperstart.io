@@ -11,12 +11,13 @@ export interface SearchFieldProps {
   log: LogFn
   onSearch?: (search: Search) => void
   placeholder?: string
+  displaySearchButton?: boolean
 }
 
 export function SearchField(props: SearchFieldProps) {
   return (
     <div>
-      <TextField {...props} type="field" displaySearchButton />
+      <TextField {...props} type="field" />
     </div>
   )
 }
