@@ -1,6 +1,5 @@
 export * from "./Button"
 export * from "./Disable"
-export * from "./Form"
 export * from "./Icon"
 export * from "./Modal"
 export * from "./SplitPane"

@@ -36,7 +36,7 @@ function toUser(user?: firebase.User): api.User | null {
     : null
 }
 
-const signUpForm = createForm({
+const signUpModalForm = createForm({
   email: "",
   password: "",
   confirmPassword: ""
@@ -44,6 +44,11 @@ const signUpForm = createForm({
 const signInForm = createForm({
   email: "",
   password: ""
+})
+const signUpForm = createForm({
+  email: "",
+  password: "",
+  confirmPassword: ""
 })
 
 function checkNotEmpty(state, actions, field) {
@@ -62,7 +67,8 @@ let googleProvider
 const _users: ModuleImpl<api.State, Actions> = {
   // # State
   state: {
-    loading: false
+    loading: false,
+    signUpForm: signUpForm.state
   },
   // # Actions
   actions: {
@@ -86,6 +92,7 @@ const _users: ModuleImpl<api.State, Actions> = {
       actions.signUpModal.setField({ field, error })
     },
     // ## Public
+    signUpForm: signUpForm.actions,
     init: () => ({ signInModal: null, signUpModal: null }),
     getState: () => state => state,
     initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
@@ -169,8 +176,8 @@ const _users: ModuleImpl<api.State, Actions> = {
     showSignInModal: () => ({ signInModal: signInForm.state }),
     hideSignInModal: () => ({ signInModal: null }),
     // ### Sign Up
-    signUpModal: signUpForm.actions,
-    showSignUpModal: () => ({ signUpModal: signUpForm.state }),
+    signUpModal: signUpModalForm.actions,
+    showSignUpModal: () => ({ signUpModal: signUpModalForm.state }),
     hideSignUpModal: () => ({ signUpModal: null })
   }
 }

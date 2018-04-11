@@ -3,6 +3,7 @@ import { h } from "hyperapp"
 import { ProjectsSearch } from "lib/search/ProjectsSearch"
 
 import { State, Actions } from "api"
+import { UserSignUpForm } from "users"
 import { LogFn } from "logger"
 
 import "./IndexPage.scss"
@@ -47,7 +48,7 @@ export function IndexPage(props: IndexPageProps) {
               </h2>
             </div>
             <div class="col-4 text-left py-10 mx-auto centered">
-              <p />
+              <UserSignUpForm state={state.users} actions={actions.users} />
             </div>
           </div>
         </div>
