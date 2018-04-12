@@ -26,7 +26,10 @@ export function createProject(
       .then(project => {
         actions.editor.open(project)
         replace("/projects/" + project.details.id)
-        logEvent("create_project", { method: "Index" })
+        logEvent("create_project", {
+          event_category: "project",
+          event_label: "Index"
+        })
       })
   )
 }

@@ -140,7 +140,10 @@ const _users: ModuleImpl<api.State, Actions> = {
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           actions.hideSignUpModal()
-          logEvent("signup", { method: "Email" })
+          logEvent("signup", {
+            event_category: "users",
+            event_label: "Email"
+          })
         })
         .catch(actions._errorOnSignUp)
     },
@@ -164,7 +167,10 @@ const _users: ModuleImpl<api.State, Actions> = {
         .then(val => {
           console.log("signed in", val)
           actions.hideSignInModal()
-          logEvent("login", { method: "Email" })
+          logEvent("login", {
+            event_category: "users",
+            event_label: "Email"
+          })
         })
         .catch(actions._errorOnSignIn)
     },
@@ -175,7 +181,12 @@ const _users: ModuleImpl<api.State, Actions> = {
       return firebase
         .auth()
         .signInWithPopup(googleProvider)
-        .then(() => logEvent("login", { method: "Google" }))
+        .then(() =>
+          logEvent("login", {
+            event_category: "users",
+            event_label: "Google"
+          })
+        )
     },
     signInWithGithub: () => (state, actions) => {
       if (!githubProvider) {
