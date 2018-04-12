@@ -3,16 +3,18 @@ import { h } from "hyperapp"
 import { Button, Icon } from "lib/components"
 
 import { State, Actions } from "./api"
+import { LogFn } from "logger"
 
 declare const ui
 
 export interface UserIconButtonProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export function UserIconButton(props: UserIconButtonProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
   const user = state.user
   if (user) {
     const logout = (e: Event) => {
@@ -50,6 +52,8 @@ export function UserIconButton(props: UserIconButtonProps) {
           >
             Sign Up
           </a>
+        </li>
+        <li class="menu-item">
           <a
             href="#"
             onclick={actions.showSignInModal}
@@ -57,12 +61,23 @@ export function UserIconButton(props: UserIconButtonProps) {
           >
             Sign In with Email
           </a>
+        </li>
+        <li class="menu-item">
           <a
             href="#"
-            onclick={actions.signInWithGoogle}
+            onclick={() => log(actions.signInWithGoogle())}
             style={{ color: "black" }}
           >
             Sign In with Google
+          </a>
+        </li>
+        <li class="menu-item">
+          <a
+            href="#"
+            onclick={() => log(actions.signInWithGithub())}
+            style={{ color: "black" }}
+          >
+            Sign In with Github
           </a>
         </li>
       </ul>

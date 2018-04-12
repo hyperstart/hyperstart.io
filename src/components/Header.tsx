@@ -137,7 +137,11 @@ export function Header(props: HeaderProps) {
           placeholder: "Search projects...",
           class: "hide-md"
         })}
-        {UserIconButton({ state: state.users, actions: actions.users })}
+        {UserIconButton({
+          state: state.users,
+          actions: actions.users,
+          log: actions.logger.log
+        })}
       </section>
     </header>
   )

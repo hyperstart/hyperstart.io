@@ -6,5 +6,10 @@ export interface BlogPageProps {
 
 export function BlogPage(props: BlogPageProps) {
   //const text = "world"
-  return <div>Blog under construction</div>
+  return (
+    <iframe
+      style={{ "flex-grow": "1", "border-style": "none" }}
+      src="https://hyperstart.github.io/blog/"
+    />
+  )
 }
