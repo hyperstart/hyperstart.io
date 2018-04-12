@@ -64,6 +64,7 @@ function checkNotEmpty(state, actions, field) {
 }
 
 let googleProvider
+let githubProvider
 
 const _users: ModuleImpl<api.State, Actions> = {
   // # State
@@ -175,6 +176,15 @@ const _users: ModuleImpl<api.State, Actions> = {
         .auth()
         .signInWithPopup(googleProvider)
         .then(() => logEvent("login", { method: "Google" }))
+    },
+    signInWithGithub: () => (state, actions) => {
+      if (!githubProvider) {
+        githubProvider = new firebase.auth.GithubAuthProvider()
+      }
+      return firebase
+        .auth()
+        .signInWithPopup(githubProvider)
+        .then(() => logEvent("login", { method: "Github" }))
     },
     signOut: (): Promise<void> => {
       return firebase.auth().signOut()

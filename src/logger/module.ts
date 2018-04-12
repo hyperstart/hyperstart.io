@@ -19,8 +19,16 @@ function isLogEntry(entry: any): entry is api.LogEntry {
   )
 }
 
+function isPromise(value: any): value is Promise<any> {
+  return (
+    value &&
+    typeof value["then"] === "function" &&
+    typeof value["catch"] === "function"
+  )
+}
+
 function getEvent(payload: api.LogEvent | Promise<any>): api.LogEvent {
-  if (payload instanceof Promise) {
+  if (isPromise(payload)) {
     return {
       promise: payload,
       success: "Action successful",

@@ -33,6 +33,7 @@ export interface Actions extends ModuleActions<State> {
   signUp(source: "form" | "modal"): Promise<void>
   signIn(): Promise<void>
   signInWithGoogle(): Promise<void>
+  signInWithGithub(): Promise<void>
   signOut(): Promise<void>
   // ## UI
   signUpForm: form.Actions
