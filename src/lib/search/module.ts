@@ -114,7 +114,10 @@ export function createSearch(
 
         return searchResult
           .then(results => {
-            logEvent("search", { method: { text } })
+            logEvent("search", {
+              event_category: "project",
+              event_label: { text }
+            })
             const hasNext = results.length > search.resultsPerPage
             actions.update({ name, status: "success", results, hasNext })
             return actions.getState()[name]

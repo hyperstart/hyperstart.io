@@ -133,7 +133,10 @@ export const module: ModuleImpl<State, Actions> = {
         .then(project => {
           actions.editor.open(project)
           replace("/projects/" + project.details.id)
-          logEvent("create_project", { method: "Header" })
+          logEvent("create_project", {
+            event_category: "project",
+            event_label: "Header"
+          })
         })
     },
     fetchProject: (payload: FetchProjectPayload) => (state, actions) => {
