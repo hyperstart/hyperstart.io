@@ -7,7 +7,7 @@ import { getEditorUrl } from "utils"
 import { User } from "users"
 
 import { DebugPane, SourcesPane, ViewsPane } from "./components"
-import { hasDirtySources } from "./selectors"
+import { hasDirtySources, isDebuggable } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
 
@@ -22,15 +22,22 @@ export interface EditorProps {
 const INTERCEPTOR = "__INTERCEPTOR"
 const IFRAME_LISTENER = "__IFRAME_LISTENER"
 const UNLOAD = "__UNLOAD"
+const SHORTCUTS_LISTENER = "__SHORTCUTS_LISTENER"
+
+function isCtrlKeyDown(event: KeyboardEvent, code: number): boolean {
+  return (event.metaKey || event.ctrlKey) && event.keyCode === code
+}
 
 export function Editor(props: EditorProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
 
   if (!state.project) {
     return <div />
   }
 
+  // ## oncreate
   const oncreate = (e: HTMLElement) => {
+    // ### Confirm on exit
     e[INTERCEPTOR] = (url: string) => {
       if (
         !url.includes(getEditorUrl(state.project)) &&
@@ -52,6 +59,7 @@ export function Editor(props: EditorProps) {
     }
     window.addEventListener("beforeunload", e[UNLOAD])
 
+    // ### Debugger
     e[IFRAME_LISTENER] = (e: MessageEvent) => {
       const iframe = document.getElementById(
         "preview-iframe"
@@ -93,6 +101,39 @@ export function Editor(props: EditorProps) {
       }
     }
     window.addEventListener("message", e[IFRAME_LISTENER])
+
+    // ### Keyboard shortcuts
+    e[SHORTCUTS_LISTENER] = (event: KeyboardEvent) => {
+      console.log(event.keyCode)
+      if (isCtrlKeyDown(event, 83)) {
+        // CTRL+S or CMD+S -> save sources
+        const state = actions.getState()
+        if (state.status === "editing") {
+          log(actions.saveAllSources())
+          event.preventDefault()
+        }
+      }
+      if (isCtrlKeyDown(event, 82)) {
+        // CTRL+R or CMD+R -> run project
+        const state = actions.getState()
+        if (state.status === "editing" || state.status === "read-only") {
+          log(actions.run(false))
+          event.preventDefault()
+        }
+      }
+      if (isCtrlKeyDown(event, 68)) {
+        // CTRL+D or CMD+D -> debug project
+        const state = actions.getState()
+        if (
+          state.status === "editing" ||
+          (state.status === "read-only" && isDebuggable(state))
+        ) {
+          log(actions.run(false))
+          event.preventDefault()
+        }
+      }
+    }
+    window.addEventListener("keydown", e[SHORTCUTS_LISTENER])
   }
 
   const ondestroy = (e: HTMLElement) => {
@@ -100,6 +141,7 @@ export function Editor(props: EditorProps) {
     removeInterceptor(e[INTERCEPTOR])
     window.removeEventListener("beforeunload", e[UNLOAD])
     window.removeEventListener("message", e[IFRAME_LISTENER])
+    window.removeEventListener("keydown", e[SHORTCUTS_LISTENER])
   }
 
   return (
