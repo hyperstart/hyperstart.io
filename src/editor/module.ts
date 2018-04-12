@@ -2,7 +2,7 @@ import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 import { replace } from "lib/router"
 import { set } from "lib/immutable"
-import { guid } from "lib/utils"
+import { guid, getErrorMessage } from "lib/utils"
 
 import * as projects from "projects"
 import * as global from "api"
@@ -105,15 +105,24 @@ const _editor: ModuleImpl<api.State, Actions> = {
     init: (globalActions: global.Actions) => (state, actions) => {
       usersActions = globalActions.users
       projectsActions = globalActions.projects
-      monaco.initialize().then(() => {
-        actions._setMonacoLoaded()
-        if (projectToOpen) {
-          const user = usersActions.getState().user
-          actions._setState(
-            openProject(state, actions, projectToOpen, user ? user.id : null)
-          )
-        }
-      })
+      monaco
+        .initialize()
+        .then(() => {
+          actions._setMonacoLoaded()
+          if (projectToOpen) {
+            const user = usersActions.getState().user
+            actions._setState(
+              openProject(state, actions, projectToOpen, user ? user.id : null)
+            )
+          }
+        })
+        .catch(e => {
+          globalActions.logger.log({
+            severity: "error",
+            message: getErrorMessage(e)
+          })
+          throw e
+        })
     },
     _setMonacoLoaded: () => ({ monacoLoaded: true }),
     _setState: (state: Partial<api.State>) => state,

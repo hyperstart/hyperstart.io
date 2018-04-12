@@ -1,9 +1,13 @@
+import { languages } from "monaco-editor"
+
+import monaco from "./monaco"
+
 declare const require: any
 
 const configure = (
-  service: monaco.languages.typescript.LanguageServiceDefaults
+  service: languages.typescript.LanguageServiceDefaults
 ): void => {
-  service.setMaximunWorkerIdleTime(-1)
+  service.setMaximumWorkerIdleTime(-1)
   service.setEagerModelSync(true)
   service.setDiagnosticsOptions({
     noSemanticValidation: false,
@@ -12,6 +16,7 @@ const configure = (
 }
 
 const onresolve = (resolve: Function) => () => {
+  console.log(monaco)
   configure(monaco.languages.typescript.typescriptDefaults)
   configure(monaco.languages.typescript.javascriptDefaults)
 
@@ -29,11 +34,11 @@ export const initialize = (): Promise<void> =>
   new Promise((resolve, reject) => {
     const loaderScript = document.createElement("script")
     loaderScript.type = "text/javascript"
-    loaderScript.src = "https://unpkg.com/monaco-editor@0.10.1/min/vs/loader.js"
+    loaderScript.src = "https://unpkg.com/monaco-editor@0.12.0/min/vs/loader.js"
     loaderScript.addEventListener("load", () => {
       const req = window["require"]
       req.config({
-        paths: { vs: "https://unpkg.com/monaco-editor@0.10.1/min/vs" }
+        paths: { vs: "https://unpkg.com/monaco-editor@0.12.0/min/vs" }
       })
 
       // proxy instantiation of web workers through a same-domain script

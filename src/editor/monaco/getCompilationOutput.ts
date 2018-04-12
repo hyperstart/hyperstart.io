@@ -1,4 +1,7 @@
+import { Uri } from "monaco-editor"
 import { LanguageService, EmitOutput, Diagnostic } from "lib/typescript"
+
+import monaco from "./monaco"
 
 export interface CompilationOutput {
   emit: EmitOutput
@@ -46,7 +49,7 @@ export const getCompilationOutput = (
   path: string,
   language: string
 ): Promise<CompilationOutput> => {
-  const uri = monaco.Uri.from({ path })
+  const uri = Uri.from({ path })
   if (language === "javascript") {
     return getOutput(
       monaco.languages.typescript

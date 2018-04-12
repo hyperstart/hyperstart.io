@@ -1,3 +1,4 @@
+import { editor } from "monaco-editor"
 import { h } from "hyperapp"
 
 import { SourceNode } from "projects/fileTree"
@@ -57,7 +58,7 @@ const Preview = (props: PreviewProps) => {
   return SourcePreview(props)
 }
 
-const getOptions = (): monaco.editor.IEditorOptions => {
+const getOptions = (): editor.IEditorOptions => {
   return {
     minimap: { enabled: false },
     folding: true,

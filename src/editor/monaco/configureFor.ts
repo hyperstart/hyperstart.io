@@ -1,4 +1,4 @@
-import "monaco-editor"
+import { languages } from "monaco-editor"
 
 import { FileTree } from "projects"
 
@@ -6,8 +6,10 @@ import { State } from "../api"
 import { getLanguage } from "./languages"
 import { createModel, hasModel, deleteAllModels } from "./modelStore"
 
+import monaco from "./monaco"
+
 const configureCompiler = (): void => {
-  const compilerDefaults: monaco.languages.typescript.CompilerOptions = {
+  const compilerDefaults: languages.typescript.CompilerOptions = {
     jsxFactory: "h",
     reactNamespace: "",
     jsx: monaco.languages.typescript.JsxEmit.React,
@@ -35,7 +37,6 @@ const configureCompiler = (): void => {
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
     compilerDefaults
   )
-
   monaco.languages.typescript.javascriptDefaults.setCompilerOptions(
     compilerDefaults
   )

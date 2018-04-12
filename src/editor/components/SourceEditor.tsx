@@ -1,3 +1,4 @@
+import { editor } from "monaco-editor"
 import { h } from "hyperapp"
 
 import { SourceNode } from "projects/FileTree"
@@ -25,8 +26,8 @@ function getOptions(): any {
 export function SourceEditor(props: SourceEditorProps) {
   const { state, actions, source } = props
 
-  function onModelContentChanged(editor: monaco.editor.IEditor) {
-    const model = editor.getModel() as monaco.editor.IModel
+  function onModelContentChanged(editor: editor.IEditor) {
+    const model = editor.getModel() as editor.IModel
     actions.setFileContent({
       path: model.uri.path,
       content: model.getValue()

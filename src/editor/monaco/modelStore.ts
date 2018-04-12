@@ -1,5 +1,9 @@
+import { editor } from "monaco-editor"
+
+import monaco from "./monaco"
+
 interface Models {
-  [path: string]: monaco.editor.IModel
+  [path: string]: editor.IModel
 }
 
 const models: Models = {}

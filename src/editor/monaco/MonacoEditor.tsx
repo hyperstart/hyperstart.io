@@ -1,11 +1,13 @@
-import "monaco-editor"
+import { editor } from "monaco-editor"
 import { h } from "hyperapp"
+
+import monaco from "./monaco"
 
 const EDITOR = "__EDITOR"
 const RESIZE_LISTENER = "__RESIZE_LISTENER"
 
 const hasEditor = e => !!e[EDITOR]
-const getEditor = e => e[EDITOR] as monaco.editor.IEditor
+const getEditor = e => e[EDITOR] as editor.IEditor
 
 const createEditor = (e: HTMLElement, props: MonacoEditorProps) => {
   if (monaco && !hasEditor(e)) {
@@ -52,16 +54,13 @@ const destroyEditor = (e: HTMLElement, props: MonacoEditorProps) => {
 }
 
 export interface MonacoEditorProps {
-  getOptions(): monaco.editor.IEditorConstructionOptions
-  getOverrides?: () => monaco.editor.IEditorOverrideServices
-  onEditorCreated?: (editor: monaco.editor.IEditor, e: HTMLElement) => void
-  onEditorDeleted?: (editor: monaco.editor.IEditor, e: HTMLElement) => void
-  onModelChanged?: (
-    editor: monaco.editor.IEditor,
-    oldModel: monaco.editor.IModel
-  ) => void
-  onModelContentChanged?: (editor: monaco.editor.IEditor) => void
-  model?: monaco.editor.IModel
+  getOptions(): editor.IEditorConstructionOptions
+  getOverrides?: () => editor.IEditorOverrideServices
+  onEditorCreated?: (editor: editor.IEditor, e: HTMLElement) => void
+  onEditorDeleted?: (editor: editor.IEditor, e: HTMLElement) => void
+  onModelChanged?: (editor: editor.IEditor, oldModel: editor.IModel) => void
+  onModelContentChanged?: (editor: editor.IEditor) => void
+  model?: editor.IModel
   key?: string
   /**
    * Defaults to "monaco-editor"
