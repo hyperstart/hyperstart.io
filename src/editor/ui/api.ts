@@ -18,6 +18,7 @@ export interface State {
   deletingFile?: FileNode
   selectedFile?: string
   previewedFile?: string
+  shortcutsModal?: boolean
 }
 
 // # Actions
@@ -52,4 +53,7 @@ export interface Actions {
   preview(fileId: string | null)
   // ## View pane's tabs
   selectViewPaneTab(tab: string | null)
+  // ## Shortcut modal
+  showShortcutsModal()
+  hideShortcutsModal()
 }

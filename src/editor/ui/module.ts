@@ -81,6 +81,9 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## View pane's tabs
     selectViewPaneTab: (selectedViewPaneTab: string | null) => state => {
       return { selectedViewPaneTab }
-    }
+    },
+    // ## Shortcut modal
+    showShortcutsModal: () => ({ shortcutsModal: true }),
+    hideShortcutsModal: () => ({ shortcutsModal: false })
   }
 }

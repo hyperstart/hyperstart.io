@@ -7,6 +7,7 @@ export interface ModalProps {
   title?: string
   titleTag?: string
   Footer?: any
+  class?: string
 }
 
 export function Modal(props: ModalProps, children) {
@@ -19,7 +20,7 @@ export function Modal(props: ModalProps, children) {
   ) : null
   const className = `modal ${active ? "active" : ""} ${
     size ? "modal-" + size : ""
-  }`
+  } ${props.class || ""}`
   return (
     <div class={className}>
       <a href="#" class="modal-overlay" aria-label="Close" onclick={close} />

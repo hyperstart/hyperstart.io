@@ -6,10 +6,32 @@ import { UserSignInModal, UserSignUpModal } from "users"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./Footer.scss"
+import { ShortcutsModal } from "editor"
+import { Button } from "lib/components"
 
 export interface FooterProps {
   state: State
   actions: Actions
+}
+
+function ShortcutsButton(props: FooterProps) {
+  const { state, actions } = props
+  if (
+    state.editor.status === "editing" ||
+    state.editor.status === "read-only"
+  ) {
+    return (
+      <a
+        class="text-light"
+        href="#"
+        onclick={actions.editor.ui.showShortcutsModal}
+      >
+        Shortcuts
+      </a>
+    )
+  }
+
+  return null
 }
 
 export function Footer(props: FooterProps) {
@@ -17,7 +39,9 @@ export function Footer(props: FooterProps) {
   return (
     <div>
       <footer class="footer navbar bg-dark">
-        <section class="navbar-center" />
+        <section class="navbar-center">
+          <ShortcutsButton state={state} actions={actions} />
+        </section>
         <section class="navbar-center">
           <a
             href="https://github.com/hyperstart/hyperstart.io"
@@ -40,6 +64,7 @@ export function Footer(props: FooterProps) {
       <UserSignInModal state={state.users} actions={actions.users} />
       <UserSignUpModal state={state.users} actions={actions.users} />
       <CreateProjectModal state={state} actions={actions} />
+      <ShortcutsModal state={state.editor} actions={actions.editor} />
     </div>
   )
 }

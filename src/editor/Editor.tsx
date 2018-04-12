@@ -104,7 +104,6 @@ export function Editor(props: EditorProps) {
 
     // ### Keyboard shortcuts
     e[SHORTCUTS_LISTENER] = (event: KeyboardEvent) => {
-      console.log(event.keyCode)
       if (isCtrlKeyDown(event, 83)) {
         // CTRL+S or CMD+S -> save sources
         const state = actions.getState()
