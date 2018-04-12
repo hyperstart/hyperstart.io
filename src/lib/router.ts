@@ -189,7 +189,12 @@ export function replace(url) {
 
 // ## Link
 
-export function Link(props, children) {
+export interface LinkProps {
+  href: string
+  [key: string]: any
+}
+
+export function Link(props: LinkProps, children) {
   props.onclick = function(e) {
     if (
       e.button !== 0 ||

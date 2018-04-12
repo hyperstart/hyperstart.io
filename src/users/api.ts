@@ -4,6 +4,18 @@ import * as form from "lib/form"
 
 // # State
 
+export interface FirebaseUser {
+  emailVerified: boolean
+  isAnonymous: boolean
+  refreshToken: string
+  displayName: string | null
+  email: string | null
+  phoneNumber: string | null
+  photoURL: string | null
+  providerId: string
+  uid: string
+}
+
 export interface User {
   id: string
   displayName: string

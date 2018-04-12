@@ -373,11 +373,12 @@ export function app(state, actions, view, container) {
 
 module.exports = {
   FIREBASE_CONFIG: JSON.stringify({
-    apiKey: "AIzaSyB4OdCZTEEw319HtZFDnRxkK_uh5dOQRlY",
-    authDomain: "hyperstart-development.firebaseapp.com",
-    databaseURL: "https://hyperstart-development.firebaseio.com",
-    projectId: "hyperstart-development",
-    storageBucket: "hyperstart-development.appspot.com"
+    apiKey: "AIzaSyDglK8aYLILpBLMvOXA4buWk4v0mHgDlBY",
+    authDomain: "test-projects-structure.firebaseapp.com",
+    databaseURL: "https://test-projects-structure.firebaseio.com",
+    projectId: "test-projects-structure",
+    storageBucket: "test-projects-structure.appspot.com",
+    messagingSenderId: "313851981108"
   }),
   STORE_CONFIG: JSON.stringify({
     type: "local",
