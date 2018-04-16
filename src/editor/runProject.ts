@@ -56,7 +56,8 @@ export function runProject(
 
       const iframeSource = indexHtml.content.replace(
         `<script src="/bundle.js"></script>`,
-        `<script>${output.code}</script>`
+        `<script>if (window.history) { window.history.replaceState(null, null, "/") }</script>
+<script>${output.code}</script>`
       )
 
       actions._setState({

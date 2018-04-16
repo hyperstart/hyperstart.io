@@ -1,3 +1,5 @@
+import { createFilter } from "rollup-pluginutils"
+
 import {
   Diagnostic as TsDiagnostic,
   DiagnosticMessageChain
@@ -46,11 +48,12 @@ const collecDiagnostics = (output: CompilationOutput): Diagnostic[] => {
 }
 
 export const monaco = (state: State, result: CompileOutput): any => {
+  const filter = createFilter()
   return {
     name: "hyperstart-monaco",
     transform(code: string, id: string): Promise<CompilationResult> | null {
       const extension = getExtension(id)
-      if (!SUPPORTED_EXTENSIONS[extension]) {
+      if (!SUPPORTED_EXTENSIONS[extension] || !filter(id)) {
         return null
       }
       return getCompilationOutput(id, getLanguage(id)).then(output => {

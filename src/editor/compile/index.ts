@@ -1,10 +1,9 @@
 import { getErrorMessage } from "lib/utils"
+import { rollup } from "rollup"
 
 import { State } from "../api"
 import { CompileOutput } from "./api"
-import { debug, monaco, resolve, style } from "./plugins"
-
-declare const rollup
+import { commonjs, debug, monaco, resolve, style } from "./plugins"
 
 export const compile = (
   state: State,
@@ -17,19 +16,20 @@ export const compile = (
   const plugins = [
     resolve(state, result),
     monaco(state, result),
-    style(state, result)
+    style(state, result),
+    commonjs(state, result)
   ]
   if (debugging) {
     plugins.unshift(debug(state, result))
   }
-  return rollup
-    .rollup({
-      input: state.project.mainFile,
-      plugins
-    })
+  return rollup({
+    input: state.project.mainFile,
+    plugins
+  })
     .then(bundle => {
       return bundle.generate({
-        format: "iife"
+        format: "iife",
+        name: "bundle"
       })
     })
     .then(bundle => {
