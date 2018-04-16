@@ -10,12 +10,12 @@
 
   .item-link {
     display: block;
-    color: black;
+    color: $body-font-color;
 
     &:hover {
-      background-color: $secondary-color;
+      background-color: $secondary-color-dark;
       text-decoration: none;
-      color: black;
+      color: $body-font-color;
     }
 
     &:focus {
@@ -23,9 +23,9 @@
     }
 
     &.selected {
-      background-color: $secondary-color-dark;
+      background-color: $secondary-color;
       font-weight: bold;
-      color: black;
+      color: $body-font-color;
     }
   }
 
