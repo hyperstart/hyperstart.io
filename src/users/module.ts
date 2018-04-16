@@ -165,7 +165,6 @@ const _users: ModuleImpl<api.State, Actions> = {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(val => {
-          console.log("signed in", val)
           actions.hideSignInModal()
           logEvent("login", {
             event_category: "users",

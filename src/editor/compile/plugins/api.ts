@@ -3,3 +3,7 @@ export interface CompilationResult {
   map: any
   ast?: any
 }
+
+export interface Resolver {
+  (importee: string, importer?: string): string | undefined | null
+}

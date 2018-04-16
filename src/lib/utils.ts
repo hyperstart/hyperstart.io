@@ -1,7 +1,7 @@
 /**
  * Type for Map<String, T>.
  */
-export interface StringMap<T> {
+export interface StringMap<T = any> {
   [key: string]: T
 }
 

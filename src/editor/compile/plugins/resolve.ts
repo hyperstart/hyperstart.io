@@ -1,10 +1,13 @@
 import { DiagnosticCategory } from "lib/typescript"
+import { fetchSource } from "lib/fetchSource"
 
 import { DEPENDENCIES_FOLDER } from "projects"
 
 import { getSource } from "../../selectors"
 import { State } from "../../api"
 import { CompileOutput } from "../api"
+import { getErrorMessage } from "lib/utils"
+import { createPairMap } from "lib/pairMap"
 
 const suffixes = [
   "",
@@ -63,6 +66,11 @@ const getGlobalPath = (
     return removeSlash(localPath)
   }
 
+  // importing from http
+  if (localPath.startsWith("http")) {
+    return localPath
+  }
+
   // local import
   if (localPath.startsWith(".")) {
     const folder = getParentPath(getSegments(relativeTo))
@@ -93,6 +101,10 @@ const resolveId = (
 ): string => {
   const path = getGlobalPath(state, importee, importer)
 
+  if (path.startsWith("http")) {
+    return path
+  }
+
   // try all possible suffixes
   for (const suffix of suffixes) {
     const resolved = path + suffix
@@ -104,10 +116,20 @@ const resolveId = (
   return null
 }
 
-export const resolve = (state: State, result: CompileOutput): any => {
+export function resolve(state: State, result: CompileOutput): any {
+  const cache = createPairMap<string>()
+
   return {
     name: "hyperstart-resolve",
     resolveId(importee: string, importer: string): string {
+      if (importee.startsWith("\0")) {
+        return
+      }
+      const res = cache.get(importee, importer || "")
+      if (res) {
+        return res
+      }
+
       const resolved = resolveId(state, importee, importer)
       if (!resolved) {
         if (importer) {
@@ -117,16 +139,42 @@ export const resolve = (state: State, result: CompileOutput): any => {
               message: "Cannot find module " + importee
             }
           ]
-          throw new Error("Error while compiling")
+          // console.log("failed for importee: " + importee)
+          if (!importer) {
+            throw new Error("Cannot resolve entry file " + importee)
+          }
+          throw new Error(
+            "Cannot resolve import " + importee + " in file " + importer
+          )
         } else {
           throw new Error("Cannot find module " + importee)
         }
       }
 
+      cache.set(importee, importer || "", resolved)
       return resolved
     },
-    load(id: string): string {
-      return getSource(state, id, true).content || ""
+    load(id: string): string | Promise<string> {
+      if (id.startsWith("\0")) {
+        return
+      }
+      // TODO code better
+      if (id.startsWith("http")) {
+        return fetchSource(id).catch(e => {
+          throw new Error("Cannot fetch " + id + ": " + getErrorMessage(e))
+        })
+      }
+      const source = getSource(state, id, true)
+
+      if (typeof source.content === "string") {
+        return source.content
+      }
+
+      if (source.url) {
+        return fetchSource(source.url)
+      }
+
+      throw new Error("Cannot load " + id)
     }
   }
 }
