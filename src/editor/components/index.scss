@@ -8,6 +8,7 @@
   .tabs-wrapper {
     display: flex;
     overflow-x: auto;
+    flex-shrink: 0;
 
     .tab {
       height: 2rem;

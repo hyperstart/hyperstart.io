@@ -17,7 +17,7 @@ export interface SearchPaneProps {
 
 export function SearchPane(props: SearchPaneProps) {
   return (
-    <div>
+    <div class="search-pane">
       <TextField {...props} type="pane" displaySearchButton />
       <SearchResults {...props} />
     </div>

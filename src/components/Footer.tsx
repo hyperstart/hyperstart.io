@@ -38,7 +38,7 @@ export function Footer(props: FooterProps) {
   const { state, actions } = props
   return (
     <div>
-      <footer class="footer navbar bg-dark">
+      <footer class="footer navbar">
         <section class="navbar-center">
           <ShortcutsButton state={state} actions={actions} />
         </section>

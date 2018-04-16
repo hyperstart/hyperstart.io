@@ -45,38 +45,22 @@ export function UserIconButton(props: UserIconButtonProps) {
       </a>
       <ul class="menu">
         <li class="menu-item">
-          <a
-            href="#"
-            onclick={actions.showSignUpModal}
-            style={{ color: "black" }}
-          >
+          <a href="#" onclick={actions.showSignUpModal}>
             Sign Up
           </a>
         </li>
         <li class="menu-item">
-          <a
-            href="#"
-            onclick={actions.showSignInModal}
-            style={{ color: "black" }}
-          >
+          <a href="#" onclick={actions.showSignInModal}>
             Sign In with Email
           </a>
         </li>
         <li class="menu-item">
-          <a
-            href="#"
-            onclick={() => log(actions.signInWithGoogle())}
-            style={{ color: "black" }}
-          >
+          <a href="#" onclick={() => log(actions.signInWithGoogle())}>
             Sign In with Google
           </a>
         </li>
         <li class="menu-item">
-          <a
-            href="#"
-            onclick={() => log(actions.signInWithGithub())}
-            style={{ color: "black" }}
-          >
+          <a href="#" onclick={() => log(actions.signInWithGithub())}>
             Sign In with Github
           </a>
         </li>

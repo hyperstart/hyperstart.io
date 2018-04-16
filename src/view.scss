@@ -46,10 +46,10 @@
 .tooltip {
   position: relative;
   &::after {
-    background: rgba($dark-color, 0.9);
+    background: $bg-color-light;
     border-radius: $border-radius;
     bottom: 100%;
-    color: $light-color;
+    color: $body-font-color-light;
     content: attr(data-tooltip);
     display: block;
     font-size: $font-size-sm;
@@ -107,20 +107,28 @@ body {
   flex-direction: column;
   height: 100%;
 }
+
 .btn {
-  color: #000;
-  border-color: $gray-color-dark;
-}
-.btn.btn-primary {
-  background-color: darken($primary-color, 10%);
-  border-color: darken($primary-color, 10%);
+  color: $primary-color;
+  // border-color: $border-color;
+
+  &:hover {
+    background: $bg-color-light;
+  }
 }
 
 .form-input {
-  background-color: $secondary-color;
+  background-color: $bg-color-input;
+  color: $body-font-color-light;
+}
+
+.form-input::placeholder {
+  color: $body-font-color-dark;
+  opacity: 1;
 }
 
 .empty {
-  background-color: $secondary-color;
   margin-top: 10px;
+  color: inherit;
+  background-color: $bg-color-light;
 }
