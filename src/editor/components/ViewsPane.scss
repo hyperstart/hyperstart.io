@@ -1,6 +1,7 @@
 .views-pane {
   display: flex;
   flex-direction: column;
+  flex: 0 0 50%;
 
   // Tab
   ul {

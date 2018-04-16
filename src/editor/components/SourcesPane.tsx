@@ -71,7 +71,9 @@ export const SourcesPane = (props: SourcesPaneProps) => {
 
   return (
     <div class="sources-pane">
-      <Tab>{tabItems}</Tab>
+      <div class="tabs-wrapper">
+        <Tab>{tabItems}</Tab>
+      </div>
       {selected
         ? SourceEditor({ state, actions, source: selected })
         : "No source selected"}

@@ -3,9 +3,23 @@
 .sources-pane {
   display: flex;
   flex-direction: column;
+  flex: 0 0 50%;
 
-  .tab {
-    height: 2rem;
+  .tabs-wrapper {
+    display: flex;
+    overflow-x: auto;
+
+    .tab {
+      height: 2rem;
+      min-width: 0px;
+      flex-grow: 1;
+      display: flex;
+      flex-wrap: nowrap;
+
+      .tab-item {
+        flex-shrink: 0;
+      }
+    }
   }
 
   .monaco-editor {
