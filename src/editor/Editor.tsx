@@ -109,16 +109,16 @@ export function Editor(props: EditorProps) {
         const state = actions.getState()
         if (state.status === "editing") {
           log(actions.saveAllSources())
-          event.preventDefault()
         }
+        event.preventDefault()
       }
       if (isCtrlKeyDown(event, 82)) {
         // CTRL+R or CMD+R -> run project
         const state = actions.getState()
         if (state.status === "editing" || state.status === "read-only") {
           log(actions.run(false))
-          event.preventDefault()
         }
+        event.preventDefault()
       }
       if (isCtrlKeyDown(event, 68)) {
         // CTRL+D or CMD+D -> debug project
@@ -128,8 +128,8 @@ export function Editor(props: EditorProps) {
           (state.status === "read-only" && isDebuggable(state))
         ) {
           log(actions.run(false))
-          event.preventDefault()
         }
+        event.preventDefault()
       }
     }
     window.addEventListener("keydown", e[SHORTCUTS_LISTENER])
