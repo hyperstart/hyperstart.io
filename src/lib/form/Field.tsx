@@ -49,7 +49,7 @@ function Input(props: FieldProps) {
           type={type}
           class={`form-input ${props.class || ""}`}
         />
-        {error && <p class="form-input-hint">{error}</p>}
+        {<p class="form-input-hint">{error}</p>}
       </div>
     )
   }
@@ -61,7 +61,7 @@ function Input(props: FieldProps) {
       type={type}
       class={`form-input ${props.class || ""}`}
     />,
-    <p class="form-input-hint">{error || "&nbsp;"}</p>
+    <p class="form-input-hint">{error}</p>
   ]
 }
 

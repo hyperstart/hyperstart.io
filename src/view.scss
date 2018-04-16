@@ -117,9 +117,16 @@ body {
   }
 }
 
-.form-input {
-  background-color: $bg-color-input;
-  color: $body-font-color-light;
+.form-group {
+  .form-input {
+    background-color: $bg-color-input;
+    color: $body-font-color-light;
+  }
+
+  .form-input-hint {
+    margin: 0;
+    text-align: left;
+  }
 }
 
 .form-input::placeholder {
