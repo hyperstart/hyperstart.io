@@ -5,25 +5,25 @@ $version: "0.5.1";
 $rtl: false !default;
 
 // Core colors
-$primary-color: #5755d9 !default;
-$primary-color-dark: darken($primary-color, 3%) !default;
+$primary-color: #56a1d7 !default;
+$primary-color-dark: darken($primary-color, 15%) !default;
 $primary-color-light: lighten($primary-color, 3%) !default;
-$secondary-color: lighten($primary-color, 37.5%) !default;
+$secondary-color: #fff !default;
 $secondary-color-dark: darken($secondary-color, 3%) !default;
 $secondary-color-light: lighten($secondary-color, 3%) !default;
 
 // Gray colors
 $dark-color: #454d5d !default;
 $light-color: #fff !default;
-$gray-color: lighten($dark-color, 40%) !default;
+$gray-color: #1e2428 !default; //#221f22
 $gray-color-dark: darken($gray-color, 25%) !default;
 $gray-color-light: lighten($gray-color, 20%) !default;
 
 $border-color: lighten($dark-color, 60%) !default;
 $border-color-dark: darken($border-color, 10%) !default;
-$bg-color: lighten($dark-color, 66%) !default;
-$bg-color-dark: darken($bg-color, 3%) !default;
-$bg-color-light: $light-color !default;
+$bg-color: $gray-color !default;
+$bg-color-dark: darken($bg-color, 5%) !default;
+$bg-color-light: #cecece !default;
 
 // Control colors
 $success-color: #32b643 !default;
@@ -33,15 +33,14 @@ $error-color: #e85600 !default;
 // Other colors
 $code-color: #e06870 !default;
 $highlight-color: #ffe9b3 !default;
-$body-bg: $bg-color-light !default;
-$body-font-color: lighten($dark-color, 5%) !default;
+$body-bg: $bg-color !default;
+$body-font-color: #fff !default;
 $link-color: $primary-color !default;
 $link-color-dark: darken($link-color, 5%) !default;
 
 // Fonts
 // Credit: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
-$base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
-  Roboto !default;
+$base-font-family: "Montserrat", sans-serif;
 $mono-font-family: "SF Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Courier,
   monospace !default;
 $fallback-font-family: "Helvetica Neue", sans-serif !default;

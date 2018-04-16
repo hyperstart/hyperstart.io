@@ -1,13 +1,19 @@
 @import "../variables.scss";
 
 .create-project-modal .modal-container {
+  color: #fff;
+  background-color: $bg-color;
+
   .modal-body .card {
     width: 280px;
     margin: 11px;
     padding: 1px;
+    color: #fff;
+    background-color: #000;
 
     &.active {
-      background-color: $bg-color;
+      background-color: $bg-color-light;
+      color: #000;
       border: 3px solid $primary-color-dark;
       padding: 0px;
       margin: 10px;

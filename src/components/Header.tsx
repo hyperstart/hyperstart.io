@@ -111,7 +111,7 @@ function ForkButton({ state, actions }: HeaderProps) {
 export function Header(props: HeaderProps) {
   const { state, actions, log } = props
   return (
-    <header class="header navbar bg-dark">
+    <header class="header navbar">
       <section class="navbar-section">
         <Link href="/" class="navbar-brand mr-2 p-2 text-light">
           Hyperstart

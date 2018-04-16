@@ -107,3 +107,20 @@ body {
   flex-direction: column;
   height: 100%;
 }
+.btn {
+  color: #000;
+  border-color: $gray-color-dark;
+}
+.btn.btn-primary {
+  background-color: darken($primary-color, 10%);
+  border-color: darken($primary-color, 10%);
+}
+
+.form-input {
+  background-color: $secondary-color;
+}
+
+.empty {
+  background-color: $secondary-color;
+  margin-top: 10px;
+}

@@ -150,11 +150,12 @@ export function IndexPage(props: IndexPageProps) {
             <a href="/blog">Start learning Hyperapp.</a>
           </div>
 
-          <div class="column col-12 hide-md text-center py-10">
+          <div class="column col-4 centered hide-md text-center py-14">
             <Button
               primary={true}
-              text="Create an Account to Save Your Projects"
+              text="Create an Account"
               size="lg"
+              class="btn-large-font"
               onclick={() => {
                 actions.users.showSignUpModal()
               }}

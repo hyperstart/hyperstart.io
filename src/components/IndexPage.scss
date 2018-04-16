@@ -17,6 +17,11 @@
   padding-bottom: 40px;
 }
 
+.py-14 {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+
 .hero-header {
   padding-top: 0 !important;
   font-weight: 700;
@@ -32,6 +37,13 @@
 
 .jumbotron-home {
   padding-top: 5%;
+}
+
+.btn-large-font {
+  font-size: 1.4em !important;
+  padding: 10px;
+  height: 2.5em !important;
+  width: 100%;
 }
 
 .jumbotron {
@@ -53,10 +65,13 @@
     width: 280px;
     margin: 11px;
     padding: 1px;
+    color: $secondary-color;
+    background-color: #000;
 
     &.active {
-      background-color: $bg-color;
-      border: 3px solid $primary-color-dark;
+      background-color: $bg-color-light;
+      color: #000;
+      border: 4px solid $primary-color-dark;
       padding: 0px;
       margin: 10px;
     }

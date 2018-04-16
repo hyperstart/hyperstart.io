@@ -17,8 +17,8 @@ function getOptions(): any {
     folding: true,
     fixedOverflowWidgets: true,
     wordWrap: "on",
-    wrappingIndent: "same"
-    // theme: "vs-dark"
+    wrappingIndent: "same",
+    theme: "vs-dark"
   }
 }
 
