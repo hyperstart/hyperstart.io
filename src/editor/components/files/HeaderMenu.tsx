@@ -9,7 +9,7 @@ export interface HeaderMenuProps {
   actions: Actions
 }
 
-export const HeaderMenu = (props: HeaderMenuProps) => {
+export function HeaderMenu(props: HeaderMenuProps) {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right">
@@ -34,7 +34,7 @@ export const HeaderMenu = (props: HeaderMenuProps) => {
         <li class="divider" />
         <li class="menu-item">
           <a href="#" onclick={actions.openImportProjectDialog}>
-            Import Project
+            Add Dependency
           </a>
         </li>
       </ul>

@@ -5,6 +5,7 @@ import { FolderNode } from "projects/fileTree"
 import { DEPENDENCIES_FOLDER } from "projects/constants"
 
 import { State, Actions } from "../../api"
+import { isDependenciesFolder } from "./utils"
 
 function stopPropagation(e: Event) {
   e.stopPropagation()
@@ -16,7 +17,7 @@ interface FolderDropdownProps {
   item: FolderNode
 }
 
-const FolderDropdown = (props: FolderDropdownProps) => {
+function FolderDropdown(props: FolderDropdownProps) {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
@@ -58,6 +59,45 @@ const FolderDropdown = (props: FolderDropdownProps) => {
   )
 }
 
+function DependenciesFolderDropdown(props: FolderItemProps) {
+  const actions = props.actions.ui
+  return (
+    <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
+      <a href="#" class="dropdown-toggle">
+        <Icon name="bars" class="actions float-right" />
+      </a>
+      <ul class="menu">
+        <li class="menu-item">
+          <a href="#" onclick={actions.openImportProjectDialog}>
+            Add Dependency
+          </a>
+        </li>
+      </ul>
+    </div>
+  )
+}
+
+function DependenciesFolderItem(props: FolderItemProps) {
+  const { state, actions, item } = props
+
+  return (
+    <div class="file c-hand">
+      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
+      <span
+        class="tooltip tooltip-bottom"
+        data-tooltip={`This folder contains all the dependencies for
+this project. The dependencies may be other 
+Hyperstart projects or npm packages.
+You may import them in your source, e.g.:
+import { app, h } from "hyperapp"`}
+      >
+        <i class="fa fa-question-circle-o preview" aria-hidden="true" />
+      </span>
+      {DependenciesFolderDropdown(props)}
+    </div>
+  )
+}
+
 // ## Folder
 
 export interface FolderItemProps {
@@ -66,22 +106,16 @@ export interface FolderItemProps {
   item: FolderNode
 }
 
-export const FolderItem = (props: FolderItemProps) => {
+export function FolderItem(props: FolderItemProps) {
   const { state, actions, item } = props
 
-  const Tooltip =
-    item.name === DEPENDENCIES_FOLDER && !item.parent ? (
-      <span
-        class="tooltip tooltip-bottom"
-        data-tooltip={`This folder contains all the projects that \nhave been imported (via File's dropdown \nmenu). All projects in this folder can be \nimported from inside your sources.`}
-      >
-        <i class="fa fa-question-circle-o preview" aria-hidden="true" />
-      </span>
-    ) : null
+  if (isDependenciesFolder(item)) {
+    return DependenciesFolderItem(props)
+  }
+
   return (
     <div class="file c-hand">
       <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
-      {Tooltip}
       {FolderDropdown(props)}
     </div>
   )
