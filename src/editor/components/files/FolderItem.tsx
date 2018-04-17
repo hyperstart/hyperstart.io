@@ -10,13 +10,13 @@ function stopPropagation(e: Event) {
   e.stopPropagation()
 }
 
-interface FolderDropdownProps {
+interface FolderActionsProps {
   state: State
   actions: Actions
   item: FolderNode
 }
 
-const FolderDropdown = (props: FolderDropdownProps) => {
+const FolderDropdown = (props: FolderActionsProps) => {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
@@ -58,6 +58,66 @@ const FolderDropdown = (props: FolderDropdownProps) => {
   )
 }
 
+function FolderActions(props: FolderActionsProps) {
+  const { state, item } = props
+  if (!state.project) {
+    return
+  }
+
+  const actions = []
+
+  if (item.path !== DEPENDENCIES_FOLDER) {
+    actions.push(
+      <a
+        href="#"
+        onclick={() =>
+          props.actions.ui.openCreateFileModal({
+            parent: props.item,
+            type: "file"
+          })
+        }
+        class="actions"
+      >
+        <Icon name="file-text-o" class="fa-fw" />
+      </a>,
+      <a
+        href="#"
+        onclick={() =>
+          props.actions.ui.openCreateFileModal({
+            parent: props.item,
+            type: "folder"
+          })
+        }
+        class="actions"
+      >
+        <Icon name="folder-open-o" class="fa-fw" />
+      </a>,
+      // <a href="#" onclick={() => {}} class="actions">
+      //   <Icon name="edit" />
+      // </a>,
+      <a
+        href="#"
+        onclick={() => props.actions.ui.openDeleteFileModal(props.item)}
+        class="actions"
+      >
+        <Icon name="trash" class="fa-fw" />
+      </a>
+    )
+  } else {
+    actions.push(
+      <a
+        href="#"
+        onclick={() => props.actions.ui.openImportProjectDialog()}
+        class="actions"
+      >
+        <Icon name="plus" class="fa-fw" />
+      </a>
+    )
+  }
+
+  return <div class="float-right">{actions}</div>
+}
+
 // ## Folder
 
 export interface FolderItemProps {
@@ -82,7 +142,8 @@ export const FolderItem = (props: FolderItemProps) => {
     <div class="file c-hand">
       <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
       {Tooltip}
-      {FolderDropdown(props)}
+      {FolderActions(props)}
     </div>
   )
 }
+

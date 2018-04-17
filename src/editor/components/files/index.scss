@@ -8,6 +8,10 @@
   h2 {
     margin-bottom: 0rem;
 
+    .files-section-action {
+      margin-left: 0.2rem;
+    }
+
     .dropdown {
       font-size: 0.8rem;
       font-style: normal;
@@ -38,8 +42,12 @@
       &:hover {
         background: $secondary-color;
 
-        span:hover {
+        .fa:hover {
           color: $primary-color;
+        }
+
+        .main-text {
+          visibility: visible;
         }
 
         .preview {
@@ -48,9 +56,10 @@
 
         .actions {
           visibility: visible;
-          border: 1px solid $primary-color;
+          color: $body-font-color;
 
           &:hover {
+            border: 1px solid $primary-color;
             color: $primary-color;
           }
         }
@@ -63,6 +72,10 @@
       .actions {
         border: 1px solid $border-color-light;
         padding: 0.1rem;
+        visibility: hidden;
+        margin: 0 0.1rem;
+      }
+      .main-text {
         visibility: hidden;
       }
     }

@@ -10,11 +10,30 @@ import { DeleteFileModal } from "./DeleteFileModal"
 import { FileTree } from "./FileTree"
 import { FilePreview } from "./FilePreview"
 import { HeaderMenu } from "./HeaderMenu"
+import { Button } from "lib/components"
 
 export interface ProjectFilesSectionProps {
   state: State
   actions: Actions
   log: LogFn
+}
+
+function FilesActions(props: ProjectFilesSectionProps) {
+  const actions = props.actions.ui
+  return (
+    <div class="float-right">
+      <Button
+        icon="file-text-o"
+        onclick={() => actions.openCreateFileModal({ type: "file" })}
+        class="files-section-action"
+      />
+      <Button
+        icon="folder-open-o"
+        onclick={() => actions.openCreateFileModal({ type: "folder" })}
+        class="files-section-action"
+      />
+    </div>
+  )
 }
 
 export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
@@ -30,7 +49,7 @@ export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
 
   return (
     <div class="m-2 project-files">
-      <h2>Files {HeaderMenu(props)}</h2>
+      <h2>Files {FilesActions(props)}</h2>
       {file ? FilePreview({ state, actions, file }) : FileTree(props)}
       <DeleteFileModal
         deleting={state.ui.deletingFile}
