@@ -6,6 +6,8 @@ import { getErrorMessage } from "lib/utils"
 import { State, Actions } from "../api"
 import { CompilationErrors } from "./CompilationErrors"
 
+import "./OutputTab.scss"
+
 export interface OutputTabProps {
   state: State
   actions: Actions

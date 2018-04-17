@@ -9,6 +9,8 @@ import { ImportProjectModal } from "./ImportProjectModal"
 import { ProjectFilesSection } from "./files"
 import { LogFn } from "logger"
 
+import "./ProjectTab.scss"
+
 export interface ProjectTabProps {
   state: State
   actions: Actions
