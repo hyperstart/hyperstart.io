@@ -15,7 +15,9 @@ import { COLLECTION, Owner } from "projects"
 import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "projects/createProject"
+import { createProject as create } from "./createProject"
 import { logConfig, logEvent } from "analytics"
+import { LOCAL_PROJECT_ID } from "projects/constants"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -41,6 +43,7 @@ export const module: ModuleImpl<State, Actions> = {
     ui: ui.actions,
     users: users.actions,
 
+    getState: () => state => state,
     init: () => (_, actions) => {
       initializeFirebase()
 
@@ -96,9 +99,16 @@ export const module: ModuleImpl<State, Actions> = {
       actions.editor.ui.importProjectDialog.search.setSearchFn(searchFn)
 
       addListener("projects/:id", match => {
-        actions.logger.log(
-          actions.fetchProject({ id: match.params.id, open: true })
-        )
+        const id = match.params.id
+        if (id === LOCAL_PROJECT_ID) {
+          const store = actions.editor.localStore.getState()
+          if (store[id]) {
+            actions.editor.open(store[id])
+          } else {
+            create(actions.getState(), actions, "hyperapp")
+          }
+        }
+        actions.logger.log(actions.fetchProject({ id, open: true }))
       })
 
       addListener("*", match => {

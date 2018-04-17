@@ -37,6 +37,7 @@ export interface Actions {
   init(): void
   createProject(): Promise<void> | null
   fetchProject(payload: FetchProjectPayload): Promise<projects.Project> | null
+  getState(): State
 }
 
 export interface ModuleActions<State> {

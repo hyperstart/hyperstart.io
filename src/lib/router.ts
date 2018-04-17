@@ -79,6 +79,8 @@ window.onpopstate = e => {
     e.preventDefault()
     e.stopImmediatePropagation()
     history.go(1)
+  } else {
+    notifyListeners()
   }
 }
 
@@ -153,7 +155,7 @@ export function create(): Module {
       update: () => ({ location: window.location.pathname }),
       init: () => (_, actions) => {
         LISTENERS.push(actions.update)
-        LISTENERS.forEach(u => u())
+        notifyListeners()
       }
     }
   }
@@ -164,7 +166,7 @@ export function create(): Module {
 export function push(url) {
   if (intercept(url)) {
     history.pushState(null, null, url)
-    LISTENERS.forEach(u => u())
+    notifyListeners()
   }
 }
 
@@ -175,14 +177,18 @@ export function back() {
 
 export function forward() {
   history.forward()
-  LISTENERS.forEach(u => u())
+  notifyListeners()
 }
 
 export function replace(url) {
   if (intercept(url)) {
     history.replaceState(null, null, url)
-    LISTENERS.forEach(u => u())
+    notifyListeners()
   }
+}
+
+function notifyListeners() {
+  LISTENERS.forEach(u => u())
 }
 
 // # Components
