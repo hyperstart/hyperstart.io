@@ -6,7 +6,7 @@ import { addInterceptor, removeInterceptor } from "lib/router"
 import { getEditorUrl } from "utils"
 import { User } from "users"
 
-import { DebugPane, SourcesPane, ViewsPane } from "./components"
+import { DebuggerPane, SourcesPane, ViewsPane } from "./components"
 import { hasDirtySources, isDebuggable } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
@@ -149,7 +149,7 @@ export function Editor(props: EditorProps) {
       oncreate={oncreate}
       ondestroy={ondestroy}
     >
-      {state.debug.paneShown ? DebugPane(props) : SourcesPane(props)}
+      {state.debug.paneShown ? DebuggerPane(props) : SourcesPane(props)}
       {ViewsPane(props)}
     </SplitPane>
   )

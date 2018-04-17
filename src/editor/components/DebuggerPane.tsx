@@ -7,6 +7,8 @@ import { State, Actions, Diagnostic } from "../api"
 import { DebuggerOptions, DebugPaneContent } from "../debug/components"
 import { getRuns } from "../selectors"
 
+import "./DebuggerPane.scss"
+
 interface PaneProps {
   state: State
   actions: Actions
@@ -25,12 +27,12 @@ const Title = (actions: Actions) => {
   )
 }
 
-export interface DebugPaneProps {
+export interface DebuggerPaneProps {
   state: State
   actions: Actions
 }
 
-export const DebugPane = (props: DebugPaneProps) => {
+export const DebuggerPane = (props: DebuggerPaneProps) => {
   const { state, actions } = props
   if (state.compilationOutput.loading) {
     return (

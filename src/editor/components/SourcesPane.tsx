@@ -8,6 +8,8 @@ import { State, Actions } from "../api"
 import { getSelectedSource, isEditable } from "../selectors"
 import { SourceEditor } from "./SourceEditor"
 
+import "./SourcesPane.scss"
+
 function SourceName(source: SourceNode, parent: FileNode, duplicated: boolean) {
   if (duplicated) {
     const parentName = parent ? parent.name : ""

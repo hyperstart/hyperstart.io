@@ -8,3 +8,9 @@
     flex-shrink: 0;
   }
 }
+
+.view-pane-tab {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

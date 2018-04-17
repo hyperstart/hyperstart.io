@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+
+.project-tab {
+  .project-details {
+    h1 {
+      margin-bottom: 0rem;
+      .dropdown {
+        font-size: 0.8rem;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .import-project-modal
+    .modal-container
+    .modal-body
+    table.table
+    tbody
+    tr.active {
+    background: $secondary-color-dark;
+  }
+}

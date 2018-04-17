@@ -1,36 +1,5 @@
 @import "../../variables.scss";
 
-.sources-pane {
-  display: flex;
-  flex-direction: column;
-  flex: 0 0 50%;
-
-  .tabs-wrapper {
-    display: flex;
-    overflow-x: auto;
-    flex-shrink: 0;
-
-    .tab {
-      height: 2rem;
-      min-width: 0px;
-      flex-grow: 1;
-      display: flex;
-      flex-wrap: nowrap;
-
-      .tab-item {
-        flex-shrink: 0;
-      }
-    }
-  }
-
-  .monaco-editor {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-}
-
 .debugger-pane {
   display: flex;
   flex-direction: column;
@@ -132,36 +101,4 @@
       margin: 0rem;
     }
   }
-}
-
-.view-pane-tab {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.project-tab {
-  .project-details {
-    h1 {
-      margin-bottom: 0rem;
-      .dropdown {
-        font-size: 0.8rem;
-        font-style: normal;
-        font-weight: 400;
-      }
-    }
-  }
-
-  .import-project-modal
-    .modal-container
-    .modal-body
-    table.table
-    tbody
-    tr.active {
-    background: $secondary-color-dark;
-  }
-}
-
-.output-tab iframe {
-  flex-grow: 1;
 }
