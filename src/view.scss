@@ -116,11 +116,16 @@ body {
     background: $bg-color-light;
   }
 }
-
+.input-group {
+  .form-input {
+    background-color: $bg-color-input;
+    color: darken($body-font-color-dark, 30%);
+  }
+}
 .form-group {
   .form-input {
     background-color: $bg-color-input;
-    color: $body-font-color-light;
+    color: darken($body-font-color-dark, 30%);
   }
 
   .form-input-hint {
@@ -137,5 +142,31 @@ body {
 .empty {
   margin-top: 10px;
   color: inherit;
-  background-color: $bg-color-light;
+  background-color: lighten($bg-color-light, 10%);
+}
+
+// Button Secundary
+.btn-secondary {
+  background: $secondary-color-light;
+  border-color: $secondary-color-dark;
+  color: $light-color;
+
+  &:focus,
+  &:hover {
+    background: darken($secondary-color-dark, 2%);
+    border-color: darken($secondary-color-dark, 5%);
+    color: $light-color;
+  }
+  &:active,
+  &.active {
+    background: darken($secondary-color-dark, 4%);
+    border-color: darken($secondary-color-dark, 7%);
+    color: $light-color;
+  }
+  &.loading {
+    &::after {
+      border-bottom-color: $light-color;
+      border-left-color: $light-color;
+    }
+  }
 }

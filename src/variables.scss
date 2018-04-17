@@ -6,7 +6,7 @@ $rtl: false !default;
 
 // Primary color: font color for links, buttons, etc
 // background color for primary buttons
-$primary-color: #56a3d7 !default;
+$primary-color: #56a3d7 !default; //#56a3d7
 $primary-color-dark: darken($primary-color, 15%) !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 
@@ -22,7 +22,7 @@ $border-color-light: lighten($border-color, 10%) !default;
 $border-color-dark: darken($border-color, 10%) !default;
 
 // Background colors
-$bg-color: #292929 !default; //#221f22
+$bg-color: #221f22 !default; //#292929
 $bg-color-dark: darken($bg-color, 10%) !default;
 $bg-color-light: lighten($bg-color, 10%) !default;
 
@@ -32,7 +32,7 @@ $body-font-color-light: lighten($body-font-color, 30%) !default;
 $body-font-color-dark: darken($body-font-color, 30%) !default;
 
 // Input background color
-$bg-color-input: lighten($bg-color, 20%) !default; //#221f22
+$bg-color-input: lighten($bg-color, 60%) !default; //#221f22
 
 // Toolbars colors
 $bg-color-toolbar: lighten($bg-color, 15%) !default;

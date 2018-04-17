@@ -27,7 +27,7 @@ function CreateButton({ state, actions }: HeaderProps) {
   return Button({
     onclick: actions.ui.openCreateProjectModal,
     text: window.innerWidth < 840 ? "Create" : "Create a Project",
-    class: "button"
+    class: "button btn-secondary"
   })
 }
 
@@ -59,7 +59,7 @@ function RunButton({ state, actions }: HeaderProps) {
     disabled: isLoading(state) || status === "loading",
     onclick: () => actions.editor.run(false),
     text: "Run",
-    class: "button"
+    class: "button btn-secondary"
   })
 }
 
@@ -77,12 +77,14 @@ function DebugButton({ state, actions }: HeaderProps) {
         disabled={isLoading(state)}
         onclick={() => actions.editor.run(true)}
         text="Debug"
+        class="btn-secondary"
       />
       <Button
         disabled={isLoading(state) || !state.editor.compilationOutput}
         active={debugState.paneShown}
         onclick={() => actions.editor.debug.showPane(!debugState.paneShown)}
         icon="caret-down"
+        class="btn-secondary"
       />
     </div>
   )
@@ -104,7 +106,7 @@ function ForkButton({ state, actions }: HeaderProps) {
       forkProject(state, actions, toFork)
     },
     text: "Fork",
-    class: "fork-button"
+    class: "fork-button btn-secondary"
   })
 }
 

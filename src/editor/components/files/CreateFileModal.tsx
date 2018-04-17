@@ -89,7 +89,7 @@ export const CreateFileModal = (props: CreateFileModalProps) => {
             <input type="submit" class="btn btn-primary float-right">
               Submit
             </input>
-            <button class="btn float-right" onclick={oncancel}>
+            <button class="btn float-right btn-secondary" onclick={oncancel}>
               Cancel
             </button>
           </form>

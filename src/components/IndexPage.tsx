@@ -147,7 +147,7 @@ export function IndexPage(props: IndexPageProps) {
               </a>, and has been optimised to speed up the development process
               using the framework.
             </p>
-            <a href="/blog">Start learning Hyperapp.</a>
+            <a href="/blog">Visit our blog for more news.</a>
           </div>
 
           <div class="column col-4 centered hide-md text-center py-14">

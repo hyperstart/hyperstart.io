@@ -41,7 +41,7 @@ export const DeleteFileModal = (props: DeleteFileModalProps) => {
           >
             Delete
           </button>{" "}
-          <button class="btn float-right" onclick={close}>
+          <button class="btn float-right btn-secondary" onclick={close}>
             Cancel
           </button>
         </div>

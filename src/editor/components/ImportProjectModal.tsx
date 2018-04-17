@@ -124,7 +124,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             log={log}
           />
           <div>
-            <button class="btn" onclick={oncancel}>
+            <button class="btn btn-secondary" onclick={oncancel}>
               Cancel
             </button>
             <button

@@ -119,7 +119,10 @@ export function CreateProjectModal(props: CreateProjectModalProps) {
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn" onclick={actions.ui.closeCreateProjectModal}>
+          <button
+            class="btn btn-secondary"
+            onclick={actions.ui.closeCreateProjectModal}
+          >
             Cancel
           </button>{" "}
           <button
