@@ -54,11 +54,16 @@ export function runProject(
         throw new Error("No index.html found in files")
       }
 
-      const iframeSource = indexHtml.content.replace(
-        `<script src="/bundle.js"></script>`,
-        `<script>if (window.history) { window.history.replaceState(null, null, "/") }</script>
+      const iframeSource = indexHtml.content
+        .replace(
+          `<script src="/bundle.js"></script>`,
+          `<script>if (window.history) { window.history.replaceState(null, null, "/") }</script>
 <script>${output.code}</script>`
-      )
+        )
+        .replace(
+          `</head>`,
+          `<style>body { background-color: white; }</style></head>`
+        )
 
       actions._setState({
         compilationOutput: {
