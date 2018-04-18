@@ -65,7 +65,7 @@ export const CreateFileModal = (props: CreateFileModalProps) => {
             aria-label="Close"
             onclick={actions.ui.closeCreateFileModal}
           />
-          <h3 class="modal-title">Enter a name</h3>
+          <h3 class="modal-title">Create {type.value}</h3>
         </div>
         <div class="modal-body">
           <form onsubmit={onsubmit}>

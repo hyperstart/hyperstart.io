@@ -2,6 +2,7 @@ import { ModuleImpl } from "lib/modules"
 import { get, merge, set } from "lib/immutable"
 import { createForm, createFormState } from "lib/form/module"
 import { createSearch } from "lib/search/module"
+import { logEvent } from "analytics"
 
 import * as projects from "projects"
 
@@ -32,6 +33,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
       search: search.actions
     },
     openImportProjectDialog: () => state => {
+      logEvent("screen_view", { screen_name: "Add Dependency" })
       return {
         importProjectDialog: {
           search: search.state
