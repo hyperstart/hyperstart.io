@@ -17,10 +17,10 @@ import { CompilationResult } from "./api"
 import { State, Diagnostic } from "../../api"
 
 const SUPPORTED_EXTENSIONS = {
-  js: true,
-  jsx: true,
   ts: true,
-  tsx: true
+  tsx: true,
+  js: true,
+  jsx: true
 }
 
 const flatten = (message: string | DiagnosticMessageChain): string => {

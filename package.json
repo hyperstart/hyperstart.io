@@ -25,16 +25,17 @@
     "report": "open reports/report.html"
   },
   "dependencies": {
+    "buble": "^0.19.3",
+    "estree-walker": "0.5.1",
     "firebase": "4.10.1",
     "hyperapp": "1.1.2",
+    "magic-string": "0.22.4",
     "marked": "0.3.17",
     "monaco-editor": "0.10.1",
-    "spectre.css": "0.5.1",
-    "typescript": "2.8.1",
-    "estree-walker": "0.5.1",
-    "magic-string": "0.22.4",
+    "rollup": "0.56.5",
     "rollup-pluginutils": "2.0.1",
-    "rollup": "0.56.5"
+    "spectre.css": "0.5.1",
+    "typescript": "2.8.1"
   },
   "devDependencies": {
     "@types/acorn": "^4.0.3",

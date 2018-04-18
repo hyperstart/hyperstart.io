@@ -16,6 +16,7 @@ export const compile = (
   const plugins = [
     resolve(state, result),
     monaco(state, result),
+    // buble(state, result),
     style(state, result),
     commonjs(state, result)
   ]
