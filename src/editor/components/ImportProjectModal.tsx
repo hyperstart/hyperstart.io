@@ -89,7 +89,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             aria-label="Close"
             onclick={actions.ui.closeImportProjectDialog}
           />
-          <h3 class="modal-title">Please select a project</h3>
+          <h3 class="modal-title">Add Dependency</h3>
           <TextField
             state={searchState}
             actions={searchActions}

@@ -127,7 +127,7 @@ export function Editor(props: EditorProps) {
           state.status === "editing" ||
           (state.status === "read-only" && isDebuggable(state))
         ) {
-          log(actions.run(false))
+          log(actions.run(true))
         }
         event.preventDefault()
       }
