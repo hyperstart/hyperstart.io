@@ -1,6 +1,6 @@
 import { set } from "lib/immutable"
 import { ModuleImpl } from "lib/modules"
-import { getSearches } from "lib/search"
+import { getSearches, normalize } from "lib/search"
 import * as store from "lib/store"
 
 import * as api from "./api"
@@ -107,13 +107,14 @@ export function createProjects(
       update: (project: api.UpdatedProject) => (
         state,
         actions
-      ): Promise<void> => {
+      ): Promise<api.Project> => {
         const { id, name, owner } = project
         const document: any = {}
 
         if (name) {
-          document.name = name
-          document.searches = getSearches(name)
+          const sanitizedName = normalize(name)
+          document.name = sanitizedName
+          document.searches = getSearches(sanitizedName)
         }
         if (owner) {
           document.owner = owner
@@ -130,6 +131,7 @@ export function createProjects(
             updated.details = { ...updated.details, ...document }
             updated.status = { loading: false, error: null }
             actions._setProject(updated)
+            return updated
           })
           .catch(e => {
             const error = getErrorMessage(e)

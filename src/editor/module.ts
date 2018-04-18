@@ -158,10 +158,10 @@ const _editor: ModuleImpl<api.State, Actions> = {
           id,
           name
         })
-        .then(() => {
+        .then(project => {
           actions.ui.stopEdit()
           actions._setState({
-            project: { ...state.project, name },
+            project: { ...project.details },
             status: "editing"
           })
         })

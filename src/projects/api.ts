@@ -100,7 +100,7 @@ export interface ImportProjectsPayload {
 export interface Actions extends ModuleActions<State> {
   // ## Projects
   save(project: Project): Promise<Project>
-  update(project: UpdatedProject): Promise<void>
+  update(project: UpdatedProject): Promise<Project>
   fetch(id: string): Promise<Project>
   // ## Files
   addFiles(payload: AddFilesPayload): Promise<void>
