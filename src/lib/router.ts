@@ -74,6 +74,12 @@ const intercept = (url: string): boolean =>
   INTERCEPTORS.reduce((prev, interceptor) => prev && interceptor(url), true)
 
 window.onpopstate = e => {
+  if (
+    (e.srcElement as any).location.pathname ==
+    (e.target as any).location.pathname
+  ) {
+    return
+  }
   const allowed = intercept(window.location.href)
   if (!allowed) {
     e.preventDefault()
