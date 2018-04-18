@@ -38,8 +38,12 @@
       &:hover {
         background: $secondary-color;
 
-        span:hover {
+        .fa:hover {
           color: $primary-color;
+        }
+
+        .main-file {
+          visibility: visible;
         }
 
         .preview {
@@ -63,6 +67,9 @@
       .actions {
         border: 1px solid $border-color-light;
         padding: 0.1rem;
+        visibility: hidden;
+      }
+      .main-file {
         visibility: hidden;
       }
     }

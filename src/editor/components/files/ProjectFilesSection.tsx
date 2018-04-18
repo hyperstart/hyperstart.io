@@ -11,6 +11,8 @@ import { FileTree } from "./FileTree"
 import { FilePreview } from "./FilePreview"
 import { HeaderMenu } from "./HeaderMenu"
 
+import "./ProjectFilesSection.scss"
+
 export interface ProjectFilesSectionProps {
   state: State
   actions: Actions

@@ -17,6 +17,10 @@ interface FileDropdownProps {
 }
 
 const FileDropdown = (props: FileDropdownProps) => {
+  const { state, actions, item } = props
+  if (item.path === state.project.mainFile) {
+    return <span class="float-right main-file">main</span>
+  }
   return (
     <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
       <a href="#" class="dropdown-toggle">
