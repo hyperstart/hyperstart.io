@@ -44,7 +44,7 @@ function SaveButton({ state, actions }: HeaderProps) {
       status === "loading",
     onclick: actions.editor.saveAllSources,
     text: "Save",
-    class: "button"
+    class: "button btn-secondary"
   })
 }
 
