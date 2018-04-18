@@ -54,10 +54,12 @@ export function runProject(
       if (!indexHtmlId || !indexHtml) {
         throw new Error("No index.html found in files")
       }
-      logEvent("run", {
+
+      logEvent(debug ? "debug" : "run", {
         event_category: "project",
-        event_label: "RunProject"
+        event_label: debug ? "DebugProject" : "RunProject"
       })
+
       const iframeSource = indexHtml.content
         .replace(
           `<script src="/bundle.js"></script>`,
