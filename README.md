@@ -15,6 +15,7 @@ This repository contains:
 * [hyperapp](https://github.com/hyperapp/hyperapp)
 * [spectre.css](https://github.com/picturepan2/spectre)
 * [webpack](https://github.com/webpack/webpack)
+* [firebase](https://firebase.google.com/)
 
 # Overall Structure
 
