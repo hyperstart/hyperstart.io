@@ -39,17 +39,33 @@ export function Footer(props: FooterProps) {
   return (
     <div>
       <footer class="footer navbar">
-        <section class="navbar-center">
+        <section class="navbar-section">
           <ShortcutsButton state={state} actions={actions} />
         </section>
         <section class="navbar-center">
+          <a
+            href="mailto:contact@hyperstart.io"
+            class="text-light"
+            target="_blank"
+          >
+            Contact
+          </a>
+          |
+          <a
+            href="https://twitter.com/HyperstartJS"
+            class="text-light"
+            target="_blank"
+          >
+            Twitter
+          </a>
+          |
           <a
             href="https://github.com/hyperstart/hyperstart.io"
             class="text-light"
             target="_blank"
           >
             Github
-          </a>{" "}
+          </a>
           |
           <a
             href="https://hyperapp.slack.com/messages/C9CDF88P9"
@@ -59,7 +75,15 @@ export function Footer(props: FooterProps) {
             Slack
           </a>
         </section>
-        <section class="navbar-center" />
+        <section class="navbar-section">
+          <a
+            href="https://github.com/hyperstart/hyperstart.io/releases/tag/0.2.0"
+            class="text-light"
+            target="_blank"
+          >
+            v0.2.0
+          </a>
+        </section>
       </footer>
       <UserSignInModal state={state.users} actions={actions.users} />
       <UserSignUpModal state={state.users} actions={actions.users} />
