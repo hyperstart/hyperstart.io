@@ -6,6 +6,7 @@ import * as api from "./api"
 import { OUTPUT_TAB_ID } from "./constants"
 import { compile } from "./compile"
 import { LogFn } from "logger"
+import { logEvent } from "analytics"
 
 export interface Actions extends api.Actions {
   _setMonacoLoaded()
@@ -53,7 +54,10 @@ export function runProject(
       if (!indexHtmlId || !indexHtml) {
         throw new Error("No index.html found in files")
       }
-
+      logEvent("run", {
+        event_category: "project",
+        event_label: "RunProject"
+      })
       const iframeSource = indexHtml.content
         .replace(
           `<script src="/bundle.js"></script>`,

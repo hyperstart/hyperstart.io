@@ -5,6 +5,7 @@ import { get, merge, set } from "lib/immutable"
 
 import { getPath } from "./selectors"
 import * as api from "./api"
+import { logEvent } from "analytics"
 
 function getPreviousState(action: api.AppAction): any {
   if (action.actions.length > 0) {
@@ -200,6 +201,12 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
       return { selectedAction }
     },
     showPane: (paneShown: boolean) => {
+      if (paneShown == true) {
+        logEvent("debug", {
+          event_category: "project",
+          event_label: "ToggleDebug"
+        })
+      }
       return { paneShown }
     },
     setPaneDisplay: (paneDisplay: api.PaneDisplay) => {

@@ -36,7 +36,7 @@ export const DebuggerPane = (props: DebuggerPaneProps) => {
   const { state, actions } = props
   if (state.compilationOutput.loading) {
     return (
-      <div class="debug-pane">
+      <div class="debug-pane background-dark">
         {Title(actions)}
         <p>Loading...</p>
       </div>
@@ -45,7 +45,7 @@ export const DebuggerPane = (props: DebuggerPaneProps) => {
   const runs = getRuns(state.debug.runs)
   if (runs.length === 0) {
     return (
-      <div class="debug-pane">
+      <div class="debug-pane background-dark">
         {Title(actions)}
         <p>No debug information found, please debug this project.</p>
       </div>
