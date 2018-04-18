@@ -30,10 +30,11 @@ $bg-color-light: lighten($bg-color, 10%) !default;
 $body-font-color: #ddd !default;
 $body-font-color-light: lighten($body-font-color, 30%) !default;
 $body-font-color-dark: darken($body-font-color, 30%) !default;
-$placeholder-font-color: darken($body-font-color, 0%) !default;
 
-// Input background color
+// Input colors
 $bg-color-input: lighten($bg-color, 60%) !default; //#221f22
+$input-font-color: darken($body-font-color-dark, 30%);
+$placeholder-font-color: darken($body-font-color, 40%) !default;
 
 // Toolbars colors
 $bg-color-toolbar: lighten($bg-color, 15%) !default;

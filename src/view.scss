@@ -116,27 +116,28 @@ body {
     background: $bg-color-light;
   }
 }
-.input-group {
-  .form-input {
-    background-color: $bg-color-input;
-    color: darken($body-font-color-dark, 30%);
+
+.form-input {
+  background-color: $bg-color-input;
+  color: $input-font-color;
+
+  &::placeholder {
+    color: $placeholder-font-color;
+    opacity: 1;
   }
 }
+
+// this is to override the spectre defaults
 .form-group {
-  .form-input {
-    background-color: $bg-color-input;
-    color: darken($body-font-color-dark, 30%);
-  }
-
-  .form-input-hint {
-    margin: 0;
-    text-align: left;
+  .form-select {
+    background-color: $bg-color-input !important;
+    color: $input-font-color;
   }
 }
 
-.form-input::placeholder {
-  color: $placeholder-font-color;
-  opacity: 1;
+.form-input-hint {
+  margin: 0;
+  text-align: left;
 }
 
 .empty {
@@ -145,7 +146,7 @@ body {
   background-color: lighten($bg-color-light, 10%);
 }
 
-// Button Secundary
+// Button Secondary
 .btn-secondary {
   background: $secondary-color-light;
   border-color: $secondary-color-dark;
