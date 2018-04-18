@@ -8,6 +8,8 @@ import { ProjectTitle, ProjectOwner } from "projects/components"
 import { State, Actions } from "../api"
 import { LogFn } from "logger"
 
+import "./ImportProjectModal.scss"
+
 function ProjectTableRow(
   project: Details,
   index: number,

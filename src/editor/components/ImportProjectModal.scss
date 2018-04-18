@@ -1,0 +1,5 @@
+@import "../../variables.scss";
+
+.import-project-modal .modal-container .modal-body table.table tbody tr.active {
+  background: $bg-color-dark;
+}
