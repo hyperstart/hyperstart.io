@@ -50,7 +50,7 @@ export function CompilationErrors(props: CompilationErrorsProps) {
   return (
     <div>
       <h4>Compilation error(s)</h4>
-      {error ? "Module resolution error: " + error : ""}
+      {error ? "Compilation error: " + error : ""}
       {files.map(FileError)}
     </div>
   )
