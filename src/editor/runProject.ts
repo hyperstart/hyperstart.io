@@ -48,7 +48,7 @@ export function runProject(
         })
         throw "Compilation error(s)!"
       }
-      const indexHtmlId = state.files.byPath["index.html"]
+      const indexHtmlId = state.files.byPath["/index.html"]
       const indexHtml = state.files.byId[indexHtmlId] as SourceNode
 
       if (!indexHtmlId || !indexHtml) {

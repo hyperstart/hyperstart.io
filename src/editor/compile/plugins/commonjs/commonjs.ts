@@ -75,7 +75,7 @@ export function commonjs(state: State, result: CompileOutput): any {
       if (startsWith(id, PREFIX)) {
         // add an extra "/" to turn this into a global path, the resolve plugin will take care of the rest
         const actualId = id.slice(PREFIX.length)
-        const actualPath = "/" + actualId
+        const actualPath = actualId
         const name = getName(actualId)
 
         let result
@@ -109,10 +109,11 @@ export function commonjs(state: State, result: CompileOutput): any {
             return code
           }
           const result = transformEsModule(this.parse, code, modules, jsModule)
+
           return result
         } else if (!jsModule.isCommonJs) {
           // it is not an ES module but not a commonjs module, too, do nothing.
-          return
+          return code
         }
 
         // it's a commonjs module

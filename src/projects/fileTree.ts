@@ -83,7 +83,7 @@ const computePath = (files: FileTree, file: FileNode): string => {
     return path
   }
 
-  const path = file.name
+  const path = "/" + file.name
   file.path = path
   return path
 }

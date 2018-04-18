@@ -14,7 +14,6 @@ const isEditable = (project: Project, currentUser: string): boolean =>
 
 function getSources(files: FileTree, mainFile: string): sources.State {
   const index = files.byPath[mainFile]
-
   if (!mainFile || !index) {
     return {
       opened: [],

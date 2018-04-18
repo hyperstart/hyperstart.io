@@ -44,9 +44,9 @@ const getSegments = (path: string): string[] => {
   return segments
 }
 
-const removeSlash = (path: string): string => {
-  return path.startsWith("/") ? path.substring(1) : path
-}
+// const removeSlash = (path: string): string => {
+//   return path.startsWith("/") ? path.substring(1) : path
+// }
 
 /**
  *
@@ -58,12 +58,12 @@ const getGlobalPath = (
 ): string => {
   // index.js
   if (!relativeTo) {
-    return removeSlash(localPath)
+    return localPath
   }
 
   // global path
   if (localPath.startsWith("/")) {
-    return removeSlash(localPath)
+    return localPath
   }
 
   // importing from http
@@ -84,11 +84,11 @@ const getGlobalPath = (
         result.push(segment)
       }
     }
-    return result.join("/")
+    return "/" + result.join("/")
   }
 
   // dependency
-  return DEPENDENCIES_FOLDER + "/" + localPath
+  return "/" + DEPENDENCIES_FOLDER + "/" + localPath
 }
 
 /**
@@ -132,23 +132,7 @@ export function resolve(state: State, result: CompileOutput): any {
 
       const resolved = resolveId(state, importee, importer)
       if (!resolved) {
-        if (importer) {
-          result.modules[importer] = [
-            {
-              category: DiagnosticCategory.Error,
-              message: "Cannot find module " + importee
-            }
-          ]
-          // console.log("failed for importee: " + importee)
-          if (!importer) {
-            throw new Error("Cannot resolve entry file " + importee)
-          }
-          throw new Error(
-            "Cannot resolve import " + importee + " in file " + importer
-          )
-        } else {
-          throw new Error("Cannot find module " + importee)
-        }
+        return
       }
 
       cache.set(importee, importer || "", resolved)
@@ -165,7 +149,6 @@ export function resolve(state: State, result: CompileOutput): any {
         })
       }
       const source = getSource(state, id, true)
-
       if (typeof source.content === "string") {
         return source.content
       }

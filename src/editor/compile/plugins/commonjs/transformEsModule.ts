@@ -20,7 +20,7 @@ export function transformEsModule(
   inCode: string,
   modules: JsModules,
   jsModule: JsModule
-): ModuleSource {
+): ModuleSource | string {
   const id = jsModule.id
   const magicString = new MagicString(inCode)
 
@@ -52,7 +52,7 @@ export function transformEsModule(
     })
   // no need to generate anything if no import replaced.
   if (!replaced) {
-    return null
+    return inCode
   }
 
   const code = magicString.toString()

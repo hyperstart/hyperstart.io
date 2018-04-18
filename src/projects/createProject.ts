@@ -27,7 +27,7 @@ export function createProject(payload: Payload): Promise<Project> {
     owner: payload.owner,
     searches: getSearches(name),
     hidden: false,
-    mainFile: "index.js"
+    mainFile: "/index.js"
   }
 
   const files =

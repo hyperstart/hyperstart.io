@@ -113,7 +113,7 @@ export function isDebuggable(state: State): boolean {
     return false
   }
 
-  const path = DEPENDENCIES_FOLDER + "/" + HYPERAPP_NAME + "/index.js"
+  const path = "/" + DEPENDENCIES_FOLDER + "/" + HYPERAPP_NAME + "/index.js"
   const id = state.files.byPath[path]
   return !!id
 }

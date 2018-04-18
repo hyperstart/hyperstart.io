@@ -67,7 +67,6 @@ export const monaco = (state: State, result: CompileOutput): any => {
         let map
         let dts
         output.emit.outputFiles.forEach(file => {
-          // console.log("Got output: ", file)
           if (file.name.endsWith(".js")) {
             code = file.text
           } else if (file.name.endsWith(".map")) {

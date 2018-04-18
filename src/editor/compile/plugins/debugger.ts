@@ -4,10 +4,10 @@ import { CompileOutput } from "../api"
 import { DiagnosticCategory } from "lib/typescript"
 
 const ACTUAL_HYPERAPP_IMPORT = "__ACTUAL__HYPERAPP__IMPORT__"
-export const ACTUAL_HYPERAPP_PATH = "__ACTUAL__HYPERAPP__PATH__"
+export const ACTUAL_HYPERAPP_PATH = "\0__ACTUAL__HYPERAPP__PATH__"
 const HYPERAPP_IMPORT = "hyperapp"
-const HYPERAPP_PATH = "dependencies/hyperapp/index.js"
-export const DEBUGGER_PATH = "__DEBUGGER__PATH__"
+const HYPERAPP_PATH = "/dependencies/hyperapp/index.js"
+export const DEBUGGER_PATH = "\0__DEBUGGER__PATH__"
 
 const debuggerSource = `
 import * as ha from "${ACTUAL_HYPERAPP_IMPORT}"
@@ -76,7 +76,7 @@ export const debug = (state: State, result: CompileOutput): any => {
   return {
     name: "hyperstart-debug",
     resolveId(importee: string, importer: string): string {
-      if (importee === HYPERAPP_IMPORT) {
+      if (importee === HYPERAPP_IMPORT || importee === DEBUGGER_PATH) {
         return DEBUGGER_PATH
       }
       if (importee === ACTUAL_HYPERAPP_IMPORT) {

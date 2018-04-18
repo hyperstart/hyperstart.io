@@ -42,6 +42,15 @@ function fetchDetails(
   return store.getById({ collection: path(), id })
 }
 
+// modify the project (in place) to ensure older versions are loaded properly
+function backCompatible(project: api.Project): api.Project {
+  const mainFile = project.details.mainFile
+  if (mainFile && !mainFile.startsWith("/")) {
+    project.details.mainFile = "/" + mainFile
+  }
+  return project
+}
+
 export function createProjects(
   store: store.Store
 ): ModuleImpl<api.State, api.Actions> {
@@ -153,11 +162,11 @@ export function createProjects(
             return store.query({ collection: path(id) })
           })
           .then((results: api.File[]) => {
-            const project: api.Project = {
+            const project: api.Project = backCompatible({
               details,
               files: {},
               status: { loading: false, error: null }
-            }
+            })
             results.forEach(file => (project.files[file.id] = file))
 
             actions._setProject(project)
