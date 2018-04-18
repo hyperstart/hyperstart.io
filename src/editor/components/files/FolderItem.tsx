@@ -68,7 +68,7 @@ function DependenciesFolderDropdown(props: FolderItemProps) {
       </a>
       <ul class="menu">
         <li class="menu-item">
-          <a href="#" onclick={actions.openAddDependencyModal}>
+          <a href="#" onclick={actions.openImportProjectDialog}>
             Add Dependency
           </a>
         </li>

@@ -79,13 +79,3 @@ export const compare = (obj1: any, obj2: any): number => {
   }
   return obj1 < obj2 ? -1 : 1
 }
-
-export const debounce = (func, delay: number): any => {
-  let inDebounce
-  return function() {
-    const context = this
-    const args = arguments
-    clearTimeout(inDebounce)
-    inDebounce = setTimeout(() => func.apply(context, args), delay)
-  }
-}

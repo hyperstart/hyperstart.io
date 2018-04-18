@@ -33,7 +33,7 @@ export function HeaderMenu(props: HeaderMenuProps) {
         </li>
         <li class="divider" />
         <li class="menu-item">
-          <a href="#" onclick={actions.openAddDependencyModal}>
+          <a href="#" onclick={actions.openImportProjectDialog}>
             Add Dependency
           </a>
         </li>
