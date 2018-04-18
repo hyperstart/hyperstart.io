@@ -5,7 +5,7 @@ import { User } from "users"
 
 import { State, Actions } from "../api"
 import { ProjectDetailsSection } from "./ProjectDetailsSection"
-import { ImportProjectModal } from "./ImportProjectModal"
+import { AddDependencyModal } from "./AddDependencyModal"
 import { ProjectFilesSection } from "./files"
 import { LogFn } from "logger"
 
@@ -30,7 +30,7 @@ export const ProjectTab = (props: ProjectTabProps) => {
     <div class="view-pane-tab project-tab">
       {ProjectDetailsSection(props)}
       {ProjectFilesSection(props)}
-      {ImportProjectModal(props)}
+      {AddDependencyModal(props)}
     </div>
   )
 }

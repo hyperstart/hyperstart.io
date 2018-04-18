@@ -1,5 +1,7 @@
 import * as form from "lib/form/api"
 import * as search from "lib/search/api"
+import { PackageMetadata } from "lib/npm"
+
 import * as projects from "projects/api"
 import { FileTree, FileNode } from "projects/fileTree"
 
@@ -8,6 +10,23 @@ import { FileTree, FileNode } from "projects/fileTree"
 export interface ImportProjectDialog {
   search: search.State
   selected?: string
+}
+
+export interface AddPackageDependencyState {
+  input: string
+  versions: string[]
+  version?: string
+  loading?: boolean
+  error?: string
+}
+
+export type AddDependencyTab = "project" | "package"
+
+export interface AddDependencyModal {
+  selectedTab: AddDependencyTab
+  projectSearch: search.State
+  selectedProject?: string
+  package: AddPackageDependencyState
 }
 
 export interface State {
@@ -19,6 +38,7 @@ export interface State {
   selectedFile?: string
   previewedFile?: string
   shortcutsModal?: boolean
+  addDependencyModal?: AddDependencyModal
 }
 
 // # Actions
@@ -26,6 +46,24 @@ export interface State {
 export interface OpenFileModalPayload {
   type: projects.FileType
   parent?: FileNode
+}
+
+export interface SetPackagesStatePayload {
+  version?: string
+  loading?: boolean
+  error?: string
+  versions?: string[]
+}
+
+export interface AddPackageDependencyActions {
+  setInput(value: string)
+  set(payload: SetPackagesStatePayload)
+}
+
+export interface AddDependencyModalActions {
+  projectsSearch: search.Actions
+  package: AddPackageDependencyActions
+  selectTab(tab: AddDependencyTab)
 }
 
 export interface Actions {
@@ -56,4 +94,8 @@ export interface Actions {
   // ## Shortcut modal
   showShortcutsModal()
   hideShortcutsModal()
+  // # Add Dependency modal
+  addDependencyModal: AddDependencyModalActions
+  openAddDependencyModal()
+  closeAddDependencyModal()
 }
