@@ -21,7 +21,7 @@ export function getSelectedAction(state: State): AppAction | null {
   return get(state.runs, getPath(run, path))
 }
 
-export function getPath(run: string, path: number[]): Path {
+export function getPath(run: string, path: number[]): (string | number)[] {
   const result: Path = [run]
   path.forEach(index => {
     result.push("actions", index)

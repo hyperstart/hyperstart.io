@@ -56,7 +56,8 @@ function appendActionEvent(
         collapsed: false,
         actionData: event.data,
         actions: [],
-        previousState: action.previousState
+        previousState: action.previousState,
+        stateCollapses: {}
       }
 
       return {
@@ -117,7 +118,6 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
   state: {
     runs: {},
     logs: [],
-    paneDisplay: "over-sources",
     valueDisplay: "state",
     paneShown: false,
     selectedAction: null,
@@ -136,7 +136,8 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
         collapsed: false,
         actions: [],
         previousState: null,
-        nextState: event.state
+        nextState: event.state,
+        stateCollapses: {}
       }
 
       runs[event.runId] = {
@@ -163,7 +164,8 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
             actions: [],
             name: event.action,
             actionData: event.data,
-            previousState: prevAction.nextState
+            previousState: prevAction.nextState,
+            stateCollapses: {}
           }
 
           actions.push(prevAction, action)
@@ -200,6 +202,15 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
     select: (selectedAction: api.SelectedAction | null) => {
       return { selectedAction }
     },
+    collapseAppAction: (payload: api.CollapseAppActionPayload) => state => {
+      const { run, actionPath, appActionPath, collapsed } = payload
+
+      const path = getPath(run, actionPath)
+      path.push("stateCollapses", appActionPath)
+
+      const runs: api.Runs = set(state.runs, path, collapsed)
+      return { runs }
+    },
     showPane: (paneShown: boolean) => {
       if (paneShown == true) {
         logEvent("debug", {
@@ -208,9 +219,6 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
         })
       }
       return { paneShown }
-    },
-    setPaneDisplay: (paneDisplay: api.PaneDisplay) => {
-      return { paneDisplay }
     },
     setValueDisplay: (valueDisplay: api.ValueDisplay) => {
       return { valueDisplay }

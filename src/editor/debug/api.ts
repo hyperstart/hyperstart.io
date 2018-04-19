@@ -1,3 +1,5 @@
+import { StringMap } from "lib/utils"
+
 // # State
 
 export interface AppAction {
@@ -9,6 +11,7 @@ export interface AppAction {
   nextState?: any
   actionData?: any
   actionResult?: any
+  stateCollapses: StringMap<boolean>
 }
 
 export interface Run {
@@ -40,8 +43,6 @@ export interface RuntimeEvent {
   level: "info" | "warn" | "error"
 }
 
-export type PaneDisplay = "fullscreen" | "over-sources"
-
 export type ValueDisplay = "state" | "result" | "data" | "debugger-state"
 
 export interface SelectedAction {
@@ -53,7 +54,6 @@ export interface State {
   runs: Runs
   logs: RuntimeEvent[]
   paneShown: boolean
-  paneDisplay: PaneDisplay
   selectedAction: SelectedAction | null
   collapseRepeatingActions: boolean
   valueDisplay: ValueDisplay
@@ -66,13 +66,20 @@ export interface ToggleActionPayload {
   path: number[]
 }
 
+export interface CollapseAppActionPayload {
+  run: string
+  actionPath: number[]
+  appActionPath: string
+  collapsed: boolean
+}
+
 export interface Actions {
   log(event: RuntimeEvent)
   logInit(event: InitEvent)
   logAction(event: ActionEvent)
+  collapseAppAction(payload: CollapseAppActionPayload)
   select(action: SelectedAction | null)
   showPane(shown: boolean)
-  setPaneDisplay(paneDisplay: PaneDisplay)
   setValueDisplay(valueDisplay: ValueDisplay)
   toggleRun(run: string)
   toggleAction(payload: ToggleActionPayload)
