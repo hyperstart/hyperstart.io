@@ -54,7 +54,7 @@ export function getPreviewedFile(
 
   paths.shift()
   paths.shift()
-  const path = paths.join("/")
+  const path = "/" + paths.join("/")
   const id = state.files.byPath[path]
   if (!id) {
     return { notFound: true, path }

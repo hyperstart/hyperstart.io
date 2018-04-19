@@ -20,6 +20,7 @@ import { openProject } from "./openProject"
 import { getDirtySources } from "./selectors"
 import { runProject } from "./runProject"
 import { getEditorUrl } from "utils"
+import { logEvent } from "analytics"
 
 function copyFiles(files: projects.FileTree): projects.Files {
   const results: projects.Files = {}
@@ -354,10 +355,14 @@ const _editor: ModuleImpl<api.State, Actions> = {
         return {}
       }
 
+      if (typeof fileOrUrl !== "string") {
+        logEvent("screen_view", { screen_name: "Preview of " + fileOrUrl.path })
+      }
+
       replace(
         typeof fileOrUrl === "string"
           ? fileOrUrl
-          : getEditorUrl(state.project) + "/" + fileOrUrl.path
+          : getEditorUrl(state.project) + fileOrUrl.path
       )
       return {}
     },
