@@ -53,13 +53,24 @@ export function openProject(
     logs: []
   }
 
-  return {
+  const editable = isEditable(project, currentUser)
+
+  const result: Partial<State> = {
     compilationOutput: null,
     debug,
     files,
     project: project.details,
     sources,
-    status: isEditable(project, currentUser) ? "editing" : "read-only",
+    status: editable ? "editing" : "read-only",
     ui
   }
+
+  if (!editable) {
+    result.localStore = {
+      ...state.localStore,
+      [project.details.id]: project
+    }
+  }
+
+  return result
 }
