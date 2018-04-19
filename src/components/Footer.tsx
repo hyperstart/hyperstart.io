@@ -8,6 +8,7 @@ import { CreateProjectModal } from "./CreateProjectModal"
 import "./Footer.scss"
 import { ShortcutsModal } from "editor"
 import { Button } from "lib/components"
+import { Link } from "lib/router"
 
 export interface FooterProps {
   state: State
@@ -44,19 +45,23 @@ export function Footer(props: FooterProps) {
         </section>
         <section class="navbar-center">
           <a
-            href="mailto:contact@hyperstart.io"
-            class="text-light"
-            target="_blank"
-          >
-            Contact
-          </a>
-          |
-          <a
             href="https://twitter.com/HyperstartJS"
             class="text-light"
             target="_blank"
           >
             Twitter
+          </a>
+          |
+          <Link href="/blog" class="text-light">
+            Blog
+          </Link>
+          |
+          <a
+            href="mailto:contact@hyperstart.io"
+            class="text-light"
+            target="_blank"
+          >
+            Contact
           </a>
           |
           <a
