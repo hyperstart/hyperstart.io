@@ -100,6 +100,9 @@ export const module: ModuleImpl<State, Actions> = {
 
       addListener("projects/:id", match => {
         const id = match.params.id
+        if (actions.getState().editor.project) {
+          return
+        }
         if (id === LOCAL_PROJECT_ID) {
           const store = actions.editor.localStore.getState()
           if (store[id]) {

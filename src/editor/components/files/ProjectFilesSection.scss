@@ -74,40 +74,4 @@
       }
     }
   }
-
-  .file-window {
-    padding-right: 0.1rem;
-    border: 1px solid $border-color-dark;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-
-    .title-bar {
-      border-bottom: 1px solid $border-color-dark;
-
-      .btn-clear {
-        margin-top: 0.2rem;
-        margin-right: 0.2rem;
-        float: right;
-
-        &:hover {
-          color: $primary-color;
-        }
-      }
-    }
-
-    .monaco-editor {
-      overflow-y: auto;
-      min-height: 0px;
-      flex-grow: 1;
-      height: 100%;
-    }
-
-    .markdown-preview {
-      overflow-y: auto;
-      min-height: 0px;
-      flex-grow: 1;
-      height: 100%;
-    }
-  }
 }

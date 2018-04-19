@@ -8,6 +8,8 @@ import { MonacoEditor, getModel } from "../../monaco"
 import { render, postRender } from "./markdown"
 import { isNotFound } from "../../selectors"
 
+import "./FilePreview.scss"
+
 export interface PreviewProps {
   actions: Actions
   file: SourceNode
@@ -84,7 +86,7 @@ export const FilePreview = (props: FilePreviewProps) => {
 
   if (isNotFound(file)) {
     return (
-      <div class="file-window">
+      <div class="file-preview">
         <h3>File not found!</h3>
         No file at path {file.path}!
         <a href="#" onclick={onclose}>
@@ -95,7 +97,7 @@ export const FilePreview = (props: FilePreviewProps) => {
   }
 
   return (
-    <div class="file-window">
+    <div class="file-preview">
       <div class="title-bar">
         <span>Preview of {file.path}</span>
         <button
