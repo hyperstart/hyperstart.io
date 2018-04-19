@@ -6,8 +6,9 @@ import "./SplitPane.scss"
 
 export interface SplitPaneProps {
   horizontal?: boolean
-  [name: string]: any
   pane0Percent?: number
+  class?: string
+  [name: string]: any
 }
 
 export function SplitPane(props: SplitPaneProps, children: any[]) {
@@ -43,8 +44,14 @@ export function SplitPane(props: SplitPaneProps, children: any[]) {
     ? { ...children[1].attributes.style, ...style1 }
     : style1
 
+  const className = rest.class || ""
+  delete rest.class
+
   return (
-    <section class={`split-pane ${vertical ? "vertical" : ""}`} {...rest}>
+    <section
+      class={`split-pane ${vertical ? "vertical" : ""} ${className}`}
+      {...rest}
+    >
       {children[0]}
       <span class="resizer" />
       {children[1]}

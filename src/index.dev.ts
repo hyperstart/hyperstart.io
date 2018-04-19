@@ -6,3 +6,7 @@ import { State, Actions } from "./api"
 import { view } from "./view"
 
 devtools<any>(app)(module.state, module.actions, view, document.body).init()
+
+// import { get } from "lib/unpkg"
+
+// get({ pkg: "hyperapp" }).then(console.log)

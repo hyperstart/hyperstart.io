@@ -11,6 +11,8 @@ import { hasDirtySources, isDebuggable } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
 
+import "./Editor.scss"
+
 export interface EditorProps {
   state: State
   actions: Actions
@@ -148,6 +150,7 @@ export function Editor(props: EditorProps) {
       key="project-editor-div"
       oncreate={oncreate}
       ondestroy={ondestroy}
+      class="code-editor"
     >
       {state.debug.paneShown ? DebuggerPane(props) : SourcesPane(props)}
       {ViewsPane(props)}
