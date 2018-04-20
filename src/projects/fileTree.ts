@@ -22,6 +22,7 @@ export interface FolderNode extends BaseFile {
   type: "folder"
   children: string[]
   projectId?: string
+  version?: string
   expanded?: boolean
 }
 
@@ -56,6 +57,9 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
     }
     if (file.projectId) {
       result.projectId = file.projectId
+    }
+    if (file.version) {
+      result.version = file.version
     }
     return result
   }

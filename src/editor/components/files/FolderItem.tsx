@@ -59,6 +59,14 @@ function FolderDropdown(props: FolderDropdownProps) {
   )
 }
 
+function FolderVersion(props: FolderItemProps) {
+  const { item } = props
+  if (item.version) {
+    return <span class="folder-version">@{item.version}</span>
+  }
+  return null
+}
+
 function DependenciesFolderDropdown(props: FolderItemProps) {
   const actions = props.actions.ui
   return (
@@ -115,8 +123,8 @@ export function FolderItem(props: FolderItemProps) {
 
   return (
     <div class="file c-hand">
-      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
-      {FolderDropdown(props)}
+      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}
+      {FolderVersion(props)} {FolderDropdown(props)}
     </div>
   )
 }

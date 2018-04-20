@@ -29,7 +29,6 @@ export const ProjectTab = (props: ProjectTabProps) => {
 
   const file = getPreviewedFile(state)
   if (file) {
-    console.log("Previewing", file)
     return (
       <div class="view-pane-tab project-tab">
         {FilePreview({ state, actions, file })}

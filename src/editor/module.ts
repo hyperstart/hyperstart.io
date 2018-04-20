@@ -250,7 +250,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
           const payload: projects.ImportProjectsPayload = {
             id,
             projects: projects.map(project => ({
+              id: project.details.id,
               name: project.details.name,
+              version: project.details.version,
               files: project.files
             }))
           }

@@ -396,7 +396,8 @@ module.exports = {
             url: "https://github.com/hyperapp"
           },
           url: "https://github.com/hyperapp/hyperapp",
-          version: "1.2.5"
+          version: "1.2.5",
+          hidden: false
         }
       },
       "projects/hyperapp/files": {
