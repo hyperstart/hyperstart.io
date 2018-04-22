@@ -121,15 +121,17 @@ function getProjectFolder(project: ImportedProject, parent: string): File {
   if (project.version) {
     result.version = project.version
   }
-  console.log("getProjectFolder", result)
+  // console.log("getProjectFolder", result)
   return result
 }
 
 export interface ImportedProject {
   id: string
   name: string
-  version?: string
   files: StringMap<File>
+  storageUrl?: string
+  mainFile?: string
+  version?: string
 }
 
 export const importProjects = (
@@ -162,6 +164,14 @@ export const importProjects = (
         getProjectFolder(project, root.id)
       )
     }
+    // set project info.
+    root.project = {
+      id: project.id,
+      mainFile: project.mainFile,
+      version: project.version
+      // storageUrl: project.storageUrl
+    }
+
     const toImportTree = getFileTree(project.files)
     toImportTree.roots.forEach(fileId => {
       const toImport = toImportTree.byId[fileId]
