@@ -1,4 +1,3 @@
-import createRequireRegex from "requires-regex"
 import semver from "semver"
 
 import { get } from "lib/unpkg"
