@@ -1,5 +1,6 @@
 import { DiagnosticCategory } from "lib/typescript"
 import { fetchSource } from "lib/fetchSource"
+import { concat } from "lib/fs"
 
 import { DEPENDENCIES_FOLDER_PATH } from "projects"
 
@@ -8,6 +9,7 @@ import { State } from "../../api"
 import { CompileOutput } from "../api"
 import { getErrorMessage } from "lib/utils"
 import { createPairMap } from "lib/pairMap"
+import { inferMainFile, PackageJson } from "lib/npm"
 
 const suffixes = [
   "",
@@ -44,18 +46,42 @@ const getSegments = (path: string): string[] => {
   return segments
 }
 
-// const removeSlash = (path: string): string => {
-//   return path.startsWith("/") ? path.substring(1) : path
-// }
+/**
+ * Recursively checks all the enclosing folders and checks the ones that are projects, i.e. that contains
+ * a package.json.
+ *
+ * @param state the editor state
+ * @param path the path of the file to look from, must start with "/"
+ */
+function getEnclosingProjectsRoots(state: State, path: string): string[] {
+  // e.g. ["", "dependencies", "@hyperapp", "render", "dependencies", "hyperapp", "index.js"]
+  const candidates = path.split("/")
+  // remove the file name
+  candidates.pop()
+  for (let i = 1; i < candidates.length; i++) {
+    candidates[i] = concat(candidates[i - 1], candidates[i])
+  }
+
+  console.log("Candidates", candidates)
+
+  console.log(
+    "Mapped candidates",
+    candidates.map(c => concat(c, "/package.json"))
+  )
+
+  return candidates
+    .filter(candidate => state.files.byPath[concat(candidate, "/package.json")])
+    .reverse()
+}
 
 /**
  *
  */
-const getGlobalPath = (
+function getGlobalPath(
   state: State,
   localPath: string,
   relativeTo?: string
-): string => {
+): string {
   // index.js
   if (!relativeTo) {
     return localPath
@@ -76,7 +102,7 @@ const getGlobalPath = (
     const folder = getParentPath(getSegments(relativeTo))
     const local = getSegments(localPath)
     const segments = folder.concat(local)
-    const result = []
+    const result: string[] = []
     for (const segment of segments) {
       if (segment === "..") {
         result.pop()
@@ -84,11 +110,49 @@ const getGlobalPath = (
         result.push(segment)
       }
     }
-    return "/" + result.join("/")
+    return concat(result)
   }
 
-  // dependency
-  return DEPENDENCIES_FOLDER_PATH + "/" + localPath
+  // dependency: get the enclosing project's root folders from nested to outer
+  const enclosingProjects = relativeTo
+    ? getEnclosingProjectsRoots(state, relativeTo)
+    : [""]
+  console.log("enclosing projects", enclosingProjects, relativeTo, state)
+  for (const project of enclosingProjects) {
+    const dependencyRoot = concat(
+      project,
+      "/dependencies",
+      localPath,
+      "/package.json"
+    )
+    console.log("Checking " + dependencyRoot)
+    const id = state.files.byPath[dependencyRoot]
+    if (!id) {
+      continue
+    }
+
+    const pkgJsonFile = state.files.byId[id]
+    if (!pkgJsonFile || pkgJsonFile.type !== "file") {
+      continue
+    }
+
+    try {
+      const pkgJson: PackageJson = JSON.parse(pkgJsonFile.content)
+      const mainFile = inferMainFile(pkgJson)
+
+      if (mainFile) {
+        return concat(project, "/dependencies", localPath, mainFile)
+      }
+    } catch (e) {
+      console.log(`Could not parse ${dependencyRoot}`)
+    }
+
+    throw new Error(
+      `Could not resolve ${localPath} imported in ${relativeTo}: error while parsing the package.json file.`
+    )
+  }
+
+  throw new Error(`Could not resolve ${localPath} imported in ${relativeTo}`)
 }
 
 /**

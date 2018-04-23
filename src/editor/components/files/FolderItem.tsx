@@ -4,7 +4,7 @@ import { Icon } from "lib/components"
 import { FolderNode } from "projects/fileTree"
 
 import { State, Actions } from "../../api"
-import { isDependenciesFolder } from "./utils"
+import { isRootDependenciesFolder } from "./utils"
 
 function stopPropagation(e: Event) {
   e.stopPropagation()
@@ -121,7 +121,7 @@ export interface FolderItemProps {
 export function FolderItem(props: FolderItemProps) {
   const { state, actions, item } = props
 
-  if (isDependenciesFolder(item)) {
+  if (isRootDependenciesFolder(item)) {
     return DependenciesFolderItem(props)
   }
 

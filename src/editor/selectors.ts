@@ -113,6 +113,8 @@ export function isDebuggable(state: State): boolean {
     return false
   }
 
+  // TODO check version as well....
+
   const path = DEPENDENCIES_FOLDER_PATH + "/" + HYPERAPP_NAME + "/index.js"
   const id = state.files.byPath[path]
   return !!id

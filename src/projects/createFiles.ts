@@ -4,27 +4,19 @@ import { File } from "./api"
 import { files } from "./utils"
 import { DEPENDENCIES_FOLDER_NAME } from "./constants"
 
-const css = ``
+// # Blank sources
 
-const js = `import "./index.css"
+const blankJs = `import "./index.css"
 
 document.getElementById("app").innerHTML = "Hello World"
 `
 
-const jsImport = `import { text } from "./text"
-
-document.getElementById("app").innerHTML = text
-`
-
-const jsText = `export const text = "Hello World"
-`
-
-const html = `<!DOCTYPE html>
+const blankHtml = `<!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
-  <title>Awesome Stuff</title>
+  <title>New Project</title>
 </head>
 
 <body>
@@ -37,7 +29,18 @@ const html = `<!DOCTYPE html>
 </html>
 `
 
-const js2 = `import { h, app } from "hyperapp"
+const blankCss = ``
+
+const blankPkg = `{
+  "name": "new-project",
+  "version": "0.0.1",
+  "description": "New Project",
+  "main": "index.js"
+}`
+
+// # HA sources
+
+const haJs = `import { h, app } from "hyperapp"
 
 import "./index.css"
 
@@ -61,19 +64,48 @@ const view = (state, actions) => (
 app(state, actions, view, document.body)
 `
 
+const haHtml = blankHtml
+
+const haCss = blankCss
+
+const haPkg = `{
+  "name": "new-project",
+  "version": "0.0.1",
+  "description": "New Project",
+  "main": "index.js",
+  dependencies: {
+    "hyperapp": "1.2.5"
+  }
+}`
+
+// # Create file functions
+
 export function createBlankFiles(): StringMap<File> {
   return files()
     .folder(DEPENDENCIES_FOLDER_NAME)
-    .source("index.js", js)
-    .source("index.html", html)
-    .source("index.css", css)
+    .source("index.js", blankJs)
+    .source("index.html", blankHtml)
+    .source("index.css", blankCss)
+    .source("package.json", blankPkg)
     .get()
 }
 
 export function createHyperappFiles(): StringMap<File> {
   return files()
-    .source("index.js", js2)
-    .source("index.html", html)
-    .source("index.css", css)
+    .folder(DEPENDENCIES_FOLDER_NAME)
+    .source("index.js", haJs)
+    .source("index.html", haHtml)
+    .source("index.css", haCss)
+    .source("package.json", haPkg)
     .get()
 }
+
+// # Old stuff
+
+const jsImport = `import { text } from "./text"
+
+document.getElementById("app").innerHTML = text
+`
+
+const jsText = `export const text = "Hello World"
+`

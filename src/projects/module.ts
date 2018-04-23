@@ -340,8 +340,6 @@ export function createProjects(
         const oldFiles = state[id].files
         const files = importBundle(bundle, oldFiles)
 
-        console.log("New files:", files)
-
         return updateProjectFiles(state, actions, store, id, oldFiles, files)
       }
     }
