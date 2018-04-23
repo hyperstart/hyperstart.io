@@ -37,6 +37,11 @@ export function HeaderMenu(props: HeaderMenuProps) {
             Add Dependency
           </a>
         </li>
+        <li class="menu-item">
+          <a href="#" onclick={actions.openImportNpmPackageModal}>
+            Add Npm Package
+          </a>
+        </li>
       </ul>
     </div>
   )

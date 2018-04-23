@@ -36,11 +36,13 @@ export function createProject(payload: Payload): Promise<Project> {
   if (template === "hyperapp") {
     let hyperappFiles: StringMap<File>
     return fetch(HYPERAPP_ID).then(hyperapp => {
+      const name = hyperapp.details.name
+      const id = hyperapp.details.id
+      const version = hyperapp.details.version
+      const files = hyperapp.files
       return {
         details,
-        files: importProjects(files, [
-          { name: HYPERAPP_NAME, files: hyperapp.files }
-        ]),
+        files: importProjects(files, [{ id, name, files, version }]),
         status: { loading: false }
       }
     })

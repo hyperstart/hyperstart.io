@@ -54,8 +54,8 @@ export interface ImportProjectModalProps {
 
 export const ImportProjectModal = (props: ImportProjectModalProps) => {
   const { state, actions, log } = props
-  const dialog = state.ui.importProjectDialog
-  if (!dialog) {
+  const modal = state.ui.importProjectDialog
+  if (!modal) {
     return <div />
   }
 
@@ -65,7 +65,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
   }
 
   const onsubmit = e => {
-    const project = dialog.selected
+    const project = modal.selected
     if (project) {
       e.preventDefault()
       log(actions.importProjects([project]))
@@ -73,7 +73,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
     }
   }
 
-  const searchState = dialog.search
+  const searchState = modal.search
   const searchActions = actions.ui.importProjectDialog.search
   return (
     <div class="modal active import-project-modal">
@@ -130,10 +130,10 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
               Cancel
             </button>
             <button
-              class={"btn btn-primary" + (dialog.selected ? "" : " disabled")}
+              class={"btn btn-primary" + (modal.selected ? "" : " disabled")}
               onclick={onsubmit}
             >
-              Import
+              Add
             </button>
           </div>
         </div>

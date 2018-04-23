@@ -115,6 +115,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
           )
         }
       })
+
+      // hide the import npm package modal...
+      return { ui: { ...state.ui, importNpmPackageModal: null } }
     },
     _setMonacoLoaded: () => ({ monacoLoaded: true }),
     _setState: (state: Partial<api.State>) => state,
@@ -250,7 +253,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
           const payload: projects.ImportProjectsPayload = {
             id,
             projects: projects.map(project => ({
+              id: project.details.id,
               name: project.details.name,
+              version: project.details.version,
               files: project.files
             }))
           }

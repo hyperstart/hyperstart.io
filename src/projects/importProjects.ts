@@ -110,9 +110,28 @@ function importFileRecursive(
   }
 }
 
+function getProjectFolder(project: ImportedProject, parent: string): File {
+  const result: File = {
+    id: null,
+    name: project.name,
+    type: "folder",
+    projectId: project.id,
+    parent
+  }
+  if (project.version) {
+    result.version = project.version
+  }
+  // console.log("getProjectFolder", result)
+  return result
+}
+
 export interface ImportedProject {
+  id: string
   name: string
   files: StringMap<File>
+  storageUrl?: string
+  mainFile?: string
+  version?: string
 }
 
 export const importProjects = (
@@ -137,14 +156,22 @@ export const importProjects = (
     for (const name of names) {
       path += "/" + name
       foldersToExclude.push(path)
-      const parent = root.id
-      root = importFile(files, tree, result, path, {
-        id: null,
-        name: name,
-        type: "folder",
-        parent
-      })
+      root = importFile(
+        files,
+        tree,
+        result,
+        path,
+        getProjectFolder(project, root.id)
+      )
     }
+    // set project info.
+    root.project = {
+      id: project.id,
+      mainFile: project.mainFile,
+      version: project.version
+      // storageUrl: project.storageUrl
+    }
+
     const toImportTree = getFileTree(project.files)
     toImportTree.roots.forEach(fileId => {
       const toImport = toImportTree.byId[fileId]

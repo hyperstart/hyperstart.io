@@ -15,6 +15,7 @@ export interface State {
   editForm?: form.State
   createFileDialog?: form.State
   importProjectDialog?: ImportProjectDialog
+  importNpmPackageModal?: form.State
   deletingFile?: FileNode
   selectedFile?: string
   previewedFile?: string
@@ -33,13 +34,17 @@ export interface Actions {
   editForm: form.Actions
   startEdit(project: projects.Details)
   stopEdit()
-  // ## Import project dialog
+  // ## Import project modal
   importProjectDialog: {
     search: search.Actions
   }
   openImportProjectDialog()
   selectImportedProject(projectId: string)
   closeImportProjectDialog()
+  // ## Import Npm Package modal
+  importNpmPackageModal: form.Actions
+  openImportNpmPackageModal()
+  closeImportNpmPackageModal()
   // ## Delete file modal
   openDeleteFileModal(file: FileNode)
   closeDeleteFileModal()

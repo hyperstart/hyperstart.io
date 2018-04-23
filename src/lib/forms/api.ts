@@ -1,9 +1,9 @@
-import { FormField } from "lib/form/api"
+import { FormFieldState } from "lib/form/api"
 
 // # State
 
 export interface Form {
-  [field: string]: FormField
+  [field: string]: FormFieldState
 }
 
 export interface State {

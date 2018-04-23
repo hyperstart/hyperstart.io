@@ -5,6 +5,7 @@ import { User } from "users"
 
 import { State, Actions } from "../api"
 import { ProjectDetailsSection } from "./ProjectDetailsSection"
+import { ImportNpmPackageModal } from "./ImportNpmPackageModal"
 import { ImportProjectModal } from "./ImportProjectModal"
 import { ProjectFilesSection, FilePreview } from "./files"
 import { LogFn } from "logger"
@@ -29,7 +30,6 @@ export const ProjectTab = (props: ProjectTabProps) => {
 
   const file = getPreviewedFile(state)
   if (file) {
-    console.log("Previewing", file)
     return (
       <div class="view-pane-tab project-tab">
         {FilePreview({ state, actions, file })}
@@ -42,6 +42,7 @@ export const ProjectTab = (props: ProjectTabProps) => {
       {ProjectDetailsSection(props)}
       {ProjectFilesSection(props)}
       {ImportProjectModal(props)}
+      {ImportNpmPackageModal(props)}
     </div>
   )
 }

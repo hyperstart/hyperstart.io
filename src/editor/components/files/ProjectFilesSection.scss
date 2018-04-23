@@ -22,6 +22,10 @@
     min-height: 0px;
     flex-grow: 1;
 
+    .folder-version {
+      color: $body-font-color-dark;
+    }
+
     .file-node {
       padding-left: 0.8rem;
     }

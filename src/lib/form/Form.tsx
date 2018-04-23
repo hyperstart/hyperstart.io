@@ -3,9 +3,9 @@ import { h } from "hyperapp"
 import { Modal } from "lib/components"
 
 import { State, Actions } from "./api"
-import { Field } from "./Field"
+import { FormField } from "./FormField"
 
-export interface FormFieldProps {
+export interface FieldProps {
   name: string
   placeholder?: string
   label?: string
@@ -19,7 +19,7 @@ export interface FormProps {
   active: boolean
   title: string
   submit()
-  fields: FormFieldProps[]
+  fields: FieldProps[]
   fieldSize?: "sm" | "lg"
   horizontal?: string[]
 }
@@ -44,7 +44,13 @@ export function Form(props: FormProps) {
     >
       <h3>{props.title}</h3>
       {fields.map(f =>
-        Field({ ...f, state, actions, horizontal, class: className })
+        FormField({
+          ...f,
+          state: state[f.name],
+          setField: actions.setField,
+          horizontal,
+          class: className
+        })
       )}
       <div class="text-right py-6">
         <button

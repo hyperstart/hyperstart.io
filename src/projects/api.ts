@@ -6,14 +6,25 @@ import { ModuleActions } from "api"
 
 export type FileType = "file" | "folder"
 
+export interface FileProject {
+  id: string
+  version?: string
+  mainFile?: string
+  // storageUrl?: string  // TODO later!
+}
+
 export interface File {
   id: string
   type: FileType
   name: string
   parent?: string
+  // files
   content?: string
   url?: string
+  // folders
+  project?: FileProject
   projectId?: string
+  version?: string
 }
 
 export interface Files {
@@ -88,7 +99,9 @@ export interface DeleteFilesPayload {
 }
 
 export interface ImportedProject {
+  id: string
   name: string
+  version?: string
   files: Files
 }
 

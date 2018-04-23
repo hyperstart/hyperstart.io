@@ -11,6 +11,10 @@ import * as api from "./api"
 
 const editForm = createForm()
 const createFileForm = createForm()
+const importNpmPackageForm = createForm({
+  name: "",
+  version: ""
+})
 const search = createSearch([{ name: "import-project" }])
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
@@ -50,6 +54,18 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     },
     closeImportProjectDialog: () => state => {
       return { importProjectDialog: null }
+    },
+    // ## Import Npm Package modal
+    importNpmPackageModal: importNpmPackageForm.actions,
+    openImportNpmPackageModal: () => {
+      return {
+        importNpmPackageModal: importNpmPackageForm.state
+      }
+    },
+    closeImportNpmPackageModal: () => {
+      return {
+        importNpmPackageModal: null
+      }
     },
     // ## Delete file modal
     openDeleteFileModal: (deletingFile: projects.FileNode) => {

@@ -7,6 +7,11 @@ import { view } from "./view"
 
 devtools<any>(app)(module.state, module.actions, view, document.body).init()
 
-// import { get } from "lib/unpkg"
-
-// get({ pkg: "hyperapp" }).then(console.log)
+// import { bundle } from "lib/bundler"
+// console.log("Starting... " + new Date())
+// bundle("webpack").then(bundle => {
+//   // react rollup webpack
+//   // @hyperapp/router
+//   console.log("Done: " + new Date())
+//   // console.log(JSON.stringify(bundle, null, 2))
+// })
