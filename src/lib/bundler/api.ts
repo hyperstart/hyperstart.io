@@ -1,3 +1,5 @@
+import { PackageJson } from "../npm"
+
 export interface Dependencies {
   [name: string]: string
 }
@@ -16,16 +18,6 @@ export interface Packages {
   [name: string]: {
     [version: string]: Package
   }
-}
-
-export interface PackageJson {
-  name: string
-  version: string
-  files: string[]
-  main?: string
-  module?: string
-  dependencies?: Dependencies
-  peerDependencies?: Dependencies
 }
 
 export interface Bundle {

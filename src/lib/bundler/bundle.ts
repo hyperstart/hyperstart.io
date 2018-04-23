@@ -2,7 +2,8 @@ import semver from "semver"
 
 import { get } from "lib/unpkg"
 import { resolveId } from "./resolveId"
-import { Bundle, Package, PackageJson } from "./api"
+import { Bundle, Package } from "./api"
+import { PackageJson, inferMainFile } from "../npm"
 
 // # Remove comments
 const commentsRegex = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm
@@ -103,31 +104,6 @@ export function getPkg(
   for (const v of Object.keys(versions)) {
     if (semver.satisfies(v, version)) {
       return versions[v]
-    }
-  }
-  return null
-}
-
-function inferMainFile(json: PackageJson): string | null {
-  if (json.module) {
-    return json.module
-  } else if (json.main) {
-    return json.main
-  } else {
-    if (json.files.length > 0) {
-      const candidates: string[] = []
-      for (const file of json.files) {
-        if (file === "index.js") {
-          return file
-        }
-        if (file.endsWith(".js")) {
-          candidates.push(file)
-        }
-      }
-
-      if (candidates.length === 1) {
-        return candidates[0]
-      }
     }
   }
   return null

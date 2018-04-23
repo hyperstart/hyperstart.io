@@ -80,8 +80,6 @@ export function getFilesFromBundle(
     )
   }
 
-  console.log("Computed files", result)
-
   return result
 }
 
