@@ -23,7 +23,7 @@ export function UserIconButton(props: UserIconButtonProps) {
     }
     return (
       <div class="dropdown dropdown-right user-icon-button">
-        <a class="btn dropdown-toggle btn-secondary" tabindex="0">
+        <a class="btn dropdown-toggle btn-primary" tabindex="0">
           {user.displayName + " "}
           <Icon name="caret-down" />
         </a>
@@ -40,8 +40,8 @@ export function UserIconButton(props: UserIconButtonProps) {
 
   return (
     <div class="dropdown dropdown-right user-icon-button">
-      <a class="btn dropdown-toggle btn-secondary" tabindex="0">
-        User <Icon name="caret-down" />
+      <a class="btn dropdown-toggle btn-primary" tabindex="0">
+        Sign up/Sign In <Icon name="caret-down" />
       </a>
       <ul class="menu">
         <li class="menu-item">

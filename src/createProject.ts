@@ -28,7 +28,7 @@ export function createProject(
         replace("/projects/" + project.details.id)
         logEvent("create_project", {
           event_category: "project",
-          event_label: "Index"
+          event_label: "CreateFromIndex"
         })
       })
   )

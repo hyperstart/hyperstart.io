@@ -164,16 +164,33 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
+      <div class="container py-6">
+        <div class="columns">
+          <div class="column col-12 py-2">
+            <h2 class="text-center">Hyperapp</h2>
+            <div class="col-9 col-md-12 centered text-left">
+              <p>
+                Hyperstart is a development platform developed for, and using,
+                the micro-framework Hyperapp. Hyperapp is focused on doing more
+                with less, improving code readability, performance, and learning
+                curve to start with new projects.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="container">
         <div class="columns">
           <a name="search" />
-          <div class="column col-12 p-2">
+          <div class="column col-12 py-2">
             <h2 class="text-center p-2">Explore Existing Projects</h2>
-            <div class="col-8 col-md-12 centered text-left">
-              <p class="p-2">
-                Try typing "Hyperapp" into the search below to see our own
-                Hyperapp examples and learn how to use the framework, or search
-                for any existing project on Hyperstart. You can also{" "}
+            <div class="col-9 col-md-12 centered text-left">
+              <p class="py-2">
+                You can find a list of all available projects here. Try typing
+                "Hyperapp" into the search below to see our own Hyperapp
+                examples and learn how to use the framework, or search for any
+                existing project on Hyperstart. You can also{" "}
                 <a
                   href="#"
                   onclick={e => {
