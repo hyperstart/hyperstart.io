@@ -1,13 +1,13 @@
 import { h } from "hyperapp"
 
-import { State, Actions } from "./api"
+import { FormFieldState, FormFieldUpdate } from "./api"
 
 // # Field
 
-export interface FieldProps {
-  name: string
-  state: State
-  actions: Actions
+export interface FormFieldProps {
+  state: FormFieldState
+  setField(payload: FormFieldUpdate)
+  name?: string
   placeholder?: string
   label?: string
   class?: string
@@ -15,7 +15,7 @@ export interface FieldProps {
   horizontal?: string[]
 }
 
-function Label(props: FieldProps) {
+function Label(props: FormFieldProps) {
   const { label, horizontal } = props
   if (!label) {
     return null
@@ -31,13 +31,13 @@ function Label(props: FieldProps) {
   return <label class="form-label">{label}</label>
 }
 
-function Input(props: FieldProps) {
-  const { state, actions, name, placeholder = "", type, horizontal } = props
-  const error = state[name].error
-  const value = state[name].value
+function Input(props: FormFieldProps) {
+  const { state, setField, name, placeholder = "", type, horizontal } = props
+  const error = state.error
+  const value = state.value
   const setValue = e => {
     e.preventDefault()
-    actions.setField({ field: name, value: e.target.value })
+    setField({ field: name, value: e.target.value })
   }
   if (horizontal) {
     return (
@@ -65,12 +65,11 @@ function Input(props: FieldProps) {
   ]
 }
 
-export function Field(props: FieldProps) {
+export function FormField(props: FormFieldProps) {
   const { state, name, type } = props
-  const error = state[name].error
   return (
     <div
-      class={`form-group ${error ? "has-error" : ""}`}
+      class={`form-group ${state.error ? "has-error" : ""}`}
       style={{ display: type === "hidden" && "none" }}
     >
       {Label(props)}

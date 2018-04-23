@@ -1,6 +1,6 @@
 // # State
 
-export interface FormField {
+export interface FormFieldState {
   original: any
   value: any
   error?: string
@@ -8,13 +8,13 @@ export interface FormField {
 }
 
 export interface State {
-  [name: string]: FormField
+  [name: string]: FormFieldState
 }
 
 // # Actions
 
 export interface FormUpdate {
-  [name: string]: FormField
+  [name: string]: FormFieldState
 }
 
 export interface FormFieldUpdate {

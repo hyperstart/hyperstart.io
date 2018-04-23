@@ -115,6 +115,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
           )
         }
       })
+
+      // hide the import npm package modal...
+      return { ui: { ...state.ui, importNpmPackageModal: null } }
     },
     _setMonacoLoaded: () => ({ monacoLoaded: true }),
     _setState: (state: Partial<api.State>) => state,

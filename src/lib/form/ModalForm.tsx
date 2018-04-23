@@ -3,7 +3,7 @@ import { h } from "hyperapp"
 import { Modal } from "lib/components"
 
 import { State, Actions } from "./api"
-import { Field } from "./Field"
+import { FormField } from "./FormField"
 
 export interface ModalFieldProps {
   name: string
@@ -22,6 +22,7 @@ export interface ModalFormProps {
   close()
   fields: ModalFieldProps[]
   size?: "sm" | "lg"
+  titleTag?: string
   horizontal?: string[]
 }
 
@@ -31,6 +32,7 @@ export function ModalForm(props: ModalFormProps) {
     actions,
     fields,
     horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"],
+    titleTag = "h3",
     close
   } = props
 
@@ -52,6 +54,7 @@ export function ModalForm(props: ModalFormProps) {
         active={props.active}
         close={props.close}
         title={props.title}
+        titleTag={titleTag}
         size={props.size}
         Footer={() => (
           <div>
@@ -64,7 +67,14 @@ export function ModalForm(props: ModalFormProps) {
           </div>
         )}
       >
-        {fields.map(f => Field({ ...f, state, actions, horizontal }))}
+        {fields.map(f =>
+          FormField({
+            ...f,
+            state: state[f.name],
+            setField: actions.setField,
+            horizontal
+          })
+        )}
       </Modal>
     </form>
   )
