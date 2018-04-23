@@ -23,7 +23,7 @@ const FileDropdown = (props: FileDropdownProps) => {
   }
   return (
     <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
-      <a href="#" class="dropdown-toggle">
+      <a href="#" class="dropdown-toggle" tabindex="0">
         <Icon name="bars" class="actions float-right" />
       </a>
       <ul class="menu">

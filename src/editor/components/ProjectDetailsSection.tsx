@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { Disable, Button } from "lib/components"
+import { Disable, Button, Icon } from "lib/components"
 import { normalize } from "lib/search"
 
 import { User } from "users"
@@ -25,7 +25,9 @@ function HeaderMenu(props: ProjectDetailsSectionProps) {
   }
   return (
     <div class="dropdown dropdown-right float-right">
-      <Button icon="bars" class="dropdown-toggle" />
+      <a href="#" class="dropdown-toggle" tabindex="0">
+        <Icon name="bars" class="actions float-right" />
+      </a>
       <ul class="menu">
         <li class="menu-item">
           <a

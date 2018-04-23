@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { Button } from "lib/components"
+import { Button, Icon } from "lib/components"
 
 import { State, Actions } from "../../api"
 
@@ -13,7 +13,9 @@ export function HeaderMenu(props: HeaderMenuProps) {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right">
-      <Button icon="bars" class="dropdown-toggle btn-primary" />
+      <a href="#" class="dropdown-toggle" tabindex="0">
+        <Icon name="bars" class="actions float-right" />
+      </a>
       <ul class="menu">
         <li class="menu-item">
           <a
