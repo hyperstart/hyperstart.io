@@ -219,13 +219,10 @@ function crawl(result: Bundle, pkg: PackageJson, file: string): Promise<any> {
       // a package is either only es2015 or only commonjs
       deps.push(...getCommonJsImports(rawCode))
     }
+
     return Promise.all(
       deps.map(dep => {
         const resolved = resolveId(dep, file)
-        // console.log(
-        //   `Found dependency "${dep}" in file "${file}" resolved to "${resolved}"`
-        // )
-
         if (resolved.startsWith("/")) {
           // file in the same package
           return crawl(result, pkg, resolved)
@@ -260,8 +257,13 @@ export function bundle(
   },
   file?: string
 ): Promise<Bundle> {
-  return get({ pkg, version, file: "package.json" })
-    .then(res => {
+  const fetches = [
+    get({ pkg, version, file: "package.json" }),
+    get({ pkg, version, file: "README.md" }).catch(e => null)
+  ]
+
+  return Promise.all(fetches)
+    .then(([res, readme]) => {
       const json: PackageJson = JSON.parse(res.content)
       bundle.version = json.version
       const packaged = addPkg(bundle, json)
@@ -274,7 +276,13 @@ export function bundle(
           }`
         )
       }
+
       packaged.mainFile = mainFile
+      packaged.files["/package.json"] = res.content
+
+      if (readme) {
+        packaged.files["/README.md"] = readme.content
+      }
 
       return crawl(bundle, json, file || mainFile)
     })

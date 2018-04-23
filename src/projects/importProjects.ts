@@ -140,7 +140,6 @@ export const importProjects = (
   const result: StringMap<File> = {}
 
   const tree = getFileTree(files)
-  console.log("Existing tree", tree)
   const dependencies = importFile(
     files,
     tree,

@@ -24,7 +24,7 @@ function ensureParentFolder(files: Files, filePath: string): void {
   const segments = filePath.split("/")
   segments.pop() // remove file name
   // file is at the root, filePath always starts with "/"
-  if (segments.length < 1) {
+  if (segments.length <= 1) {
     return
   }
 
