@@ -148,7 +148,7 @@ export const module: ModuleImpl<State, Actions> = {
           replace("/projects/" + project.details.id)
           logEvent("create_project", {
             event_category: "project",
-            event_label: "CreateFromHeader"
+            event_label: "Create" + template + "ProjectFromHeader"
           })
         })
     },

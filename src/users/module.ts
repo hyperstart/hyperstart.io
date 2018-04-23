@@ -142,7 +142,7 @@ const _users: ModuleImpl<api.State, Actions> = {
           actions.hideSignUpModal()
           logEvent("signup", {
             event_category: "users",
-            event_label: "Email"
+            event_label: "SignupEmail"
           })
         })
         .catch(actions._errorOnSignUp)
@@ -168,7 +168,7 @@ const _users: ModuleImpl<api.State, Actions> = {
           actions.hideSignInModal()
           logEvent("login", {
             event_category: "users",
-            event_label: "Email"
+            event_label: "LoginEmail"
           })
         })
         .catch(actions._errorOnSignIn)
@@ -183,7 +183,7 @@ const _users: ModuleImpl<api.State, Actions> = {
         .then(() =>
           logEvent("login", {
             event_category: "users",
-            event_label: "Google"
+            event_label: "LoginGoogle"
           })
         )
     },
@@ -194,7 +194,12 @@ const _users: ModuleImpl<api.State, Actions> = {
       return firebase
         .auth()
         .signInWithPopup(githubProvider)
-        .then(() => logEvent("login", { method: "Github" }))
+        .then(() =>
+          logEvent("login", {
+            event_category: "users",
+            event_label: "LoginGithub"
+          })
+        )
     },
     signOut: (): Promise<void> => {
       return firebase.auth().signOut()
