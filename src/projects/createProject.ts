@@ -39,10 +39,11 @@ export function createProject(payload: Payload): Promise<Project> {
       const name = hyperapp.details.name
       const id = hyperapp.details.id
       const version = hyperapp.details.version
-      const files = hyperapp.files
       return {
         details,
-        files: importProjects(files, [{ id, name, files, version }]),
+        files: importProjects(files, [
+          { id, name, files: hyperapp.files, version }
+        ]),
         status: { loading: false }
       }
     })
