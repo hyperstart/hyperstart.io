@@ -116,7 +116,7 @@ export function createSearch(
           .then(results => {
             logEvent("search", {
               event_category: "project",
-              event_label: { text }
+              event_label: "Search"
             })
             const hasNext = results.length > search.resultsPerPage
             actions.update({ name, status: "success", results, hasNext })

@@ -47,7 +47,10 @@ export function Form(props: FormProps) {
         Field({ ...f, state, actions, horizontal, class: className })
       )}
       <div class="text-right py-6">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        <button
+          class="btn btn-lg btn-primary btn-block btn-medium-font"
+          type="submit"
+        >
           Register
         </button>
       </div>

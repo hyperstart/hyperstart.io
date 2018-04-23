@@ -27,7 +27,7 @@ function CreateButton({ state, actions }: HeaderProps) {
   return Button({
     onclick: actions.ui.openCreateProjectModal,
     text: window.innerWidth < 840 ? "Create" : "Create a Project",
-    class: "button btn-secondary"
+    class: "button btn-primary"
   })
 }
 
@@ -44,7 +44,7 @@ function SaveButton({ state, actions }: HeaderProps) {
       status === "loading",
     onclick: actions.editor.saveAllSources,
     text: "Save",
-    class: "button btn-secondary"
+    class: "button btn-primary"
   })
 }
 
@@ -58,8 +58,8 @@ function RunButton({ state, actions }: HeaderProps) {
   return Button({
     disabled: isLoading(state) || status === "loading",
     onclick: () => actions.editor.run(false),
-    text: "Run",
-    class: "button btn-secondary"
+    text: " Run",
+    class: "button btn-primary mr-1"
   })
 }
 
@@ -77,14 +77,14 @@ function DebugButton({ state, actions }: HeaderProps) {
         disabled={isLoading(state)}
         onclick={() => actions.editor.run(true)}
         text="Debug"
-        class="btn-secondary"
+        class="btn-primary"
       />
       <Button
         disabled={isLoading(state) || !state.editor.compilationOutput}
         active={debugState.paneShown}
         onclick={() => actions.editor.debug.showPane(!debugState.paneShown)}
         icon="caret-down"
-        class="btn-secondary"
+        class="btn-primary"
       />
     </div>
   )
