@@ -164,22 +164,6 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container py-6">
-        <div class="columns">
-          <div class="column col-12 py-2">
-            <h2 class="text-center">Hyperapp</h2>
-            <div class="col-9 col-md-12 centered text-left">
-              <p>
-                Hyperstart is a development platform developed for, and using,
-                the micro-framework Hyperapp. Hyperapp is focused on doing more
-                with less, improving code readability, performance, and learning
-                curve to start with new projects.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="container">
         <div class="columns">
           <a name="search" />
