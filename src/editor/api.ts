@@ -68,6 +68,11 @@ export interface SetFileContentPayload {
   content: string
 }
 
+export interface ImportNpmPackagePayload {
+  name: string
+  version?: string
+}
+
 export interface Actions extends ModuleActions<State> {
   // ## Sub-modules
   debug: debug.Actions
@@ -82,6 +87,7 @@ export interface Actions extends ModuleActions<State> {
   saveAllSources(): Promise<void>
   run(debug: boolean): Promise<void>
   importProjects(projects: string[]): Promise<void>
+  importNpmPackage(payload: ImportNpmPackagePayload): Promise<void>
   // ## Files
   toggleFileExpanded(path: string)
   createFile(file: CreateFilePayload): Promise<void>

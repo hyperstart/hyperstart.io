@@ -1,6 +1,6 @@
 import { StringMap } from "lib/utils"
 
-import { File, Project } from "./api"
+import { File, Project, FileProject } from "./api"
 
 export type FileNode = SourceNode | FolderNode
 
@@ -21,8 +21,7 @@ export interface SourceNode extends BaseFile {
 export interface FolderNode extends BaseFile {
   type: "folder"
   children: string[]
-  projectId?: string
-  version?: string
+  project?: FileProject
   expanded?: boolean
 }
 
@@ -55,11 +54,8 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
       children: [],
       path: ""
     }
-    if (file.projectId) {
-      result.projectId = file.projectId
-    }
-    if (file.version) {
-      result.version = file.version
+    if (file.project) {
+      result.project = file.project
     }
     return result
   }
@@ -185,7 +181,7 @@ export function getFile(node: FileNode): File {
     result.content = node.content
     result.url = node.url
   } else {
-    result.projectId = node.projectId
+    result.project = node.project
   }
 
   return result

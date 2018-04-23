@@ -24,7 +24,7 @@ function ensureParentFolder(files: Files, filePath: string): void {
   const segments = filePath.split("/")
   segments.pop() // remove file name
   // file is at the root, filePath always starts with "/"
-  if (segments.length <= 1) {
+  if (segments.length < 1) {
     return
   }
 
@@ -48,23 +48,6 @@ function ensureParentFolder(files: Files, filePath: string): void {
     files[path].parent = parent
     ensureParentFolder(files, parent)
   }
-}
-
-function ensureDependencyFolder(
-  dependency: Package,
-  result: Files,
-  parentRoot: string = ""
-) {
-  const path = `${parentRoot}/dependencies/${dependency.json.name}`
-
-  result[path] = {
-    id: path,
-    name: dependency.json.name,
-    type: "folder",
-    version: dependency.json.version,
-    parent: `${parentRoot}/dependencies`
-  }
-  ensureParentFolder(result, path)
 }
 
 export function getFilesFromBundle(
@@ -96,6 +79,8 @@ export function getFilesFromBundle(
       `${root}/dependencies/${dep}`
     )
   }
+
+  console.log("Computed files", result)
 
   return result
 }

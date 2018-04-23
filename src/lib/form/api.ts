@@ -13,8 +13,19 @@ export interface State {
 
 // # Actions
 
+export interface FormFieldStateUpdate {
+  value?: any
+  error?: string
+  info?: string
+}
+
+export interface FieldsUpdate {
+  [name: string]: FormFieldStateUpdate
+}
+
 export interface FormUpdate {
-  [name: string]: FormFieldState
+  fields?: FieldsUpdate
+  error?: string
 }
 
 export interface FormFieldUpdate {

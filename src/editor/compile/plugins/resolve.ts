@@ -1,7 +1,7 @@
 import { DiagnosticCategory } from "lib/typescript"
 import { fetchSource } from "lib/fetchSource"
 
-import { DEPENDENCIES_FOLDER } from "projects"
+import { DEPENDENCIES_FOLDER_PATH } from "projects"
 
 import { getSource } from "../../selectors"
 import { State } from "../../api"
@@ -88,7 +88,7 @@ const getGlobalPath = (
   }
 
   // dependency
-  return "/" + DEPENDENCIES_FOLDER + "/" + localPath
+  return DEPENDENCIES_FOLDER_PATH + "/" + localPath
 }
 
 /**

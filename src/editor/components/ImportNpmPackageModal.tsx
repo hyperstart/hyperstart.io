@@ -5,6 +5,7 @@ import { LogFn } from "logger"
 
 import "./ImportNpmPackageModal.scss"
 import { FormField, ModalForm } from "lib/form"
+import { getErrorMessage } from "lib/utils"
 
 export interface ImportNpmPackageModalProps {
   state: State
@@ -15,6 +16,7 @@ export interface ImportNpmPackageModalProps {
 export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
   const { state, actions, log } = props
   const modal = state.ui.importNpmPackageModal
+  const modalActions = actions.ui.importNpmPackageModal
   if (!modal) {
     return <div />
   }
@@ -24,24 +26,43 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
     actions.ui.closeImportNpmPackageModal()
   }
 
-  const onsubmit = e => {
-    // const project = modal.selected
-    // if (project) {
-    //   e.preventDefault()
-    //   log(actions.importProjects([project]))
-    // }
-    e.preventDefault()
-    actions.ui.closeImportNpmPackageModal()
+  const submit = () => {
+    const name = modal["name"].value
+    const version = modal["version"].value
+    if (name === "") {
+      modalActions.setField({
+        field: "name",
+        error: "The name cannot be empty"
+      })
+      return
+    }
+
+    log(
+      actions.importNpmPackage({ name, version }).then(() => {
+        actions.ui.closeImportNpmPackageModal()
+      })
+      // .catch(e => {
+      //   if (version === "") {
+      //     modalActions.setField({
+      //       field: "name",
+      //       error: "Error: " + getErrorMessage(e)
+      //     })
+      //     return
+      //   } else {
+      //     // TODO what to do there?
+      //     throw e
+      //   }
+      // })
+    )
   }
 
   return ModalForm({
     state: modal,
-    actions: actions.ui.importNpmPackageModal,
+    actions: modalActions,
     active: true,
     close: actions.ui.closeImportNpmPackageModal,
     title: "Import package from npm",
-
-    submit: null,
+    submit,
     fields: [
       { name: "name", type: "text", placeholder: "Package name" },
       { name: "version", type: "text", placeholder: "Package version" }

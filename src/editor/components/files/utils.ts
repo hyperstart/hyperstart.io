@@ -1,8 +1,8 @@
 import { FolderNode } from "projects/fileTree"
-import { DEPENDENCIES_FOLDER } from "projects"
+import { DEPENDENCIES_FOLDER_NAME } from "projects"
 
 export function isDependenciesFolder(item: FolderNode): boolean {
-  if (item.name !== DEPENDENCIES_FOLDER) {
+  if (item.name !== DEPENDENCIES_FOLDER_NAME) {
     return false
   }
 

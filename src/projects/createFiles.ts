@@ -2,7 +2,7 @@ import { guid, StringMap } from "lib/utils"
 
 import { File } from "./api"
 import { files } from "./utils"
-import { DEPENDENCIES_FOLDER } from "./constants"
+import { DEPENDENCIES_FOLDER_NAME } from "./constants"
 
 const css = ``
 
@@ -63,7 +63,7 @@ app(state, actions, view, document.body)
 
 export function createBlankFiles(): StringMap<File> {
   return files()
-    .folder(DEPENDENCIES_FOLDER)
+    .folder(DEPENDENCIES_FOLDER_NAME)
     .source("index.js", js)
     .source("index.html", html)
     .source("index.css", css)

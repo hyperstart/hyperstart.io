@@ -2,7 +2,6 @@ import { h } from "hyperapp"
 
 import { Icon } from "lib/components"
 import { FolderNode } from "projects/fileTree"
-import { DEPENDENCIES_FOLDER } from "projects/constants"
 
 import { State, Actions } from "../../api"
 import { isDependenciesFolder } from "./utils"
@@ -61,8 +60,8 @@ function FolderDropdown(props: FolderDropdownProps) {
 
 function FolderVersion(props: FolderItemProps) {
   const { item } = props
-  if (item.version) {
-    return <span class="folder-version">@{item.version}</span>
+  if (item.project && item.project.version) {
+    return <span class="folder-version">@{item.project.version}</span>
   }
   return null
 }

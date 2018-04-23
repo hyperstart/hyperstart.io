@@ -9,6 +9,7 @@ import { SourceEditor } from "editor/components/SourceEditor"
 import { getErrorMessage } from "lib/utils"
 import { importProjects } from "projects/importProjects"
 import { COLLECTION } from "."
+import { importBundle } from "./bundle"
 
 interface SetStatusPayload {
   id: string
@@ -49,6 +50,52 @@ function backCompatible(project: api.Project): api.Project {
     project.details.mainFile = "/" + mainFile
   }
   return project
+}
+
+function updateProjectFiles(
+  state: api.State,
+  actions: Actions,
+  store: store.Store,
+  id: string,
+  oldFiles: api.Files,
+  files: api.Files
+): Promise<void> {
+  const collection = path(id)
+  // added/updated files
+  const toSet: store.DocumentToSet[] = []
+  Object.keys(files).forEach(id => {
+    if (oldFiles[id] !== files[id]) {
+      toSet.push({
+        collection,
+        id,
+        document: files[id]
+      })
+    }
+  })
+  // deleted files
+  const toDelete: store.DocumentToDelete[] = []
+  Object.keys(oldFiles).forEach(id => {
+    if (!files[id]) {
+      toDelete.push({ collection, id })
+    }
+  })
+
+  actions._setStatus({ id, loading: true })
+  return store
+    .update({ toSet, toDelete })
+    .then(() => {
+      const project: api.Project = {
+        details: state[id].details,
+        files,
+        status: { loading: false }
+      }
+      actions._setProject(project)
+    })
+    .catch(e => {
+      const error = getErrorMessage(e)
+      actions._setStatus({ id, error, loading: false })
+      throw e
+    })
 }
 
 export function createProjects(
@@ -281,46 +328,21 @@ export function createProjects(
         actions
       ): Promise<void> => {
         const { id, projects } = payload
-        const collection = path(id)
 
         const oldFiles = state[id].files
         const files = importProjects(oldFiles, projects)
 
-        // added/updated files
-        const toSet: store.DocumentToSet[] = []
-        Object.keys(files).forEach(id => {
-          if (oldFiles[id] !== files[id]) {
-            toSet.push({
-              collection,
-              id,
-              document: files[id]
-            })
-          }
-        })
-        // deleted files
-        const toDelete: store.DocumentToDelete[] = []
-        Object.keys(oldFiles).forEach(id => {
-          if (!files[id]) {
-            toDelete.push({ collection, id })
-          }
-        })
+        return updateProjectFiles(state, actions, store, id, oldFiles, files)
+      },
+      importBundle: (payload: api.ImportBundlePayload) => (state, actions) => {
+        const { id, bundle } = payload
 
-        actions._setStatus({ id, loading: true })
-        return store
-          .update({ toSet, toDelete })
-          .then(() => {
-            const project: api.Project = {
-              details: state[id].details,
-              files,
-              status: { loading: false }
-            }
-            actions._setProject(project)
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, error, loading: false })
-            throw e
-          })
+        const oldFiles = state[id].files
+        const files = importBundle(bundle, oldFiles)
+
+        console.log("New files:", files)
+
+        return updateProjectFiles(state, actions, store, id, oldFiles, files)
       }
     }
   }

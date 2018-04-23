@@ -1,7 +1,7 @@
 import { guid, StringMap } from "lib/utils"
 
 import { File } from "./api"
-import { DEPENDENCIES_FOLDER } from "./constants"
+import { DEPENDENCIES_FOLDER_NAME, DEPENDENCIES_FOLDER_PATH } from "./constants"
 import { FileNode, FileTree, getFileTree } from "./fileTree"
 
 interface IdMap {
@@ -110,18 +110,17 @@ function importFileRecursive(
   }
 }
 
-function getProjectFolder(project: ImportedProject, parent: string): File {
+function getProjectFolder(
+  project: ImportedProject,
+  name: string,
+  parent: string
+): File {
   const result: File = {
     id: null,
-    name: project.name,
+    name: name,
     type: "folder",
-    projectId: project.id,
     parent
   }
-  if (project.version) {
-    result.version = project.version
-  }
-  // console.log("getProjectFolder", result)
   return result
 }
 
@@ -141,27 +140,33 @@ export const importProjects = (
   const result: StringMap<File> = {}
 
   const tree = getFileTree(files)
-  const dependencies = importFile(files, tree, result, DEPENDENCIES_FOLDER, {
-    id: null,
-    name: DEPENDENCIES_FOLDER,
-    type: "folder"
-  })
+  console.log("Existing tree", tree)
+  const dependencies = importFile(
+    files,
+    tree,
+    result,
+    DEPENDENCIES_FOLDER_PATH,
+    {
+      id: null,
+      name: DEPENDENCIES_FOLDER_NAME,
+      type: "folder"
+    }
+  )
 
-  const foldersToExclude = [DEPENDENCIES_FOLDER]
+  const foldersToExclude = []
 
   imports.forEach(project => {
     const names = project.name.split("/")
-    let path = DEPENDENCIES_FOLDER
+    let path = DEPENDENCIES_FOLDER_PATH
     let root = dependencies
     for (const name of names) {
       path += "/" + name
-      foldersToExclude.push(path)
       root = importFile(
         files,
         tree,
         result,
         path,
-        getProjectFolder(project, root.id)
+        getProjectFolder(project, name, root.id)
       )
     }
     // set project info.
@@ -171,6 +176,7 @@ export const importProjects = (
       version: project.version
       // storageUrl: project.storageUrl
     }
+    foldersToExclude.push(path)
 
     const toImportTree = getFileTree(project.files)
     toImportTree.roots.forEach(fileId => {

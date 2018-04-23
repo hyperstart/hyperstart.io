@@ -1,6 +1,7 @@
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 import { replace } from "lib/router"
+import { bundle } from "lib/bundler"
 import { set } from "lib/immutable"
 import { guid } from "lib/utils"
 
@@ -21,6 +22,7 @@ import { getDirtySources } from "./selectors"
 import { runProject } from "./runProject"
 import { getEditorUrl } from "utils"
 import { logEvent } from "analytics"
+import { importBundle } from "projects/bundle"
 
 function copyFiles(files: projects.FileTree): projects.Files {
   const results: projects.Files = {}
@@ -38,11 +40,11 @@ function copyFiles(files: projects.FileTree): projects.Files {
     if (typeof file.content === "string") {
       results[id].content = file.content
     }
+    if (file.project) {
+      results[id].project = file.project
+    }
     if (file.url) {
       results[id].url = file.url
-    }
-    if (file.projectId) {
-      results[id].projectId = file.projectId
     }
   })
 
@@ -272,6 +274,37 @@ const _editor: ModuleImpl<api.State, Actions> = {
           actions._setState({ status: "error" })
           throw e
         })
+    },
+    importNpmPackage: (payload: api.ImportNpmPackagePayload) => (
+      state,
+      actions
+    ): Promise<void> => {
+      const { name, version = "" } = payload
+
+      if (!state.project) {
+        return Promise.reject("No opened project")
+      }
+
+      const id = state.project.id
+      actions._setState({ status: "loading" })
+      return bundle(name).then(bundle => {
+        return getProjects(state, actions)
+          .importBundle({
+            id,
+            bundle
+          })
+          .then(result => {
+            updateProject(
+              actions,
+              getProjects(state, actions).getState()[id],
+              state.status
+            )
+          })
+          .catch(e => {
+            actions._setState({ status: "error" })
+            throw e
+          })
+      })
     },
     // ## Files
     toggleFileExpanded: (path: string) => (state, actions) => {

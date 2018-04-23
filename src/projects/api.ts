@@ -1,6 +1,7 @@
 import { Searches } from "lib/search"
 
 import { ModuleActions } from "api"
+import { Bundle } from "lib/bundler"
 
 // # Files
 
@@ -23,8 +24,6 @@ export interface File {
   url?: string
   // folders
   project?: FileProject
-  projectId?: string
-  version?: string
 }
 
 export interface Files {
@@ -110,6 +109,11 @@ export interface ImportProjectsPayload {
   projects: ImportedProject[]
 }
 
+export interface ImportBundlePayload {
+  id: string
+  bundle: Bundle
+}
+
 export interface Actions extends ModuleActions<State> {
   // ## Projects
   save(project: Project): Promise<Project>
@@ -120,4 +124,5 @@ export interface Actions extends ModuleActions<State> {
   updateFiles(payload: UpdateFilesPayload): Promise<void>
   deleteFiles(payload: DeleteFilesPayload): Promise<void>
   importProjects(payload: ImportProjectsPayload): Promise<void>
+  importBundle(payload: ImportBundlePayload): Promise<void>
 }
