@@ -58,6 +58,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## Import Npm Package modal
     importNpmPackageModal: importNpmPackageForm.actions,
     openImportNpmPackageModal: () => {
+      logEvent("screen_view", { screen_name: "Add npm package" })
       return {
         importNpmPackageModal: importNpmPackageForm.state
       }
