@@ -34,7 +34,6 @@ const blankCss = ``
 const blankPkg = `{
   "name": "new-project",
   "version": "0.0.1",
-  "description": "New Project",
   "main": "index.js"
 }`
 
@@ -71,7 +70,6 @@ const haCss = blankCss
 const haPkg = `{
   "name": "new-project",
   "version": "0.0.1",
-  "description": "New Project",
   "main": "index.js",
   dependencies: {
     "hyperapp": "1.2.5"
@@ -81,23 +79,27 @@ const haPkg = `{
 // # Create file functions
 
 export function createBlankFiles(): StringMap<File> {
-  return files()
-    .folder(DEPENDENCIES_FOLDER_NAME)
-    .source("index.js", blankJs)
-    .source("index.html", blankHtml)
-    .source("index.css", blankCss)
-    .source("package.json", blankPkg)
-    .get()
+  return (
+    files()
+      .folder(DEPENDENCIES_FOLDER_NAME)
+      .source("index.js", blankJs)
+      .source("index.html", blankHtml)
+      .source("index.css", blankCss)
+      // .source("package.json", blankPkg)
+      .get()
+  )
 }
 
 export function createHyperappFiles(): StringMap<File> {
-  return files()
-    .folder(DEPENDENCIES_FOLDER_NAME)
-    .source("index.js", haJs)
-    .source("index.html", haHtml)
-    .source("index.css", haCss)
-    .source("package.json", haPkg)
-    .get()
+  return (
+    files()
+      .folder(DEPENDENCIES_FOLDER_NAME)
+      .source("index.js", haJs)
+      .source("index.html", haHtml)
+      .source("index.css", haCss)
+      // .source("package.json", haPkg)
+      .get()
+  )
 }
 
 // # Old stuff

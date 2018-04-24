@@ -2,6 +2,10 @@ export interface PackageDependencies {
   [name: string]: string
 }
 
+export interface HyperstartJson {
+  id: string
+}
+
 export interface PackageJson {
   name: string
   version: string
@@ -10,6 +14,7 @@ export interface PackageJson {
   module?: string
   dependencies?: PackageDependencies
   peerDependencies?: PackageDependencies
+  hyperstart?: HyperstartJson
 }
 
 export function inferMainFile(json: PackageJson): string | null {

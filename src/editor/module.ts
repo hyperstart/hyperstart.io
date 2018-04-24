@@ -40,9 +40,6 @@ function copyFiles(files: projects.FileTree): projects.Files {
     if (typeof file.content === "string") {
       results[id].content = file.content
     }
-    if (file.project) {
-      results[id].project = file.project
-    }
     if (file.url) {
       results[id].url = file.url
     }

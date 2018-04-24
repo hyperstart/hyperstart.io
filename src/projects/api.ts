@@ -7,12 +7,12 @@ import { Bundle } from "lib/bundler"
 
 export type FileType = "file" | "folder"
 
-export interface FileProject {
-  id: string
-  version?: string
-  mainFile?: string
-  // storageUrl?: string  // TODO later!
-}
+// export interface FileProject {
+//   id: string
+//   version?: string
+//   mainFile?: string
+//   // storageUrl?: string  // TODO later!
+// }
 
 export interface File {
   id: string
@@ -23,7 +23,7 @@ export interface File {
   content?: string
   url?: string
   // folders
-  project?: FileProject
+  // project?: FileProject
 }
 
 export interface Files {
@@ -44,9 +44,9 @@ export interface Details {
   id: string
   name: string
   searches: Searches
+  hidden: boolean
   owner?: Owner
   mainFile?: string
-  hidden?: boolean
   url?: string
   version?: string
 }

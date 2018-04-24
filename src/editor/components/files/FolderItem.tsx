@@ -1,7 +1,7 @@
 import { h } from "hyperapp"
 
 import { Icon } from "lib/components"
-import { FolderNode } from "projects/fileTree"
+import { FolderNode, getPackageJsonInFolder } from "projects/fileTree"
 
 import { State, Actions } from "../../api"
 import { isRootDependenciesFolder } from "./utils"
@@ -59,9 +59,10 @@ function FolderDropdown(props: FolderDropdownProps) {
 }
 
 function FolderVersion(props: FolderItemProps) {
-  const { item } = props
-  if (item.project && item.project.version) {
-    return <span class="folder-version">@{item.project.version}</span>
+  const { state, item } = props
+  const pkgJson = getPackageJsonInFolder(state.files, item.path)
+  if (pkgJson) {
+    return <span class="folder-version">@{pkgJson.version}</span>
   }
   return null
 }

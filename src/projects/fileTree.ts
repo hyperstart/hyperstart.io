@@ -1,6 +1,8 @@
 import { StringMap } from "lib/utils"
 
-import { File, Project, FileProject } from "./api"
+import { File, Project } from "./api"
+import { PackageJson } from "lib/npm"
+import { concat } from "lib/fs"
 
 export type FileNode = SourceNode | FolderNode
 
@@ -21,7 +23,7 @@ export interface SourceNode extends BaseFile {
 export interface FolderNode extends BaseFile {
   type: "folder"
   children: string[]
-  project?: FileProject
+  // project?: FileProject
   expanded?: boolean
 }
 
@@ -54,9 +56,9 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
       children: [],
       path: ""
     }
-    if (file.project) {
-      result.project = file.project
-    }
+    // if (file.project) {
+    //   result.project = file.project
+    // }
     return result
   }
 }
@@ -181,8 +183,33 @@ export function getFile(node: FileNode): File {
     result.content = node.content
     result.url = node.url
   } else {
-    result.project = node.project
+    // result.project = node.project
   }
 
   return result
+}
+
+export function getByPath(tree: FileTree, path: string): FileNode | null {
+  const id = tree.byPath[path]
+  if (!id) {
+    return null
+  }
+
+  return tree.byId[id] || null
+}
+
+export function existsByPath(tree: FileTree, path: string): boolean {
+  return getByPath(tree, path) !== null
+}
+
+export function getPackageJsonInFolder(
+  tree: FileTree,
+  folderPath: string
+): PackageJson | null {
+  const file = getByPath(tree, concat(folderPath, "/package.json"))
+  if (!file || file.type !== "file") {
+    return null
+  }
+
+  return JSON.parse(file.content)
 }

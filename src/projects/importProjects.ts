@@ -2,7 +2,8 @@ import { guid, StringMap } from "lib/utils"
 
 import { File } from "./api"
 import { DEPENDENCIES_FOLDER_NAME, DEPENDENCIES_FOLDER_PATH } from "./constants"
-import { FileNode, FileTree, getFileTree } from "./fileTree"
+import { FileNode, FileTree, getFileTree, existsByPath } from "./fileTree"
+import { concat } from "lib/fs"
 
 interface IdMap {
   [id: string]: string
@@ -124,11 +125,30 @@ function getProjectFolder(
   return result
 }
 
+function getPackageJson(project: ImportedProject, parent: string): File {
+  const pkg: any = {
+    name: project.name,
+    version: project.version || "master",
+    main: project.mainFile || "index.js",
+    hyperstart: {
+      id: project.id
+    }
+  }
+
+  const result: File = {
+    id: null,
+    name: "package.json",
+    type: "file",
+    parent,
+    content: JSON.stringify(pkg, null, 2)
+  }
+  return result
+}
+
 export interface ImportedProject {
   id: string
   name: string
   files: StringMap<File>
-  storageUrl?: string
   mainFile?: string
   version?: string
 }
@@ -168,13 +188,7 @@ export const importProjects = (
         getProjectFolder(project, name, root.id)
       )
     }
-    // set project info.
-    root.project = {
-      id: project.id,
-      mainFile: project.mainFile,
-      version: project.version
-      // storageUrl: project.storageUrl
-    }
+
     foldersToExclude.push(path)
 
     const toImportTree = getFileTree(project.files)
@@ -192,6 +206,17 @@ export const importProjects = (
         root.id
       )
     })
+
+    if (!existsByPath(toImportTree, "/package.json")) {
+      // create the package.json file
+      importFile(
+        files,
+        tree,
+        result,
+        concat(path, "package.json"),
+        getPackageJson(project, root.id)
+      )
+    }
   })
 
   // copy non conflicting files

@@ -105,27 +105,3 @@ export function importBundle(bundle: Bundle, files: Files): Files {
     }
   ])
 }
-
-export function getProjectFromBundle(bundle: Bundle, files: boolean): Project {
-  const pkg = getPkg(bundle, bundle.name, bundle.version)
-  if (!pkg) {
-    throw new Error("Main package not found in bundle")
-  }
-
-  const result: Project = {
-    details: {
-      id: getId(bundle),
-      name: bundle.name,
-      version: bundle.version,
-      mainFile: pkg.mainFile,
-      // TODO later, depends if it's latest version or not...
-      searches: {}
-    },
-    status: {}
-  }
-  if (files) {
-    result.files = getFilesFromBundle(bundle, pkg)
-  }
-
-  return result
-}

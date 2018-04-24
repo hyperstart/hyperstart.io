@@ -3,6 +3,7 @@ import { fetchSource } from "lib/fetchSource"
 import { concat } from "lib/fs"
 
 import { DEPENDENCIES_FOLDER_PATH } from "projects"
+import { getByPath, existsByPath } from "projects/fileTree"
 
 import { getSource } from "../../selectors"
 import { State } from "../../api"
@@ -62,16 +63,38 @@ function getEnclosingProjectsRoots(state: State, path: string): string[] {
     candidates[i] = concat(candidates[i - 1], candidates[i])
   }
 
-  console.log("Candidates", candidates)
-
-  console.log(
-    "Mapped candidates",
-    candidates.map(c => concat(c, "/package.json"))
-  )
-
+  // includes the root even if there is no package.json.
   return candidates
-    .filter(candidate => state.files.byPath[concat(candidate, "/package.json")])
+    .filter(
+      candidate =>
+        candidate === "" ||
+        existsByPath(state.files, concat(candidate, "/package.json"))
+    )
     .reverse()
+}
+
+function getMainFilePath(state: State, rootPath: string): string {
+  const pkgJsonPath = concat(rootPath, "/package.json")
+
+  const pkgJsonFile = getByPath(state.files, pkgJsonPath)
+  if (!pkgJsonFile || pkgJsonFile.type !== "file") {
+    // return the default main file
+    return concat(rootPath, "/index.js")
+  }
+
+  try {
+    const pkgJson: PackageJson = JSON.parse(pkgJsonFile.content)
+    const mainFile = inferMainFile(pkgJson)
+
+    if (mainFile) {
+      return concat(rootPath, mainFile)
+    }
+    throw new Error(`No main or module set for ${pkgJsonPath}.`)
+  } catch (e) {
+    throw new Error(
+      `Error while parsing file ${pkgJsonPath}: ${getErrorMessage(e)}`
+    )
+  }
 }
 
 /**
@@ -114,45 +137,18 @@ function getGlobalPath(
   }
 
   // dependency: get the enclosing project's root folders from nested to outer
-  const enclosingProjects = relativeTo
-    ? getEnclosingProjectsRoots(state, relativeTo)
-    : [""]
-  console.log("enclosing projects", enclosingProjects, relativeTo, state)
+  const enclosingProjects = getEnclosingProjectsRoots(state, relativeTo)
   for (const project of enclosingProjects) {
-    const dependencyRoot = concat(
-      project,
-      "/dependencies",
-      localPath,
-      "/package.json"
-    )
-    console.log("Checking " + dependencyRoot)
-    const id = state.files.byPath[dependencyRoot]
-    if (!id) {
+    const rootPath = concat(project, "/dependencies", localPath)
+    const rootFolder = getByPath(state.files, rootPath)
+    if (!rootFolder || rootFolder.type !== "folder") {
       continue
     }
 
-    const pkgJsonFile = state.files.byId[id]
-    if (!pkgJsonFile || pkgJsonFile.type !== "file") {
-      continue
-    }
-
-    try {
-      const pkgJson: PackageJson = JSON.parse(pkgJsonFile.content)
-      const mainFile = inferMainFile(pkgJson)
-
-      if (mainFile) {
-        return concat(project, "/dependencies", localPath, mainFile)
-      }
-    } catch (e) {
-      console.log(`Could not parse ${dependencyRoot}`)
-    }
-
-    throw new Error(
-      `Could not resolve ${localPath} imported in ${relativeTo}: error while parsing the package.json file.`
-    )
+    return getMainFilePath(state, rootPath)
   }
 
-  throw new Error(`Could not resolve ${localPath} imported in ${relativeTo}`)
+  throw new Error(`Could not resolve ${localPath} imported in ${relativeTo}.`)
 }
 
 /**
