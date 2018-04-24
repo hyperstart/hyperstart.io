@@ -18,12 +18,6 @@ export function ProjectOwner(props: ProjectOwnerProps) {
     project.owner && project.owner.displayName
       ? project.owner.displayName
       : "Anonymous User"
-  const url = project.owner && project.owner.url ? project.owner.url : ""
 
-  return (
-    <Tag class={props.class}>
-      {name + " "}
-      <UrlIcon url={url} />
-    </Tag>
-  )
+  return <Tag class={props.class}>{name}</Tag>
 }

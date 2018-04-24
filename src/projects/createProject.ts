@@ -38,7 +38,6 @@ export function createProject(payload: Payload): Promise<Project> {
     return fetch(HYPERAPP_ID).then(hyperapp => {
       const name = hyperapp.details.name
       const id = hyperapp.details.id
-      const version = hyperapp.details.version
       const mainFile = hyperapp.details.mainFile
       return {
         details,
@@ -47,7 +46,6 @@ export function createProject(payload: Payload): Promise<Project> {
             id,
             name,
             files: hyperapp.files,
-            version,
             mainFile
           }
         ]),

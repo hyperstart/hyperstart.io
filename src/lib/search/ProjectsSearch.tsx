@@ -1,6 +1,5 @@
 import { h } from "hyperapp"
 
-import { UrlIcon } from "lib/components"
 import { replace } from "lib/router"
 
 import { Details } from "projects/api"
@@ -27,12 +26,6 @@ function SingleProject(result: Details) {
           >
             {result.name}
           </a>
-          {result.url ? (
-            <small>
-              <UrlIcon url={result.url} />
-            </small>
-          ) : null}
-          {result.version ? <small> v{result.version}</small> : null}
         </h5>
         <p class="tile-subtitle">
           <ProjectOwner project={result} />

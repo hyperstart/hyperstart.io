@@ -15,11 +15,5 @@ export interface ProjectTitleProps {
 export const ProjectTitle = (props: ProjectTitleProps) => {
   const { project, Tag = "span" } = props
 
-  return (
-    <Tag class={props.class || ""}>
-      {project.name + " "}
-      <UrlIcon url={project.url} />
-      {project.version ? <small> v{project.version}</small> : ""}
-    </Tag>
-  )
+  return <Tag class={props.class || ""}>{project.name}</Tag>
 }

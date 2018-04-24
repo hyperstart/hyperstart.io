@@ -254,7 +254,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
             projects: projects.map(project => ({
               id: project.details.id,
               name: project.details.name,
-              version: project.details.version,
+              // version: project.details.version,
               files: project.files
             }))
           }

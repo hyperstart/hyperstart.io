@@ -7,13 +7,6 @@ import { Bundle } from "lib/bundler"
 
 export type FileType = "file" | "folder"
 
-// export interface FileProject {
-//   id: string
-//   version?: string
-//   mainFile?: string
-//   // storageUrl?: string  // TODO later!
-// }
-
 export interface File {
   id: string
   type: FileType
@@ -22,8 +15,6 @@ export interface File {
   // files
   content?: string
   url?: string
-  // folders
-  // project?: FileProject
 }
 
 export interface Files {
@@ -37,7 +28,6 @@ export type Template = "hyperapp" | "blank"
 export interface Owner {
   id: string
   displayName: string
-  url?: string
 }
 
 export interface Details {
@@ -45,10 +35,8 @@ export interface Details {
   name: string
   searches: Searches
   hidden: boolean
+  mainFile: string
   owner?: Owner
-  mainFile?: string
-  url?: string
-  version?: string
 }
 
 export interface Status {
