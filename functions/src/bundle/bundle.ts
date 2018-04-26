@@ -1,4 +1,4 @@
-import semver from "semver"
+import * as semver from "semver"
 
 import { get } from "../unpkg"
 import { PackageJson, inferMainFile } from "../npm"
