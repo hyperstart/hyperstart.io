@@ -8,6 +8,10 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
+        "source": "/get-npm-package-versions",
+        "function": "getNpmPackageVersions"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
