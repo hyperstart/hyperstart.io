@@ -72,7 +72,7 @@ function DependenciesFolderDropdown(props: FolderItemProps) {
   return (
     <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
       <a href="#" class="dropdown-toggle" tabindex="1">
-        <Icon name="bars" class="actions float-right" />
+        <Icon name="bars" class="actions float-right primary-color" />
       </a>
       <ul class="menu">
         <li class="menu-item">

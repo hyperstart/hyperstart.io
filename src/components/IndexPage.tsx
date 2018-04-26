@@ -93,17 +93,19 @@ export function IndexPage(props: IndexPageProps) {
       </div>
       <div class="container">
         <div class="columns">
-          <div class="column col-12">
+          <div class="column col-12 py-4">
             <h2 class="text-center">Features</h2>
           </div>
-          <div class="column col-4 col-md-12 centered p-2">
+          <div class="col-4 col-md-12 centered py-2 px-4">
             <i
               class="fas fa-cogs fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
-            <h4 class="text-center">Integrated Devtools</h4>
+            <h4 class="text-center py-2">Integrated Devtools</h4>
             <p>
-              Projects using{" "}
+              We don't just provide a development environment, we also integrate
+              ways to create better code in it and speed up your development
+              cycle. Projects using{" "}
               <a href="https://github.com/hyperapp/hyperapp" target="_blank">
                 Hyperapp
               </a>{" "}
@@ -121,31 +123,35 @@ export function IndexPage(props: IndexPageProps) {
             </a>
           </div>
 
-          <div class="column col-4 col-md-12 centered p-2">
+          <div class="col-4 col-md-12 centered py-2 px-4">
             <i
               class="fas fa-redo fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
-            <h4 class="text-center">Reusability</h4>
+            <h4 class="text-center py-2">Reusability</h4>
             <p>
-              Since all projects are open-source, you can search all available
-              projects and re-use them as dependencies on your code.
+              We believe in open-source: you can check out this website on{" "}
+              <a href="https://github.com/hyperstart/hyperstart.io">Github</a>.
+              Since all projects hosted on Hyperstart are also open-source, you
+              can search available projects and re-use them as dependencies on
+              your code.
             </p>
             <a href="#search">Search for an existing project.</a>
           </div>
 
-          <div class="column col-4 col-md-12 centered p-2">
+          <div class="col-4 col-md-12 centered py-2 px-4">
             <i
               class="fab fa-npm fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
-            <h4 class="text-center">NPM Support</h4>
+            <h4 class="text-center py-2">NPM Support</h4>
             <p>
-              Projects can import from any npm package and use them as
+              All of your usual libraries are supported here without any changes
+              required. Projects can import from any npm package and use them as
               dependencies. Importing a dependency never takes more than a few
               seconds.
             </p>
-            <a href="/blog">Visit our documentation to learn more.</a>
+            <a href="/docs">Visit our documentation to learn more.</a>
           </div>
 
           <div class="column col-4 centered hide-md text-center py-14">
@@ -164,15 +170,54 @@ export function IndexPage(props: IndexPageProps) {
 
       <div class="container">
         <div class="columns">
+          <div class="column col-12 centered text-center py-6">
+            <h2>Developed For Hyperapp</h2>
+          </div>
+          <div class="column col-9 centered text-left py-2">
+            <p>
+              Hyperapp is a tiny JavaScript framework which focuses on being
+              minimal, pragmatic and standalone. All applications are composed
+              of a state, view, and actions. It has been influenced by the Elm
+              language and brings many of its features to JavaScript, such as
+              hot-module reloading, code completeness and no runtime exceptions.
+              It contains all the features from the most famous frameworks,
+              while being easy to learn and more performant. I guess what we're
+              trying to say is, you should really check out Hyperapp. If you
+              have any questions, check out the learning resources on our blog.
+              We are happy to answer any questions you might have either by
+              e-mail, or on the Hyperapp Slack channel.{" "}
+            </p>
+          </div>
+          <div class="column col-6 centered text-center py-2">
+            <a
+              href="https://github.com/hyperapp/hyperapp"
+              target="_blank"
+              class="px-2 float-left"
+            >
+              Check out the project on Github.
+            </a>
+            <a
+              href="https://blog.hyperstart.io"
+              target="_blank"
+              class="px-2 float-right"
+            >
+              Visit our blog to learn more.
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="columns">
           <a name="search" />
           <div class="column col-12 py-14">
             <h2 class="text-center p-2">Explore Existing Projects</h2>
             <div class="col-9 col-md-12 centered text-left">
               <p class="py-2">
                 You can find a list of all available projects here. Try typing
-                "Hyperapp" into the search below to see our own Hyperapp
-                examples and learn how to use the framework, or search for any
-                existing project on Hyperstart. You can also{" "}
+                "Hyperapp" into the search below to see our own examples and
+                learn how to use the framework, or search for any existing
+                project on Hyperstart. You can also{" "}
                 <a
                   href="#"
                   onclick={e => {

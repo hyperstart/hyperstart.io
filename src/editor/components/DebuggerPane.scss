@@ -105,3 +105,20 @@
     }
   }
 }
+
+.primary-color {
+  color: $light-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $light-color !important;
+  }
+
+  &.selected {
+    background-color: $primary-color-dark;
+    font-weight: bold;
+    &:hover {
+      background-color: $primary-color-dark;
+    }
+  }
+}
