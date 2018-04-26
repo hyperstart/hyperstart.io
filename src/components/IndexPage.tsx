@@ -80,7 +80,7 @@ export function IndexPage(props: IndexPageProps) {
               <h5 class="px-2 pb-30 hide-md">
                 Create an account for free and try it out &nbsp;
                 <i
-                  class="fa fa-long-arrow-right set-primary"
+                  class="fas fa-long-arrow-alt-right set-primary"
                   aria-hidden="true"
                 />
               </h5>
@@ -98,7 +98,7 @@ export function IndexPage(props: IndexPageProps) {
           </div>
           <div class="column col-4 col-md-12 centered p-2">
             <i
-              class="fa fa-cogs fa-5x text-center col-12 m-2"
+              class="fas fa-cogs fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
             <h4 class="text-center">Integrated Devtools</h4>
@@ -117,13 +117,13 @@ export function IndexPage(props: IndexPageProps) {
                 createProject(state, actions, "hyperapp")
               }}
             >
-              Try it out with a test Hyperapp project.
+              Try it out with a test project.
             </a>
           </div>
 
           <div class="column col-4 col-md-12 centered p-2">
             <i
-              class="fa fa-repeat fa-5x text-center col-12 m-2"
+              class="fas fa-redo fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
             <h4 class="text-center">Reusability</h4>
@@ -136,18 +136,16 @@ export function IndexPage(props: IndexPageProps) {
 
           <div class="column col-4 col-md-12 centered p-2">
             <i
-              class="fa fa-pencil-square-o fa-5x text-center col-12 m-2"
+              class="fab fa-npm fa-5x text-center col-12 m-2"
               aria-hidden="true"
             />
-            <h4 class="text-center">Built for Hyperapp</h4>
+            <h4 class="text-center">NPM Support</h4>
             <p>
-              This website has been built using{" "}
-              <a href="https://github.com/hyperapp/hyperapp" target="_blank">
-                Hyperapp
-              </a>, and has been optimised to speed up the development process
-              using the framework.
+              Projects can import from any npm package and use them as
+              dependencies. Importing a dependency never takes more than a few
+              seconds.
             </p>
-            <a href="/blog">Visit our blog for more news.</a>
+            <a href="/blog">Visit our documentation to learn more.</a>
           </div>
 
           <div class="column col-4 centered hide-md text-center py-14">
@@ -167,7 +165,7 @@ export function IndexPage(props: IndexPageProps) {
       <div class="container">
         <div class="columns">
           <a name="search" />
-          <div class="column col-12 py-2">
+          <div class="column col-12 py-14">
             <h2 class="text-center p-2">Explore Existing Projects</h2>
             <div class="col-9 col-md-12 centered text-left">
               <p class="py-2">

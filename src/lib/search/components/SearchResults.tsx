@@ -40,7 +40,7 @@ export function SearchResults(props: SearchResultsProps) {
     return (
       <div class="empty" style={{ "padding-top": "1rem" }}>
         <span>
-          <i class="fa fa-spinner fa-pulse fa-2x fa-fw" />
+          <i class="fas fa-spinner fa-pulse fa-2x fa-fw" />
           <span class="sr-only">Loading...</span>
         </span>
       </div>

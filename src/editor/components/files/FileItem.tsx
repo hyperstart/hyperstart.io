@@ -68,14 +68,18 @@ export const FileItem = (props: FileItemProps) => {
 
   return (
     <div class="file c-hand" onclick={onselect}>
-      <i class="fa fa-file-text-o" aria-hidden="true" />
+      <i class="far fa-file-alt" aria-hidden="true" />
       <span>{" " + item.name + getFileSuffix(state, item)}</span>{" "}
       <span
         class="tooltip tooltip-bottom"
         data-tooltip={`View a read-only version of the file.
 Useful to copy/paste code in your project.`}
       >
-        <i class="fa fa-eye preview" aria-label="Preview" onclick={onpreview} />
+        <i
+          class="fas fa-eye preview"
+          aria-label="Preview"
+          onclick={onpreview}
+        />
       </span>
       {FileDropdown(props)}
     </div>

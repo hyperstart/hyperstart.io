@@ -64,10 +64,10 @@ function ToggleActionItem(props: ToggleActionItemProps) {
   }
 
   if (action.collapsed) {
-    return <span class="fa fa-caret-right fa-fw" onclick={onclick} />
+    return <span class="fas fa-caret-right fa-fw" onclick={onclick} />
   }
 
-  return <span class="fa fa-caret-down fa-fw" onclick={onclick} />
+  return <span class="fas fa-caret-down fa-fw" onclick={onclick} />
 }
 
 // # ActionItemLink
