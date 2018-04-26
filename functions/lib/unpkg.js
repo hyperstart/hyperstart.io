@@ -41,6 +41,12 @@ function get(payload) {
     });
 }
 exports.get = get;
+function exists(pkg) {
+    return fetch_1.fetch(getUrl({ pkg }), { method: "HEAD" }).then(res => {
+        return res.status === 200;
+    });
+}
+exports.exists = exists;
 // function getMetaUrl(payload: GetMetaPayload) {
 //   const { pkg, version } = payload
 //   if (version) {

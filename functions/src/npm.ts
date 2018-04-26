@@ -35,7 +35,8 @@ export interface AbbreviatedVersion {
 }
 
 function getUrl(npmPackage: string, suffix: string = "") {
-  return `https://registry.npmjs.org/${npmPackage}${suffix}`
+  // hard coded URL encode...
+  return `https://registry.npmjs.org/${npmPackage.replace("/", "%2F")}${suffix}`
 }
 
 // ## fetchAbbreviatedPackageJson

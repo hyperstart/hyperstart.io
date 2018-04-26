@@ -59,6 +59,12 @@ export function get(payload: GetPayload): Promise<GetResult> {
     })
 }
 
+export function exists(pkg: string): Promise<boolean> {
+  return fetch(getUrl({ pkg }), { method: "HEAD" }).then(res => {
+    return res.status === 200
+  })
+}
+
 // function getMetaUrl(payload: GetMetaPayload) {
 //   const { pkg, version } = payload
 //   if (version) {

@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const semver_1 = require("semver");
 const fetch_1 = require("./fetch");
 function getUrl(npmPackage, suffix = "") {
-    return `https://registry.npmjs.org/${npmPackage}${suffix}`;
+    // hard coded URL encode...
+    return `https://registry.npmjs.org/${npmPackage.replace("/", "%2F")}${suffix}`;
 }
 // ## fetchAbbreviatedPackageJson
 function fetchAbbreviatedPackageJson(npmPackage) {

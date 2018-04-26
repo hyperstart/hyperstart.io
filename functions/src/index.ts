@@ -1,7 +1,9 @@
 import * as functions from "firebase-functions"
+import * as corsFn from "cors"
 
 import { fetchVersions } from "./npm"
 import { getErrorMessage } from "./utils"
+import { exists } from "./unpkg"
 
 function getUrlParameter(
   request: functions.Request,
@@ -19,20 +21,34 @@ function getUrlParameter(
   return result
 }
 
+const cors = corsFn({ origin: true })
+
 export const getNpmPackageVersions = functions.https.onRequest(
   (request, response) => {
     const pkg = getUrlParameter(request, response, "package")
     if (!pkg) {
       return
     }
-    fetchVersions(pkg)
-      .then(versions => {
-        response.contentType("application/json")
-        response.send(versions)
-      })
-      .catch(e => {
-        response.status(500).send(getErrorMessage(e))
-      })
+
+    console.log("parameter: " + pkg)
+
+    return cors(request, response, () => {
+      exists(pkg)
+        .then(exists => {
+          if (!exists) {
+            return []
+          }
+          return fetchVersions(pkg)
+        })
+        .then(versions => {
+          response.status(200)
+          response.contentType("application/json")
+          response.send(versions)
+        })
+        .catch(e => {
+          response.status(500).send(getErrorMessage(e))
+        })
+    })
   }
 )
 
