@@ -74,7 +74,7 @@ function ProjectEditableStatusText(props: ProjectDetailsSectionProps) {
   const { state, currentUser } = props
   return isEditable(state) ? null : (
     <small>
-      <i class="fa fa-exclamation-triangle" aria-hidden="true" /> Changes made
+      <i class="fas fa-exclamation-triangle" aria-hidden="true" /> Changes made
       to this project are not persisted, {ProjectEditableStatusAction(props)}
     </small>
   )

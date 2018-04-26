@@ -40,7 +40,7 @@ export function Status(props: StatusProps) {
         return (
           <span class="centered">
             {entry.message || ""}
-            <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-inverse" />
+            <i class="fas fa-spinner fa-pulse fa-2x fa-fw fa-inverse" />
             <span class="sr-only">Loading...</span>
           </span>
         )

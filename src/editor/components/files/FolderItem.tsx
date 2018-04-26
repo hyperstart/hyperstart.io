@@ -95,7 +95,7 @@ function DependenciesFolderItem(props: FolderItemProps) {
 
   return (
     <div class="file c-hand">
-      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}{" "}
+      <Icon name={item.expanded ? "folder-open" : "folder"} /> {item.name}{" "}
       <span
         class="tooltip tooltip-bottom"
         data-tooltip={`This folder contains all the dependencies for
@@ -104,7 +104,7 @@ Hyperstart projects or npm packages.
 You may import them in your source, e.g.:
 import { app, h } from "hyperapp"`}
       >
-        <i class="fa fa-question-circle-o preview" aria-hidden="true" />
+        <i class="far fa-question-circle preview" aria-hidden="true" />
       </span>
       {DependenciesFolderDropdown(props)}
     </div>
@@ -128,7 +128,7 @@ export function FolderItem(props: FolderItemProps) {
 
   return (
     <div class="file c-hand">
-      <Icon name={item.expanded ? "folder-open-o" : "folder-o"} /> {item.name}
+      <Icon name={item.expanded ? "folder-open" : "folder"} /> {item.name}
       {FolderVersion(props)} {FolderDropdown(props)}
     </div>
   )

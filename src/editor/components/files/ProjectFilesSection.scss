@@ -42,7 +42,8 @@
       &:hover {
         background: $secondary-color;
 
-        .fa:hover {
+        .fa:hover,
+        .far:hover {
           color: $primary-color;
         }
 

@@ -27,7 +27,7 @@ export function UrlIcon(props: UrlIconProps) {
       style={{ color: "black" }}
     >
       {text}
-      <i class={"fa " + icon} aria-hidden="true" />
+      <i class={"fab " + icon} aria-hidden="true" />
     </a>
   )
 }
