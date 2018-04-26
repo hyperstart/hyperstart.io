@@ -1,10 +1,11 @@
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 import { replace } from "lib/router"
-import { bundle } from "lib/bundler"
+import { bundle } from "lib/bundle"
 import { set } from "lib/immutable"
 import { guid } from "lib/utils"
 
+import * as bundles from "bundles"
 import * as projects from "projects"
 import * as global from "api"
 import * as users from "users"
@@ -66,6 +67,7 @@ function updateProject(
 const localStore = createProjects(local())
 let usersActions: users.Actions
 let projectsActions: projects.Actions
+let bundleActions: bundles.Actions
 let projectToOpen
 
 function getProjects(state: api.State, actions: api.Actions): projects.Actions {
@@ -105,6 +107,8 @@ const _editor: ModuleImpl<api.State, Actions> = {
     init: (globalActions: global.Actions) => (state, actions) => {
       usersActions = globalActions.users
       projectsActions = globalActions.projects
+      bundleActions = globalActions.bundles
+
       monaco.initialize().then(() => {
         actions._setMonacoLoaded()
         if (projectToOpen) {
@@ -284,24 +288,28 @@ const _editor: ModuleImpl<api.State, Actions> = {
 
       const id = state.project.id
       actions._setState({ status: "loading" })
-      return bundle(name).then(bundle => {
-        return getProjects(state, actions)
-          .importBundle({
-            id,
-            bundle
-          })
-          .then(result => {
-            updateProject(
-              actions,
-              getProjects(state, actions).getState()[id],
-              state.status
-            )
-          })
-          .catch(e => {
-            actions._setState({ status: "error" })
-            throw e
-          })
-      })
+      return bundleActions
+        .getFromNpmPackage({
+          name
+        })
+        .then(bundle => {
+          return getProjects(state, actions)
+            .importBundle({
+              id,
+              bundle
+            })
+            .then(result => {
+              updateProject(
+                actions,
+                getProjects(state, actions).getState()[id],
+                state.status
+              )
+            })
+            .catch(e => {
+              actions._setState({ status: "error" })
+              throw e
+            })
+        })
     },
     // ## Files
     toggleFileExpanded: (path: string) => (state, actions) => {

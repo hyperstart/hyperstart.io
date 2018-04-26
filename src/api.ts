@@ -1,5 +1,6 @@
 import * as router from "lib/router"
 
+import * as bundles from "bundles/api"
 import * as editor from "editor/api"
 import * as logger from "logger/api"
 import * as projects from "projects/api"
@@ -10,6 +11,7 @@ import * as users from "users"
 // # State
 
 export interface State {
+  bundles: bundles.State
   editor: editor.State
   logger: logger.State
   projects: projects.State
@@ -27,6 +29,7 @@ export interface FetchProjectPayload {
 }
 
 export interface Actions {
+  bundles: bundles.Actions
   editor: editor.Actions
   logger: logger.Actions
   projects: projects.Actions

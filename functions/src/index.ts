@@ -3,7 +3,7 @@ import * as admin from "firebase-admin"
 
 import { fetchVersions } from "./npm"
 import { getErrorMessage } from "./utils"
-import { bundle } from "./bundler"
+import { bundle } from "./bundle"
 
 function getUrlParameter(
   request: functions.Request,
