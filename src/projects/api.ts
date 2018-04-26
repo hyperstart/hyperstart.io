@@ -1,7 +1,7 @@
 import { Searches } from "lib/search"
 
 import { ModuleActions } from "api"
-import { Bundle } from "lib/bundler"
+import { Bundle } from "lib/bundle"
 
 // # Files
 

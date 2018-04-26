@@ -1,4 +1,4 @@
-import { Bundle, getPkg, Package } from "../lib/bundler"
+import { Bundle, getPkg, Package } from "../lib/bundle"
 
 import { Project, File, Files } from "./api"
 import { getFileTree } from "./fileTree"

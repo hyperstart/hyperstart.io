@@ -4,6 +4,7 @@ import { ModuleImpl } from "lib/modules"
 
 import { State, Actions, FetchProjectPayload } from "./api"
 import { isLoading } from "./selectors"
+import { bundles } from "bundles/module"
 import { editor } from "editor/module"
 import { logger } from "logger/module"
 import { createProjects } from "projects/module"
@@ -26,6 +27,7 @@ const search = createSearch([{ name: "projects" }])
 
 export const module: ModuleImpl<State, Actions> = {
   state: {
+    bundles: bundles.state,
     editor: editor.state,
     logger: logger.state,
     projects: projects.state,
@@ -35,6 +37,7 @@ export const module: ModuleImpl<State, Actions> = {
     users: users.state
   },
   actions: {
+    bundles: bundles.actions,
     editor: editor.actions,
     logger: logger.actions,
     projects: projects.actions,
@@ -49,6 +52,7 @@ export const module: ModuleImpl<State, Actions> = {
 
       actions.router.init()
       actions.logger.init(actions)
+      actions.bundles.init(actions)
       actions.users.init(actions)
       actions.projects.init(actions)
       actions.search.init(actions)

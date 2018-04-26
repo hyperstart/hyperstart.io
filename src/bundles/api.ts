@@ -1,5 +1,5 @@
 import { ModuleActions } from "api"
-import { Bundle } from "lib/bundler"
+import { Bundle } from "lib/bundle"
 
 // # State
 
@@ -11,7 +11,7 @@ export interface State {
 
 export interface GetBundlePayload {
   name: string
-  version: string
+  version?: string
 }
 
 export interface Actions extends ModuleActions<State> {
