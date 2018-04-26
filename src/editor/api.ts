@@ -88,6 +88,7 @@ export interface Actions extends ModuleActions<State> {
   run(debug: boolean): Promise<void>
   importProjects(projects: string[]): Promise<void>
   importNpmPackage(payload: ImportNpmPackagePayload): Promise<void>
+  computeImportingNpmPackageVersions()
   // ## Files
   toggleFileExpanded(path: string)
   createFile(file: CreateFilePayload): Promise<void>

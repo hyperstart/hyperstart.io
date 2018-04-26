@@ -2,6 +2,8 @@ import { ModuleImpl } from "lib/modules"
 import { Bundle, getId, bundle } from "lib/bundle"
 
 import * as api from "./api"
+import { getLatestVersion } from "lib/unpkg"
+import { getFunctionUrl } from "lib/firebase"
 
 interface AddActionPayload {
   bundle: Bundle
@@ -31,6 +33,7 @@ const _bundles: ModuleImpl<api.State, Actions> = {
     // ## Public
     getFromNpmPackage: (payload: api.GetBundlePayload) => (state, actions) => {
       const { name, version } = payload
+
       const result = state[getId(name, version || "latest")]
       if (result) {
         return Promise.resolve(result)
@@ -42,6 +45,16 @@ const _bundles: ModuleImpl<api.State, Actions> = {
           actions._add({ bundle, version: "latest" })
         }
         return bundle
+      })
+    },
+    getLatestVersion: (name: string): Promise<string> => {
+      return getLatestVersion(name)
+    },
+    getVersions: (name: string): Promise<string[]> => {
+      return fetch(
+        getFunctionUrl(`get-npm-package-versions?package=${name}`)
+      ).then(res => {
+        return res.json()
       })
     }
   }

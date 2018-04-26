@@ -3,16 +3,26 @@ import { ModuleImpl } from "lib/modules"
 import * as api from "./api"
 
 export interface InitialFields {
-  [name: string]: any
+  [name: string]: boolean | string | api.FormFieldOption[]
 }
 
 export function createFormState(fields: InitialFields = {}): api.State {
   const state: api.State = {}
   Object.keys(fields).forEach(name => {
     const value = fields[name]
-    state[name] = {
-      original: value,
-      value
+    if (typeof value === "string" || typeof value === "boolean") {
+      state[name] = {
+        original: value,
+        value
+      }
+    } else {
+      const val = value.length === 0 ? null : value[0].value
+
+      state[name] = {
+        original: val,
+        value: val,
+        options: value
+      }
     }
   })
   return state

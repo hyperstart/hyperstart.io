@@ -1,9 +1,8 @@
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 import { replace } from "lib/router"
-import { bundle } from "lib/bundle"
 import { set } from "lib/immutable"
-import { guid } from "lib/utils"
+import { guid, getErrorMessage, debounce } from "lib/utils"
 
 import * as bundles from "bundles"
 import * as projects from "projects"
@@ -77,6 +76,76 @@ function getProjects(state: api.State, actions: api.Actions): projects.Actions {
 
   return actions.localStore
 }
+
+function _computeNpmVersions(state: api.State, actions: api.Actions) {
+  if (!state.ui.importNpmPackageModal) {
+    return
+  }
+
+  const pkg = state.ui.importNpmPackageModal.name.value
+  if (pkg === "") {
+    return
+  }
+
+  actions.ui.importNpmPackageModal.set({
+    fields: {
+      name: {
+        error: null
+      },
+      version: {
+        options: null,
+        value: "",
+        loading: true
+      }
+    }
+  })
+  bundleActions
+    .getVersions(pkg)
+    .then(versions => {
+      if (!state.ui.importNpmPackageModal) {
+        return
+      }
+
+      if (versions.length === 0) {
+        throw "No package..."
+      }
+      const options = versions.map(v => ({ value: v, label: v })).reverse()
+      actions.ui.importNpmPackageModal.set({
+        fields: {
+          name: {
+            error: null
+          },
+          version: {
+            options,
+            value: options[0].value,
+            loading: false
+          }
+        }
+      })
+    })
+    .catch(e => {
+      if (
+        !state.ui.importNpmPackageModal ||
+        state.ui.importNpmPackageModal.versions.loading
+      ) {
+        return
+      }
+
+      actions.ui.importNpmPackageModal.set({
+        fields: {
+          name: {
+            error: `No npm package found with name ${pkg}.`
+          },
+          version: {
+            options: [],
+            value: "",
+            loading: false
+          }
+        }
+      })
+    })
+}
+const computeNpmVersions = debounce(_computeNpmVersions, 300)
 
 // internal actions
 interface Actions extends api.Actions {
@@ -280,7 +349,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
       state,
       actions
     ): Promise<void> => {
-      const { name, version = "" } = payload
+      const { name, version } = payload
 
       if (!state.project) {
         return Promise.reject("No opened project")
@@ -290,7 +359,8 @@ const _editor: ModuleImpl<api.State, Actions> = {
       actions._setState({ status: "loading" })
       return bundleActions
         .getFromNpmPackage({
-          name
+          name,
+          version
         })
         .then(bundle => {
           return getProjects(state, actions)
@@ -310,6 +380,9 @@ const _editor: ModuleImpl<api.State, Actions> = {
               throw e
             })
         })
+    },
+    computeImportingNpmPackageVersions: () => (state, actions) => {
+      computeNpmVersions(state, actions)
     },
     // ## Files
     toggleFileExpanded: (path: string) => (state, actions) => {

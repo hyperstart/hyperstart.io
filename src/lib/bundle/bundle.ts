@@ -240,6 +240,12 @@ export function bundle(
 
   return Promise.all(fetches)
     .then(([res, readme]) => {
+      if (!res.content) {
+        throw new Error(
+          `Cannot find package.json for package ${pkg} with version ${version ||
+            "latest"}.`
+        )
+      }
       const json: PackageJson = JSON.parse(res.content)
       bundle.version = json.version
       const packaged = addPkg(bundle, json)

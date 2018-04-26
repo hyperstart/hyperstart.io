@@ -7,10 +7,13 @@ import { FormField } from "./FormField"
 
 export interface ModalFieldProps {
   name: string
+  /** Only used for inputs (no options in the field definition). */
   placeholder?: string
   label?: string
   class?: string
-  type: string
+  type?: string
+  disabled?: boolean
+  onchange?(value: any)
 }
 
 export interface ModalFormProps {
@@ -20,6 +23,7 @@ export interface ModalFormProps {
   title: string
   submit(state: State)
   close()
+  canSubmit?(): boolean
   fields: ModalFieldProps[]
   size?: "sm" | "lg"
   titleTag?: string
@@ -33,7 +37,8 @@ export function ModalForm(props: ModalFormProps) {
     fields,
     horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"],
     titleTag = "h3",
-    close
+    close,
+    canSubmit = () => true
   } = props
 
   const cancel = (e: Event) => {
@@ -61,7 +66,11 @@ export function ModalForm(props: ModalFormProps) {
             <button class="btn btn-secondary" onclick={cancel} type="button">
               Cancel
             </button>{" "}
-            <button class="btn btn-primary" type="submit">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              disabled={!canSubmit()}
+            >
               Submit
             </button>
           </div>
