@@ -17,7 +17,6 @@ module.exports = function(env) {
     new CopyWebpackPlugin([{ from: "assets", to: "" }]),
     new HtmlWebpackPlugin({
       filename: "./index.html",
-      title: "Hyperstart: Hyperapp-focused Development Environment",
       template: "./src/index.html"
     })
   ]
