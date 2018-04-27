@@ -12,6 +12,7 @@ import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
 import { forkProject } from "forkProject"
+import { hasDebugRuns } from "editor/debug/selectors"
 
 export interface HeaderProps {
   state: State
@@ -78,7 +79,7 @@ function DebugButton({ state, actions }: HeaderProps) {
         class="btn-primary"
       />
       <Button
-        disabled={isLoading(state) || !state.editor.compilationOutput}
+        disabled={isLoading(state) || !hasDebugRuns(state.editor.debug)}
         active={debugState.paneShown}
         onclick={() => actions.editor.debug.showPane(!debugState.paneShown)}
         icon="caret-down"
