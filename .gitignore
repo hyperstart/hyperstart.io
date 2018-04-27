@@ -1,5 +1,5 @@
 dist
-public/bundle.js
+public
 reports
 node_modules
 .DS_Store

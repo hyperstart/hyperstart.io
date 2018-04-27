@@ -1,6 +1,9 @@
 const { TsConfigPathsPlugin } = require("awesome-typescript-loader")
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin
+const CleanWebpackPlugin = require("clean-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const webpack = require("webpack")
 const path = require("path")
 
@@ -9,7 +12,15 @@ const outPath = path.join(__dirname, "./public")
 const includePaths = [path.join(__dirname, "./src")]
 
 module.exports = function(env) {
-  const plugins = []
+  const plugins = [
+    new CleanWebpackPlugin(["public"]),
+    new CopyWebpackPlugin([{ from: "assets", to: "" }]),
+    new HtmlWebpackPlugin({
+      filename: "./index.html",
+      title: "Hyperstart: Hyperapp-focused Development Environment",
+      template: "./src/index.html"
+    })
+  ]
   let main
   if (env.build) {
     plugins.push(
@@ -38,7 +49,7 @@ module.exports = function(env) {
     output: {
       path: outPath,
       publicPath: "/",
-      filename: "bundle.js"
+      filename: "bundle.[hash].js"
     },
     plugins: plugins,
     resolve: {
