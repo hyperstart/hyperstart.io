@@ -164,7 +164,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
       }
 
       formActions.setField({ field: "name", error: null })
-      actions._setState({ status: "loading" })
       return projectsActions
         .update({
           id,
@@ -176,12 +175,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
             project: { ...project.details },
             status: "editing"
           })
-        })
-        .catch(e => {
-          actions._setState({
-            status: "error"
-          })
-          throw e
         })
     },
     setOwner: (owner: projects.Owner) => (state, actions): Promise<void> => {
@@ -208,17 +201,10 @@ const _editor: ModuleImpl<api.State, Actions> = {
         files: copyFiles(state.files)
       }
 
-      actions._setState({ status: "loading" })
-      return projectsActions
-        .save(project)
-        .then(() => {
-          updateProject(actions, project, "editing")
-          replace("/projects/" + id)
-        })
-        .catch(e => {
-          actions._setState({ status: "error" })
-          throw e
-        })
+      return projectsActions.save(project).then(() => {
+        updateProject(actions, project, "editing")
+        replace("/projects/" + id)
+      })
     },
     saveAllSources: () => (state, actions): Promise<void> => {
       if (state.status !== "editing") {
@@ -234,27 +220,15 @@ const _editor: ModuleImpl<api.State, Actions> = {
         }))
       }
 
-      actions._setState({ status: "loading" })
-      return projectsActions
-        .updateFiles(update)
-        .then(() => {
-          updateProject(
-            actions,
-            projectsActions.getState()[projectId],
-            "editing"
-          )
-        })
-        .catch(e => {
-          actions._setState({ status: "error" })
-          throw e
-        })
+      return projectsActions.updateFiles(update).then(() => {
+        updateProject(actions, projectsActions.getState()[projectId], "editing")
+      })
     },
     run: (debug: boolean) => (state, actions): Promise<void> => {
       return runProject(state, actions, debug)
     },
     importProjects: (projects: string[]) => (state, actions): Promise<void> => {
       const id = state.project.id
-      actions._setState({ status: "loading" })
       return Promise.all(projects.map(projectsActions.fetch))
         .then(projects => {
           const payload: projects.ImportProjectsPayload = {
@@ -275,10 +249,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
             state.status
           )
         })
-        .catch(e => {
-          actions._setState({ status: "error" })
-          throw e
-        })
     },
     importNpmPackage: (payload: api.ImportNpmPackagePayload) => (
       state,
@@ -291,7 +261,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
       }
 
       const id = state.project.id
-      actions._setState({ status: "loading" })
       return bundleActions
         .getFromNpmPackage({
           name,
@@ -309,10 +278,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
                 getProjects(state, actions).getState()[id],
                 state.status
               )
-            })
-            .catch(e => {
-              actions._setState({ status: "error" })
-              throw e
             })
         })
     },
@@ -346,7 +311,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
       }
       const id = state.project.id
 
-      actions._setState({ status: "loading" })
       return getProjects(state, actions)
         .addFiles({ id, files: [file] })
         .then(result => {
@@ -358,10 +322,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
           if (payload.type === "file") {
             actions.sources.open({ sources: file.id })
           }
-        })
-        .catch(e => {
-          actions._setState({ status: "error" })
-          throw e
         })
     },
     deleteFile: (file: projects.FileNode) => (
@@ -379,7 +339,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
         .filter(file => file.type === "file")
         .map(file => file.path)
 
-      actions._setState({ status: "loading" })
       return getProjects(state, actions)
         .deleteFiles({ id, files })
         .then(() => {
@@ -390,10 +349,6 @@ const _editor: ModuleImpl<api.State, Actions> = {
           )
           actions.sources.close(files)
           deleteModels(paths)
-        })
-        .catch(e => {
-          actions._setState({ status: "error" })
-          throw e
         })
     },
     previewFile: (fileOrUrl: string | projects.FileNode) => (

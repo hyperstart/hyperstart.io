@@ -41,7 +41,7 @@ export interface CompilationOutput {
   compiledModules?: StringMap<CompiledModule>
 }
 
-export type Status = "closed" | "loading" | "editing" | "read-only" | "error"
+export type Status = "closed" | "editing" | "read-only"
 
 export interface State {
   compilationOutput?: CompilationOutput
