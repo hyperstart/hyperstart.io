@@ -139,7 +139,11 @@ export const module: ModuleImpl<State, Actions> = {
         ? actions.projects
         : actions.editor.localStore
 
-      return createProject({ fetch: actions.projects.fetch, template, owner })
+      return createProject({
+        fetch: actions.bundles.getFromNpmPackage,
+        template,
+        owner
+      })
         .then(project => {
           if (state.users.user) {
             return actions.projects.save(project)

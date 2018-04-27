@@ -22,7 +22,7 @@ import { getDirtySources } from "./selectors"
 import { runProject } from "./runProject"
 import { getEditorUrl } from "utils"
 import { logEvent } from "analytics"
-import { importBundle } from "projects/bundle"
+import { importBundle } from "projects/importBundle"
 import { computeNpmVersions } from "./computeNpmVersions"
 
 function copyFiles(files: projects.FileTree): projects.Files {

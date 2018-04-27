@@ -1,6 +1,6 @@
-import { guid, StringMap } from "lib/utils"
+import { guid } from "lib/utils"
 
-import { File } from "./api"
+import { File, Files } from "./api"
 import { DEPENDENCIES_FOLDER_NAME, DEPENDENCIES_FOLDER_PATH } from "./constants"
 import { FileNode, FileTree, getFileTree, existsByPath } from "./fileTree"
 import { concat } from "lib/fs"
@@ -9,11 +9,7 @@ interface IdMap {
   [id: string]: string
 }
 
-const importFiles = (
-  existing: StringMap<File>,
-  files: StringMap<File>,
-  root?: string
-): void => {
+const importFiles = (existing: Files, files: Files, root?: string): void => {
   const idMap: IdMap = {}
 
   // add the files
@@ -52,9 +48,9 @@ function areFilesEquals(file1: File, file2: File): boolean {
 }
 
 function importFile(
-  existing: StringMap<File>,
+  existing: Files,
   tree: FileTree,
-  targets: StringMap<File>,
+  targets: Files,
   path: string,
   toImport: File
 ): File {
@@ -79,12 +75,12 @@ function importFile(
 }
 
 function importFileRecursive(
-  existing: StringMap<File>,
+  existing: Files,
   tree: FileTree,
-  targets: StringMap<File>,
+  targets: Files,
   path: string,
   toImport: FileNode,
-  toImportFiles: StringMap<File>,
+  toImportFiles: Files,
   toImportTree: FileTree,
   parentId?: string
 ) {
@@ -148,16 +144,16 @@ function getPackageJson(project: ImportedProject, parent: string): File {
 export interface ImportedProject {
   id: string
   name: string
-  files: StringMap<File>
+  files: Files
   mainFile?: string
   version?: string
 }
 
 export const importProjects = (
-  files: StringMap<File>,
+  files: Files,
   imports: ImportedProject[]
-): StringMap<File> => {
-  const result: StringMap<File> = {}
+): Files => {
+  const result: Files = {}
 
   const tree = getFileTree(files)
   const dependencies = importFile(

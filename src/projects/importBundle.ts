@@ -50,7 +50,7 @@ function ensureParentFolder(files: Files, filePath: string): void {
   }
 }
 
-export function getFilesFromBundle(
+function getFilesFromBundle(
   bundle: Bundle,
   pkg: Package,
   result: Files = {},
@@ -92,7 +92,7 @@ function getId(bundleOrPackage: HasNameAndVersion) {
   return `${bundleOrPackage.name}@${bundleOrPackage.version || "*"}`
 }
 
-export function importBundle(bundle: Bundle, files: Files): Files {
+export function importBundle(files: Files, bundle: Bundle): Files {
   const pkg = getPkg(bundle, bundle.name, bundle.version)
 
   return importProjects(files, [

@@ -9,7 +9,7 @@ import { SourceEditor } from "editor/components/SourceEditor"
 import { getErrorMessage } from "lib/utils"
 import { importProjects } from "projects/importProjects"
 import { COLLECTION } from "."
-import { importBundle } from "./bundle"
+import { importBundle } from "./importBundle"
 
 interface SetStatusPayload {
   id: string
@@ -272,7 +272,7 @@ export function createProjects(
         const { id, bundle } = payload
 
         const oldFiles = state[id].files
-        const files = importBundle(bundle, oldFiles)
+        const files = importBundle(oldFiles, bundle)
 
         return updateProjectFiles(state, actions, store, id, oldFiles, files)
       }
