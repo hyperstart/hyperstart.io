@@ -60,6 +60,10 @@ export function Footer(props: FooterProps) {
             Blog
           </Link>
           |
+          <Link href="/about" target="_blank" class="text-light">
+            About
+          </Link>
+          |
           <a
             href="mailto:contact@hyperstart.io"
             class="text-light"
