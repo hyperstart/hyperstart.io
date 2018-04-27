@@ -52,7 +52,11 @@ export function Footer(props: FooterProps) {
             Twitter
           </a>
           |
-          <Link href="/blog" class="text-light">
+          <Link
+            href="https://blog.hyperstart.io"
+            target="_blank"
+            class="text-light"
+          >
             Blog
           </Link>
           |

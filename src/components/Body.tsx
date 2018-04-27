@@ -23,7 +23,7 @@ export function Body(props: BodyProps) {
       { path: "/projects/:id", view: ProjectEditorPage },
       { path: "/projects", view: ProjectSearchPage, exact: true },
       // { path: "/my-page", view: PageTemplate, exact: true },
-      { path: "/blog", view: BlogPage, exact: true },
+      // { path: "/blog", view: BlogPage, exact: true },
       { path: "*", view: () => replace("/") && "" }
     ],
     routeProps: { state, actions, log: actions.logger.log }
