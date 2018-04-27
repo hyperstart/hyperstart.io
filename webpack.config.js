@@ -29,6 +29,7 @@ module.exports = function(env) {
   plugins.push(new webpack.DefinePlugin(configs))
 
   return {
+    mode: env.build ? "production" : "development",
     devtool: env.build ? undefined : "inline-source-map",
     context: __dirname,
     entry: {
@@ -45,15 +46,15 @@ module.exports = function(env) {
       plugins: [new TsConfigPathsPlugin()]
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.tsx?$/,
-          loaders: ["awesome-typescript-loader"],
+          use: ["awesome-typescript-loader"],
           include: includePaths
         },
         {
           test: /\.jsx?$/,
-          loaders: ["awesome-typescript-loader"],
+          use: ["awesome-typescript-loader"],
           include: includePaths
         },
         {
@@ -62,7 +63,7 @@ module.exports = function(env) {
         },
         {
           test: /\.css$/,
-          loaders: ["style-loader", "css-loader"]
+          use: ["style-loader", "css-loader"]
         }
       ]
     },
