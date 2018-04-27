@@ -3,15 +3,7 @@ import { h } from "hyperapp"
 import { Modal } from "lib/components"
 
 import { State, Actions } from "./api"
-import { FormField } from "./FormField"
-
-export interface FieldProps {
-  name: string
-  placeholder?: string
-  label?: string
-  class?: string
-  type: string
-}
+import { FormField, Field } from "./FormField"
 
 export interface FormProps {
   state: State
@@ -19,7 +11,7 @@ export interface FormProps {
   active: boolean
   title: string
   submit()
-  fields: FieldProps[]
+  fields: Field[]
   fieldSize?: "sm" | "lg"
   horizontal?: string[]
 }

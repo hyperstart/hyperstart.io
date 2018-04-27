@@ -54,18 +54,25 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
     submit,
     fields: [
       {
-        name: "name",
         type: "text",
+        name: "name",
         label: "Name",
         onchange: actions.computeImportingNpmPackageVersions
       },
       {
-        name: "version",
+        type: "radio",
         label: "Version",
-        disabled: !options || options.length === 0
+        name: "latest",
+        onchange: actions.computeImportingNpmPackageVersions
+      },
+      {
+        type: "select",
+        name: "version",
+        disabled: options.length === 0 || modal.latest.value === "latest"
       }
     ],
-    canSubmit: () => options && options.length > 0
+    canSubmit: () => options && options.length > 0,
+    horizontal: false
   })
 
   // return (

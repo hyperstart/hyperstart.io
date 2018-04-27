@@ -4,18 +4,30 @@ import { FormFieldState, FormFieldUpdate } from "./api"
 
 // # Field
 
-export interface FormFieldProps {
+export interface BaseField {
+  onchange?(value: any)
+  label?: string
+  name?: string
+  class?: string
+  horizontal?: string[] | false
+  disabled?: boolean
+  loading?: boolean
+}
+
+export interface BaseProps {
   state: FormFieldState
   setField(payload: FormFieldUpdate)
-  onchange?(value: any)
-  name?: string
-  placeholder?: string
-  label?: string
-  class?: string
-  type?: string
-  horizontal?: string[]
-  disabled?: boolean
 }
+
+export type Field = SelectField | InputField | CheckboxField | RadioField
+
+export type FormFieldProps =
+  | SelectProps
+  | InputProps
+  | CheckboxProps
+  | RadioProps
+
+// # Label
 
 function Label(props: FormFieldProps) {
   const { label, horizontal } = props
@@ -33,11 +45,22 @@ function Label(props: FormFieldProps) {
   return <label class="form-label">{label}</label>
 }
 
-function Select(props: FormFieldProps) {
-  const { state, setField, name, horizontal, placeholder, disabled } = props
+// # Select
+
+export interface SelectField extends BaseField {
+  type: "select"
+}
+
+export interface SelectProps extends SelectField, BaseProps {
+  // empty
+}
+
+function Select(props: SelectProps) {
+  const { state, setField, name, horizontal } = props
   const error = state.error
   const value = state.value
-  const loading = state.loading
+  const loading = state.loading || props.loading
+  const disabled = loading || props.disabled
   const setValue = e => {
     e.preventDefault()
     const value = e.target.value
@@ -51,9 +74,8 @@ function Select(props: FormFieldProps) {
     <select
       onchange={setValue}
       value={state.value}
+      disabled={disabled}
       class={`form-select ${props.class || ""}`}
-      placeholder={placeholder}
-      disabled={disabled || state.loading}
     >
       {state.options.map(opt => <option value={opt.value}>{opt.label}</option>)}
     </select>,
@@ -74,19 +96,77 @@ function Select(props: FormFieldProps) {
   return elements
 }
 
-function Input(props: FormFieldProps) {
-  const {
-    state,
-    setField,
-    name,
-    placeholder = "",
-    type,
-    horizontal,
-    disabled
-  } = props
+// # Radio
+
+export interface RadioField extends BaseField {
+  type: "radio"
+}
+
+export interface RadioProps extends RadioField, BaseProps {
+  // empty
+}
+
+function Radio(props: RadioProps) {
+  const { state, setField, name, horizontal } = props
   const error = state.error
-  const loading = state.loading
   const value = state.value
+  const loading = state.loading || props.loading
+  const disabled = loading || props.disabled
+  const setValue = e => {
+    e.preventDefault()
+    const value = e.target.name
+    setField({ field: name, value })
+    if (props.onchange) {
+      props.onchange(value)
+    }
+  }
+
+  const options = state.options.map(opt => {
+    return (
+      <label class="form-radio">
+        <input
+          type="radio"
+          name={opt.value}
+          checked={opt.value === state.value}
+          disabled={disabled}
+          onchange={setValue}
+        />
+        <i class="form-icon" /> {opt.label}
+      </label>
+    )
+  })
+
+  if (horizontal) {
+    return <div class={horizontal[1]}>{options}</div>
+  }
+  return options
+}
+
+// # Input
+
+export interface InputField extends BaseField {
+  type:
+    | "text"
+    | "email"
+    | "url"
+    | "password"
+    | "number"
+    | "date"
+    | "color"
+    | "file"
+  placeholder?: string
+}
+
+interface InputProps extends InputField, BaseProps {
+  // empty
+}
+
+function Input(props: InputProps) {
+  const { state, setField, name, placeholder = "", type, horizontal } = props
+  const error = state.error
+  const value = state.value
+  const loading = state.loading || props.loading
+  const disabled = loading || props.disabled
   const setValue = e => {
     e.preventDefault()
     const value = e.target.value
@@ -103,7 +183,7 @@ function Input(props: FormFieldProps) {
       oninput={setValue}
       type={type}
       class={`form-input ${props.class || ""}`}
-      disabled={disabled || state.loading}
+      disabled={disabled}
     />,
     loading && <i class="form-icon loading" />,
     <p class="form-input-hint">{error}</p>
@@ -122,10 +202,22 @@ function Input(props: FormFieldProps) {
   return elements
 }
 
-function Checkbox(props: FormFieldProps) {
-  const { state, setField, name, horizontal, disabled } = props
+// # Checkbox
+
+export interface CheckboxField extends BaseField {
+  type: "checkbox" | "switch"
+}
+
+export interface CheckboxProps extends CheckboxField, BaseProps {
+  // empty
+}
+
+function Checkbox(props: CheckboxProps) {
+  const { type, state, setField, name, horizontal } = props
   const error = state.error
   const value = state.value
+  const loading = state.loading || props.loading
+  const disabled = loading || props.disabled
   const setValue = e => {
     e.preventDefault()
     const value = e.target.checked
@@ -136,13 +228,13 @@ function Checkbox(props: FormFieldProps) {
   }
 
   const elements = [
-    <label class="form-checkbox">
+    <label class={`form-${type}`}>
       <input
         type="checkbox"
         checked={value}
         onchange={setValue}
         class={props.class || ""}
-        disabled={disabled || state.loading}
+        disabled={disabled}
       />
       {props.label && h("i", { class: "form-icon" })}
       {props.label}
@@ -156,20 +248,27 @@ function Checkbox(props: FormFieldProps) {
   return elements
 }
 
+function Field(props: FormFieldProps) {
+  switch (props.type) {
+    case "checkbox":
+    case "switch":
+      return Checkbox(props)
+    case "select":
+      return Select(props)
+    case "radio":
+      return Radio(props)
+    default:
+      return Input(props)
+  }
+}
+
 export function FormField(props: FormFieldProps) {
-  const { state, name, type } = props
-  const checkbox = typeof state.value === "boolean"
+  const { state, type } = props
+  const checkbox = type === "checkbox" || type === "switch"
   return (
-    <div
-      class={`form-group ${state.error ? "has-error" : ""}`}
-      style={{ display: type === "hidden" && "none" }}
-    >
+    <div class={`form-group ${state.error ? "has-error" : ""}`}>
       {!checkbox && Label(props)}
-      {checkbox
-        ? Checkbox(props)
-        : state.options
-          ? Select(props)
-          : Input(props)}
+      {Field(props)}
     </div>
   )
 }

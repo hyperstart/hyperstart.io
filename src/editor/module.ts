@@ -23,6 +23,7 @@ import { runProject } from "./runProject"
 import { getEditorUrl } from "utils"
 import { logEvent } from "analytics"
 import { importBundle } from "projects/bundle"
+import { computeNpmVersions } from "./computeNpmVersions"
 
 function copyFiles(files: projects.FileTree): projects.Files {
   const results: projects.Files = {}
@@ -76,76 +77,6 @@ function getProjects(state: api.State, actions: api.Actions): projects.Actions {
 
   return actions.localStore
 }
-
-function _computeNpmVersions(state: api.State, actions: api.Actions) {
-  if (!state.ui.importNpmPackageModal) {
-    return
-  }
-
-  const pkg = state.ui.importNpmPackageModal.name.value
-  if (pkg === "") {
-    return
-  }
-
-  actions.ui.importNpmPackageModal.set({
-    fields: {
-      name: {
-        error: null
-      },
-      version: {
-        options: null,
-        value: "",
-        loading: true
-      }
-    }
-  })
-  bundleActions
-    .getVersions(pkg)
-    .then(versions => {
-      if (!state.ui.importNpmPackageModal) {
-        return
-      }
-
-      if (versions.length === 0) {
-        throw "No package..."
-      }
-      const options = versions.map(v => ({ value: v, label: v })).reverse()
-      actions.ui.importNpmPackageModal.set({
-        fields: {
-          name: {
-            error: null
-          },
-          version: {
-            options,
-            value: options[0].value,
-            loading: false
-          }
-        }
-      })
-    })
-    .catch(e => {
-      if (
-        !state.ui.importNpmPackageModal ||
-        state.ui.importNpmPackageModal.versions.loading
-      ) {
-        return
-      }
-
-      actions.ui.importNpmPackageModal.set({
-        fields: {
-          name: {
-            error: `No npm package found with name ${pkg}.`
-          },
-          version: {
-            options: [],
-            value: "",
-            loading: false
-          }
-        }
-      })
-    })
-}
-const computeNpmVersions = debounce(_computeNpmVersions, 300)
 
 // internal actions
 interface Actions extends api.Actions {
@@ -382,7 +313,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
         })
     },
     computeImportingNpmPackageVersions: () => (state, actions) => {
-      computeNpmVersions(state, actions)
+      computeNpmVersions(bundleActions, state, actions)
     },
     // ## Files
     toggleFileExpanded: (path: string) => (state, actions) => {

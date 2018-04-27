@@ -3,18 +3,7 @@ import { h } from "hyperapp"
 import { Modal } from "lib/components"
 
 import { State, Actions } from "./api"
-import { FormField } from "./FormField"
-
-export interface ModalFieldProps {
-  name: string
-  /** Only used for inputs (no options in the field definition). */
-  placeholder?: string
-  label?: string
-  class?: string
-  type?: string
-  disabled?: boolean
-  onchange?(value: any)
-}
+import { FormField, Field } from "./FormField"
 
 export interface ModalFormProps {
   state: State
@@ -24,10 +13,10 @@ export interface ModalFormProps {
   submit(state: State)
   close()
   canSubmit?(): boolean
-  fields: ModalFieldProps[]
+  fields: Field[]
   size?: "sm" | "lg"
   titleTag?: string
-  horizontal?: string[]
+  horizontal?: string[] | false
 }
 
 export function ModalForm(props: ModalFormProps) {

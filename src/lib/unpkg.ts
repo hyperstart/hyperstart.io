@@ -60,6 +60,9 @@ export function get(payload: GetPayload): Promise<GetResult> {
 
 export function getLatestVersion(pkg: string): Promise<string> {
   return fetch(getUrl({ pkg }), { method: "HEAD" }).then(res => {
+    if (res.status !== 200) {
+      throw new Error(`Package with name ${pkg} does not exist.`)
+    }
     return extractVersion(res.url, pkg)
   })
 }

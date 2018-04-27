@@ -14,7 +14,11 @@ const editForm = createForm()
 const createFileForm = createForm()
 const importNpmPackageForm = createForm({
   name: "",
-  version: ""
+  version: [],
+  latest: [
+    { value: "latest", label: "Latest version" },
+    { value: "custom", label: "Custom Version" }
+  ]
 })
 const search = createSearch([{ name: "import-project" }])
 
