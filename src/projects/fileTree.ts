@@ -39,8 +39,8 @@ const getFileNode = (file: File, source?: SourceNode): FileNode => {
       id: file.id,
       type: "file",
       name: file.name,
-      content: source ? source.content : file.content,
-      original: file.content,
+      content: source ? source.content : file.content || "",
+      original: file.content || "",
       path: ""
     }
 

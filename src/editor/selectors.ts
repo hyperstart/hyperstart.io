@@ -10,6 +10,7 @@ import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, Files } from "projects"
 
 import { State, FileNotFound } from "./api"
 import { Run } from "./debug/api"
+import { inferMainFile } from "lib/npm"
 
 export function isEditable(state: State): boolean {
   return state.status === "editing"
@@ -131,6 +132,20 @@ export function isDebuggable(state: State): boolean {
   const path = `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}/index.js`
   const id = state.files.byPath[path]
   return !!id
+}
+
+export function getHyperappJsMainFile(state: State): string | null {
+  if (!state.files) {
+    return null
+  }
+
+  const pkg = getPackageJsonInFolder(
+    state.files,
+    `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}`
+  )
+  return `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}/${
+    pkg ? inferMainFile(pkg) : "index.js"
+  }`
 }
 
 export function getFiles(state: State): Files {
