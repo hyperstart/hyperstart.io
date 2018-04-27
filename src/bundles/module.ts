@@ -14,6 +14,11 @@ interface Actions extends api.Actions {
   _add(payload: AddActionPayload)
 }
 
+function sanitize(pkg: string): string {
+  // escape and sanitize
+  return pkg.replace("/", "%252F")
+}
+
 const _bundles: ModuleImpl<api.State, Actions> = {
   // # State
   state: {},
@@ -34,9 +39,43 @@ const _bundles: ModuleImpl<api.State, Actions> = {
     getFromNpmPackage: (payload: api.GetBundlePayload) => (state, actions) => {
       const { name, version } = payload
 
+      // check local cache
       const result = state[getId(name, version || "latest")]
       if (result) {
         return Promise.resolve(result)
+      }
+
+      // check github raw content
+      if (version) {
+        const url = `https://raw.githubusercontent.com/hyperstart/hyperstart-bundles/master/bundles/${sanitize(
+          name
+        )}@${version}.json`
+
+        return fetch(url)
+          .then(res => {
+            if (res.status !== 200) {
+              throw new Error("not exist")
+            }
+
+            return res.json()
+          })
+          .then(bundle => {
+            actions._add({ bundle })
+            if (!version) {
+              actions._add({ bundle, version: "latest" })
+            }
+            return bundle
+          })
+          .catch(e => {
+            // fallback on the same mechanism
+            return bundle(name, version).then(bundle => {
+              actions._add({ bundle })
+              if (!version) {
+                actions._add({ bundle, version: "latest" })
+              }
+              return bundle
+            })
+          })
       }
 
       return bundle(name, version).then(bundle => {
