@@ -30,6 +30,10 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## Edit form
     editForm: editForm.actions,
     startEdit: (project: projects.Details) => state => {
+      logEvent("edit", {
+        event_category: "project",
+        event_label: "StartEdit"
+      })
       return {
         editForm: createFormState({ name: project.name })
       }

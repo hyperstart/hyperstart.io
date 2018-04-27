@@ -9,6 +9,7 @@ import { ProjectEditorPage } from "./ProjectEditorPage"
 import { ProjectSearchPage } from "./ProjectSearchPage"
 // import { PageTemplate } from "./PageTemplate"
 import { BlogPage } from "./BlogPage"
+import { AboutPage } from "./AboutPage"
 
 export interface BodyProps {
   state: State
@@ -23,7 +24,7 @@ export function Body(props: BodyProps) {
       { path: "/projects/:id", view: ProjectEditorPage },
       { path: "/projects", view: ProjectSearchPage, exact: true },
       // { path: "/my-page", view: PageTemplate, exact: true },
-      // { path: "/blog", view: BlogPage, exact: true },
+      { path: "/about", view: AboutPage, exact: true },
       { path: "*", view: () => replace("/") && "" }
     ],
     routeProps: { state, actions, log: actions.logger.log }

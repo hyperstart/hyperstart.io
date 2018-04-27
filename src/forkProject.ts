@@ -2,8 +2,13 @@ import { Project, Owner } from "projects"
 import { State, Actions } from "api"
 import { copyProject } from "projects/copyProject"
 import { replace } from "lib/router"
+import { logEvent } from "analytics"
 
 export function forkProject(state: State, actions: Actions, project: Project) {
+  logEvent("fork_project", {
+    event_category: "project",
+    event_label: "Fork"
+  })
   const user = state.users.user
   const owner: Owner = user
     ? { id: user.id, displayName: user.displayName }

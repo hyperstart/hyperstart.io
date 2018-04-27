@@ -210,6 +210,10 @@ const _editor: ModuleImpl<api.State, Actions> = {
       if (state.status !== "editing") {
         return Promise.resolve()
       }
+      logEvent("save_all", {
+        event_category: "project",
+        event_label: "SaveAllSources"
+      })
       const files: any = state.files.byId
       const projectId = state.project.id
       const update: projects.UpdateFilesPayload = {

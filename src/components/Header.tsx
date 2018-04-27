@@ -43,7 +43,7 @@ function SaveButton({ state, actions }: HeaderProps) {
     disabled: !hasDirtySources(state.editor) || isLoading(state),
     onclick: actions.editor.saveAllSources,
     text: "Save",
-    class: "button btn-primary"
+    class: "button btn-primary mr-1"
   })
 }
 

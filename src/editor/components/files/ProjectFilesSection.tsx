@@ -12,6 +12,7 @@ import { FilePreview } from "./FilePreview"
 import { HeaderMenu } from "./HeaderMenu"
 
 import "./ProjectFilesSection.scss"
+import { logEvent } from "analytics"
 
 export interface ProjectFilesSectionProps {
   state: State
@@ -24,9 +25,17 @@ export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
   const file = getPreviewedFile(state)
 
   function createFile(type: "file" | "folder", name: string, parent?: File) {
+    logEvent("create_file", {
+      event_category: "project",
+      event_label: "Create " + type
+    })
     log(actions.createFile({ type, name, parent }))
   }
   function onDeleteFile(file: FileNode) {
+    logEvent("delete_file", {
+      event_category: "project",
+      event_label: "Delete"
+    })
     log(actions.deleteFile(file))
   }
 

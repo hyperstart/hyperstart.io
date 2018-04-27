@@ -130,7 +130,8 @@ export function IndexPage(props: IndexPageProps) {
             />
             <h4 class="text-center py-2">Reusability</h4>
             <p>
-              We believe in open-source: you can check out this website on{" "}
+              We believe in open-source: this website is completely open and
+              available on{" "}
               <a href="https://github.com/hyperstart/hyperstart.io">Github</a>.
               Since all projects hosted on Hyperstart are also open-source, you
               can search available projects and re-use them as dependencies on
@@ -173,7 +174,7 @@ export function IndexPage(props: IndexPageProps) {
           <div class="column col-12 centered text-center py-6">
             <h2>Developed For Hyperapp</h2>
           </div>
-          <div class="column col-9 centered text-left py-2">
+          <div class="column col-8 centered text-left py-2">
             <p>
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
