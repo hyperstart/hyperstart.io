@@ -205,8 +205,7 @@ const _editor: ModuleImpl<api.State, Actions> = {
           id,
           owner
         },
-        files: copyFiles(state.files),
-        status: {}
+        files: copyFiles(state.files)
       }
 
       actions._setState({ status: "loading" })

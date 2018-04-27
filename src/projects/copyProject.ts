@@ -9,7 +9,6 @@ export function copyProject(project: Project, newOwner: Owner): Project {
       id: newOwner ? newOwner.id + "-" + guid() : LOCAL_PROJECT_ID,
       owner: newOwner
     },
-    status: {},
     files: project.files
   }
 }

@@ -48,10 +48,9 @@ export function createProject(payload: Payload): Promise<Project> {
             files: hyperapp.files,
             mainFile
           }
-        ]),
-        status: { loading: false }
+        ])
       }
     })
   }
-  return Promise.resolve({ details, files, status: { loading: false } })
+  return Promise.resolve({ details, files })
 }

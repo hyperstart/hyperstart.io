@@ -16,7 +16,6 @@ export function getEditedProject(
 
   return {
     details: state.editor.project,
-    status: {},
     files: getFiles(state.editor)
   }
 }
