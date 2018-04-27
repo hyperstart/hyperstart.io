@@ -47,7 +47,7 @@ export function get(payload: GetPayload): Promise<GetResult> {
     .then(response => {
       url = response.url
       if (response.status !== 200) {
-        return null
+        throw new Error(`File ` + url + " not found.")
       }
       return response.text()
     })
