@@ -24,6 +24,14 @@ export const createModel = (code: string, language: string, path: string) => {
   return result
 }
 
+export function updateModel(code: string, path: string) {
+  if (!models[path]) {
+    throw new Error("No model found at path " + path)
+  }
+
+  models[path].setValue(code)
+}
+
 export const hasModel = (path: string) => {
   return !!models[path]
 }

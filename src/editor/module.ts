@@ -57,10 +57,15 @@ function updateProject(
   const state = actions.getState()
   const files = projects.getFileTree(project.files)
   configureFor(files, false)
+
   actions._setState({
     files,
     project: project.details,
-    status
+    status,
+    sources: {
+      opened: state.sources.opened.filter(id => files.byId[id]),
+      selected: state.sources.selected.filter(id => files.byId[id])
+    }
   })
 }
 
