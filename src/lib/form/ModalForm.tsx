@@ -3,15 +3,7 @@ import { h } from "hyperapp"
 import { Modal } from "lib/components"
 
 import { State, Actions } from "./api"
-import { FormField } from "./FormField"
-
-export interface ModalFieldProps {
-  name: string
-  placeholder?: string
-  label?: string
-  class?: string
-  type: string
-}
+import { FormField, Field } from "./FormField"
 
 export interface ModalFormProps {
   state: State
@@ -20,10 +12,11 @@ export interface ModalFormProps {
   title: string
   submit(state: State)
   close()
-  fields: ModalFieldProps[]
+  canSubmit?(): boolean
+  fields: Field[]
   size?: "sm" | "lg"
   titleTag?: string
-  horizontal?: string[]
+  horizontal?: string[] | false
 }
 
 export function ModalForm(props: ModalFormProps) {
@@ -33,7 +26,8 @@ export function ModalForm(props: ModalFormProps) {
     fields,
     horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"],
     titleTag = "h3",
-    close
+    close,
+    canSubmit = () => true
   } = props
 
   const cancel = (e: Event) => {
@@ -61,7 +55,11 @@ export function ModalForm(props: ModalFormProps) {
             <button class="btn btn-secondary" onclick={cancel} type="button">
               Cancel
             </button>{" "}
-            <button class="btn btn-primary" type="submit">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              disabled={!canSubmit()}
+            >
               Submit
             </button>
           </div>

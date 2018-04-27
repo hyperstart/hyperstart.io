@@ -140,6 +140,20 @@ body {
   text-align: left;
 }
 
+.form-select {
+  -webkit-appearance: none;
+}
+
+.form-group .has-icon-right i.loading {
+  background-color: transparent;
+
+  &::after {
+    border: $border-width-lg solid $body-font-color;
+    border-right-color: transparent;
+    border-top-color: transparent;
+  }
+}
+
 .empty {
   margin-top: 10px;
   color: inherit;

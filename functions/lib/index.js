@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
+const corsFn = require("cors");
 const npm_1 = require("./npm");
 const utils_1 = require("./utils");
+const unpkg_1 = require("./unpkg");
 function getUrlParameter(request, response, name, optional = false) {
     const result = request.query[name] || null;
     if (!result && !optional) {
@@ -12,18 +14,29 @@ function getUrlParameter(request, response, name, optional = false) {
     }
     return result;
 }
+const cors = corsFn({ origin: true });
 exports.getNpmPackageVersions = functions.https.onRequest((request, response) => {
     const pkg = getUrlParameter(request, response, "package");
     if (!pkg) {
         return;
     }
-    npm_1.fetchVersions(pkg)
-        .then(versions => {
-        response.contentType("application/json");
-        response.send(versions);
-    })
-        .catch(e => {
-        response.status(500).send(utils_1.getErrorMessage(e));
+    console.log("parameter: " + pkg);
+    return cors(request, response, () => {
+        unpkg_1.exists(pkg)
+            .then(exists => {
+            if (!exists) {
+                return [];
+            }
+            return npm_1.fetchVersions(pkg);
+        })
+            .then(versions => {
+            response.status(200);
+            response.contentType("application/json");
+            response.send(versions);
+        })
+            .catch(e => {
+            response.status(500).send(utils_1.getErrorMessage(e));
+        });
     });
 });
 /* this works fine, but it's just simpler to bundle on the client for now.

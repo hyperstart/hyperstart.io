@@ -28,7 +28,6 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
 
   const submit = () => {
     const name = modal["name"].value
-    const version = modal["version"].value
     if (name === "") {
       modalActions.setField({
         field: "name",
@@ -37,25 +36,15 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
       return
     }
 
+    const version = modal["version"].value
     log(
       actions.importNpmPackage({ name, version }).then(() => {
         actions.ui.closeImportNpmPackageModal()
       })
-      // .catch(e => {
-      //   if (version === "") {
-      //     modalActions.setField({
-      //       field: "name",
-      //       error: "Error: " + getErrorMessage(e)
-      //     })
-      //     return
-      //   } else {
-      //     // TODO what to do there?
-      //     throw e
-      //   }
-      // })
     )
   }
 
+  const options = modal.version.options
   return ModalForm({
     state: modal,
     actions: modalActions,
@@ -64,10 +53,26 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
     title: "Import package from npm",
     submit,
     fields: [
-      { name: "name", type: "text", placeholder: "Package name" },
-      { name: "version", type: "text", placeholder: "Package version" }
+      {
+        type: "text",
+        name: "name",
+        label: "Name",
+        onchange: actions.computeImportingNpmPackageVersions
+      },
+      {
+        type: "radio",
+        label: "Version",
+        name: "latest",
+        onchange: actions.computeImportingNpmPackageVersions
+      },
+      {
+        type: "select",
+        name: "version",
+        disabled: options.length === 0 || modal.latest.value === "latest"
+      }
     ],
-    horizontal: null
+    canSubmit: () => options && options.length > 0,
+    horizontal: false
   })
 
   // return (

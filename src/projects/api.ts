@@ -39,14 +39,8 @@ export interface Details {
   owner?: Owner
 }
 
-export interface Status {
-  loading?: boolean
-  error?: string
-}
-
 export interface Project {
   details: Details
-  status: Status
   files?: Files
 }
 

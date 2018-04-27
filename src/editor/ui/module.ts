@@ -8,12 +8,17 @@ import * as projects from "projects"
 
 import { PROJECT_TAB_ID } from "../constants"
 import * as api from "./api"
+import { debounce } from "lib/utils"
 
 const editForm = createForm()
 const createFileForm = createForm()
 const importNpmPackageForm = createForm({
   name: "",
-  version: ""
+  version: [],
+  latest: [
+    { value: "latest", label: "Latest version" },
+    { value: "custom", label: "Custom Version" }
+  ]
 })
 const search = createSearch([{ name: "import-project" }])
 

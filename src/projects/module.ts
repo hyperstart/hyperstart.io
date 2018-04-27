@@ -9,7 +9,7 @@ import { SourceEditor } from "editor/components/SourceEditor"
 import { getErrorMessage } from "lib/utils"
 import { importProjects } from "projects/importProjects"
 import { COLLECTION } from "."
-import { importBundle } from "./bundle"
+import { importBundle } from "./importBundle"
 
 interface SetStatusPayload {
   id: string
@@ -21,7 +21,6 @@ interface SetStatusPayload {
 // At least from a type perspective...
 interface Actions extends api.Actions {
   _setProject(project: api.Project)
-  _setStatus(payload: SetStatusPayload)
 }
 
 function path(project?: string) {
@@ -80,22 +79,13 @@ function updateProjectFiles(
     }
   })
 
-  actions._setStatus({ id, loading: true })
-  return store
-    .update({ toSet, toDelete })
-    .then(() => {
-      const project: api.Project = {
-        details: state[id].details,
-        files,
-        status: { loading: false }
-      }
-      actions._setProject(project)
-    })
-    .catch(e => {
-      const error = getErrorMessage(e)
-      actions._setStatus({ id, error, loading: false })
-      throw e
-    })
+  return store.update({ toSet, toDelete }).then(() => {
+    const project: api.Project = {
+      details: state[id].details,
+      files
+    }
+    actions._setProject(project)
+  })
 }
 
 export function createProjects(
@@ -108,10 +98,6 @@ export function createProjects(
       init: () => {},
       getState: () => state => state,
       _setProject: project => ({ [project.details.id]: project }),
-      _setStatus: (payload: SetStatusPayload) => state => {
-        const { id, loading, error } = payload
-        return set(state, [id, "status"], { loading, error })
-      },
       // # Projects
       save: (project: api.Project) => (
         state,
@@ -138,27 +124,19 @@ export function createProjects(
 
         actions._setProject({
           details,
-          files,
-          status: { loading: true, error: null }
+          files
         })
-        return store
-          .update({ toSet })
-          .then(() => {
-            const result = {
-              details,
-              files,
-              status: { loading: false, error: null }
-            }
+        return store.update({ toSet }).then(() => {
+          const result = {
+            details,
+            files,
+            status: { loading: false, error: null }
+          }
 
-            actions._setProject(result)
+          actions._setProject(result)
 
-            return result
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, loading: false, error })
-            throw e
-          })
+          return result
+        })
       },
       update: (project: api.UpdatedProject) => (
         state,
@@ -178,22 +156,12 @@ export function createProjects(
         const toUpdate: store.DocumentToUpdate[] = [
           { id, collection: path(), document }
         ]
-
-        actions._setStatus({ id, loading: true })
-        return store
-          .update({ toUpdate })
-          .then(() => {
-            const updated = { ...state[id] }
-            updated.details = { ...updated.details, ...document }
-            updated.status = { loading: false, error: null }
-            actions._setProject(updated)
-            return updated
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, loading: false, error })
-            throw e
-          })
+        return store.update({ toUpdate }).then(() => {
+          const updated = { ...state[id] }
+          updated.details = { ...updated.details, ...document }
+          actions._setProject(updated)
+          return updated
+        })
       },
       fetch: (id: string) => (state, actions): Promise<api.Project> => {
         const project = state[id]
@@ -201,7 +169,6 @@ export function createProjects(
           return Promise.resolve(project)
         }
 
-        actions._setStatus({ id, loading: true })
         let details: api.Details
         return fetchDetails(store, state, id)
           .then(result => {
@@ -211,18 +178,12 @@ export function createProjects(
           .then((results: api.File[]) => {
             const project: api.Project = backCompatible({
               details,
-              files: {},
-              status: { loading: false, error: null }
+              files: {}
             })
             results.forEach(file => (project.files[file.id] = file))
 
             actions._setProject(project)
             return project
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, error, loading: false })
-            throw e
           })
       },
       // # Files
@@ -238,20 +199,11 @@ export function createProjects(
           return { collection, id: file.id, document: file }
         })
 
-        actions._setStatus({ id, loading: true })
-        return store
-          .update({ toSet })
-          .then(() => {
-            const updated = { ...state[id] }
-            updated.files = { ...updated.files, ...newFiles }
-            updated.status = { loading: false, error: null }
-            actions._setProject(updated)
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, error, loading: false })
-            throw e
-          })
+        return store.update({ toSet }).then(() => {
+          const updated = { ...state[id] }
+          updated.files = { ...updated.files, ...newFiles }
+          actions._setProject(updated)
+        })
       },
       updateFiles: (payload: api.UpdateFilesPayload) => (
         state,
@@ -274,22 +226,13 @@ export function createProjects(
           return { collection, id, document }
         })
 
-        actions._setStatus({ id, loading: true })
-        return store
-          .update({ toUpdate })
-          .then(() => {
-            const project: api.Project = {
-              details: state[id].details,
-              files: newFiles,
-              status: { loading: false }
-            }
-            actions._setProject(project)
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, error, loading: false })
-            throw e
-          })
+        return store.update({ toUpdate }).then(() => {
+          const project: api.Project = {
+            details: state[id].details,
+            files: newFiles
+          }
+          actions._setProject(project)
+        })
       },
       deleteFiles: (payload: api.DeleteFilesPayload) => (
         state,
@@ -306,22 +249,13 @@ export function createProjects(
           }
         })
 
-        actions._setStatus({ id, loading: true })
-        return store
-          .update({ toDelete })
-          .then(() => {
-            const project: api.Project = {
-              details: state[id].details,
-              files: newFiles,
-              status: { loading: false }
-            }
-            actions._setProject(project)
-          })
-          .catch(e => {
-            const error = getErrorMessage(e)
-            actions._setStatus({ id, error, loading: false })
-            throw e
-          })
+        return store.update({ toDelete }).then(() => {
+          const project: api.Project = {
+            details: state[id].details,
+            files: newFiles
+          }
+          actions._setProject(project)
+        })
       },
       importProjects: (payload: api.ImportProjectsPayload) => (
         state,
@@ -338,7 +272,7 @@ export function createProjects(
         const { id, bundle } = payload
 
         const oldFiles = state[id].files
-        const files = importBundle(bundle, oldFiles)
+        const files = importBundle(oldFiles, bundle)
 
         return updateProjectFiles(state, actions, store, id, oldFiles, files)
       }

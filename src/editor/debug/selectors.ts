@@ -50,3 +50,7 @@ export function isSelectedAction(
 
   return path.every((val, i) => val === a.path[i])
 }
+
+export function hasDebugRuns(state: State) {
+  return Object.keys(state.runs).length > 0
+}

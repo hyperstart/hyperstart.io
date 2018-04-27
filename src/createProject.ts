@@ -15,7 +15,7 @@ export function createProject(
     : null
 
   return actions.logger.log(
-    create({ fetch: actions.projects.fetch, template, owner })
+    create({ fetch: actions.bundles.getFromNpmPackage, template, owner })
       .then(project => {
         if (state.users.user) {
           return actions.projects.save(project)

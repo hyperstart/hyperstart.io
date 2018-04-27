@@ -12,6 +12,7 @@ import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
 import { forkProject } from "forkProject"
+import { hasDebugRuns } from "editor/debug/selectors"
 
 export interface HeaderProps {
   state: State
@@ -20,11 +21,12 @@ export interface HeaderProps {
 }
 
 function CreateButton({ state, actions }: HeaderProps) {
-  if (isLoading(state) || state.editor.project) {
+  if (state.editor.project) {
     return null
   }
 
   return Button({
+    disabled: isLoading(state),
     onclick: actions.ui.openCreateProjectModal,
     text: window.innerWidth < 840 ? "Create" : "Create a Project",
     class: "button btn-primary"
@@ -33,15 +35,12 @@ function CreateButton({ state, actions }: HeaderProps) {
 
 function SaveButton({ state, actions }: HeaderProps) {
   const status = state.editor.status
-  if (status !== "editing" && status !== "loading") {
+  if (status !== "editing") {
     return null
   }
 
   return Button({
-    disabled:
-      !hasDirtySources(state.editor) ||
-      isLoading(state) ||
-      status === "loading",
+    disabled: !hasDirtySources(state.editor) || isLoading(state),
     onclick: actions.editor.saveAllSources,
     text: "Save",
     class: "button btn-primary"
@@ -56,7 +55,7 @@ function RunButton({ state, actions }: HeaderProps) {
   }
 
   return Button({
-    disabled: isLoading(state) || status === "loading",
+    disabled: isLoading(state),
     onclick: () => actions.editor.run(false),
     text: " Run",
     class: "button btn-primary mr-1"
@@ -80,7 +79,7 @@ function DebugButton({ state, actions }: HeaderProps) {
         class="btn-primary"
       />
       <Button
-        disabled={isLoading(state) || !state.editor.compilationOutput}
+        disabled={isLoading(state) || !hasDebugRuns(state.editor.debug)}
         active={debugState.paneShown}
         onclick={() => actions.editor.debug.showPane(!debugState.paneShown)}
         icon="caret-down"
@@ -92,7 +91,7 @@ function DebugButton({ state, actions }: HeaderProps) {
 
 function ForkButton({ state, actions }: HeaderProps) {
   const status = state.editor.status
-  if (status === "closed" || status === "error") {
+  if (status === "closed") {
     return null
   }
   const toFork = getEditedProject(state, true)
@@ -101,7 +100,7 @@ function ForkButton({ state, actions }: HeaderProps) {
   }
 
   return Button({
-    disabled: isLoading(state) || status === "loading",
+    disabled: isLoading(state),
     onclick: () => {
       forkProject(state, actions, toFork)
     },

@@ -16,4 +16,6 @@ export interface GetBundlePayload {
 
 export interface Actions extends ModuleActions<State> {
   getFromNpmPackage(payload: GetBundlePayload): Promise<Bundle>
+  getLatestVersion(packageName: string): Promise<string>
+  getVersions(packageName: string): Promise<string[]>
 }

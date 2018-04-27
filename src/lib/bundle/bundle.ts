@@ -1,4 +1,4 @@
-import semver from "semver"
+import * as semver from "semver"
 
 import { get } from "lib/unpkg"
 import { resolveId } from "./resolveId"
@@ -240,6 +240,12 @@ export function bundle(
 
   return Promise.all(fetches)
     .then(([res, readme]) => {
+      if (!res.content) {
+        throw new Error(
+          `Cannot find package.json for package ${pkg} with version ${version ||
+            "latest"}.`
+        )
+      }
       const json: PackageJson = JSON.parse(res.content)
       bundle.version = json.version
       const packaged = addPkg(bundle, json)
@@ -256,7 +262,7 @@ export function bundle(
       packaged.mainFile = mainFile
       packaged.files["/package.json"] = res.content
 
-      if (readme) {
+      if (readme && readme.content) {
         packaged.files["/README.md"] = readme.content
       }
 

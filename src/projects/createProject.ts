@@ -4,13 +4,17 @@ import { getSearches } from "lib/search"
 import { importProjects } from "./importProjects"
 import { createBlankFiles, createHyperappFiles } from "./createFiles"
 import { Actions, File, Owner, Project, Details, Template } from "./api"
-import { HYPERAPP_NAME, LOCAL_PROJECT_ID } from "./constants"
+import { LOCAL_PROJECT_ID } from "./constants"
+import { Bundle } from "lib/bundle"
+import { importBundle } from "./importBundle"
 
-// set in configs/
-declare const HYPERAPP_ID: string
+export interface FetchBundlePayload {
+  name: string
+  version?: string
+}
 
 export interface Payload {
-  fetch: (id: string) => Promise<Project>
+  fetch: (payload: FetchBundlePayload) => Promise<Bundle>
   name?: string
   owner?: Owner
   template: Template
@@ -34,24 +38,12 @@ export function createProject(payload: Payload): Promise<Project> {
     template === "hyperapp" ? createHyperappFiles() : createBlankFiles()
 
   if (template === "hyperapp") {
-    let hyperappFiles: StringMap<File>
-    return fetch(HYPERAPP_ID).then(hyperapp => {
-      const name = hyperapp.details.name
-      const id = hyperapp.details.id
-      const mainFile = hyperapp.details.mainFile
+    return fetch({ name: "hyperapp", version: "1.2.5" }).then(hyperapp => {
       return {
         details,
-        files: importProjects(files, [
-          {
-            id,
-            name,
-            files: hyperapp.files,
-            mainFile
-          }
-        ]),
-        status: { loading: false }
+        files: importBundle(files, hyperapp)
       }
     })
   }
-  return Promise.resolve({ details, files, status: { loading: false } })
+  return Promise.resolve({ details, files })
 }

@@ -1,6 +1,11 @@
 import { StringMap } from "lib/utils"
 
-import { SourceNode, FileNode, getFile } from "projects/fileTree"
+import {
+  SourceNode,
+  FileNode,
+  getFile,
+  getPackageJsonInFolder
+} from "projects/fileTree"
 import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, Files } from "projects"
 
 import { State, FileNotFound } from "./api"
@@ -113,9 +118,17 @@ export function isDebuggable(state: State): boolean {
     return false
   }
 
-  // TODO check version as well....
+  const pkg = getPackageJsonInFolder(
+    state.files,
+    `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}`
+  )
 
-  const path = DEPENDENCIES_FOLDER_PATH + "/" + HYPERAPP_NAME + "/index.js"
+  if (pkg && pkg.version === "1.2.5") {
+    return true
+  }
+
+  // fallback for old projects
+  const path = `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}/index.js`
   const id = state.files.byPath[path]
   return !!id
 }

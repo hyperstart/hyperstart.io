@@ -24,7 +24,7 @@ export interface ProjectTabProps {
 export const ProjectTab = (props: ProjectTabProps) => {
   const { state, actions } = props
   const project = state.project
-  if (!project || state.status === "loading" || state.status === "error") {
+  if (!project) {
     return <div />
   }
 

@@ -1,8 +1,15 @@
 // # State
 
+export interface FormFieldOption {
+  value: string
+  label: string
+}
+
 export interface FormFieldState {
   original: any
   value: any
+  options?: FormFieldOption[]
+  loading?: boolean
   error?: string
   info?: string
 }
@@ -14,9 +21,11 @@ export interface State {
 // # Actions
 
 export interface FormFieldStateUpdate {
-  value?: any
+  value?: string | boolean
   error?: string
   info?: string
+  loading?: boolean
+  options?: FormFieldOption[]
 }
 
 export interface FieldsUpdate {
@@ -30,9 +39,11 @@ export interface FormUpdate {
 
 export interface FormFieldUpdate {
   field: string
-  value?: any
+  value?: string | boolean
   error?: string
   info?: string
+  loading?: boolean
+  options?: FormFieldOption[]
 }
 
 export interface Actions {
