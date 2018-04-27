@@ -1,4 +1,4 @@
-import semver from "semver"
+import * as semver from "semver"
 
 import { get } from "lib/unpkg"
 import { resolveId } from "./resolveId"
@@ -262,7 +262,7 @@ export function bundle(
       packaged.mainFile = mainFile
       packaged.files["/package.json"] = res.content
 
-      if (readme) {
+      if (readme && readme.content) {
         packaged.files["/README.md"] = readme.content
       }
 
