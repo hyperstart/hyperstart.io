@@ -90,9 +90,7 @@ module.exports = function(env) {
       contentBase: path.join(__dirname, "public"),
       compress: false,
       port: 3000,
-      historyApiFallback: {
-        index: "index.html"
-      }
+      historyApiFallback: true
     },
     watchOptions: {
       aggregateTimeout: 300,
