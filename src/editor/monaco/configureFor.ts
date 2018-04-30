@@ -10,9 +10,66 @@ import {
   deleteAllModels,
   updateModel
 } from "./modelStore"
+import { inferMainFile, PackageJson } from "lib/npm"
+import { StringMap } from "lib/utils"
 
-const configureCompiler = (): void => {
-  const compilerDefaults: monaco.languages.typescript.CompilerOptions = {
+let a: monaco.languages.typescript.CompilerOptions
+
+type Paths = StringMap<string[]>
+
+let oldPaths
+
+function oldPathHasMapping(name: string, path: string): boolean {
+  return oldPaths && oldPaths[name] && oldPaths[name][0] === path
+}
+
+function getPathsIfDifferent(files: FileTree, force: boolean): Paths {
+  const paths: Paths = {}
+  let equals = true
+  Object.keys(files.byId).forEach(id => {
+    const file = files.byId[id]
+    if (
+      file.type === "folder" ||
+      file.name !== "package.json" ||
+      !file.content
+    ) {
+      return
+    }
+
+    const json: PackageJson = JSON.parse(file.content)
+    const main = inferMainFile(json)
+    const resolved = file.path
+      .replace("package.json", main)
+      .replace(".js", "")
+      .substring(1)
+    const name = json.name
+
+    if (!force && !oldPathHasMapping(name, resolved)) {
+      equals = false
+    }
+
+    paths[name] = [resolved]
+  })
+
+  if (!force && equals) {
+    return null
+  }
+
+  console.log("Recomputed paths", paths)
+
+  return paths
+}
+
+function configureCompiler(files: FileTree, force: boolean): void {
+  const paths = getPathsIfDifferent(files, force)
+  if (!paths) {
+    // no need to set the compiler options if the paths haven't changed
+    return
+  }
+
+  oldPaths = paths
+
+  const compilerDefaults /*: monaco.languages.typescript.CompilerOptions*/ = {
     jsxFactory: "h",
     reactNamespace: "",
     jsx: monaco.languages.typescript.JsxEmit.React,
@@ -34,15 +91,17 @@ const configureCompiler = (): void => {
     strictNullChecks: false,
     noImplicitUseStrict: true,
     suppressImplicitAnyIndexErrors: false,
-    noUnusedLocals: false
+    noUnusedLocals: false,
+    baseUrl: "/",
+    paths
   }
 
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-    compilerDefaults
+    compilerDefaults as any
   )
 
   monaco.languages.typescript.javascriptDefaults.setCompilerOptions(
-    compilerDefaults
+    compilerDefaults as any
   )
 }
 
@@ -60,9 +119,11 @@ function createModelsFor(files: FileTree, override?: boolean): void {
 }
 
 export function configureFor(files: FileTree, newlyOpened: boolean): void {
+  configureCompiler(files, newlyOpened)
+
   if (newlyOpened) {
-    configureCompiler()
     deleteAllModels()
   }
+
   createModelsFor(files, true)
 }

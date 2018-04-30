@@ -6,7 +6,7 @@ export const DEPENDENCIES_FOLDER_NAME = "dependencies"
 /**
  * The name of the folder that holds project's dependencies.
  */
-export const DEPENDENCIES_FOLDER_PATH = "/dependencies"
+export const DEPENDENCIES_FOLDER_PATH = "/" + DEPENDENCIES_FOLDER_NAME
 
 /**
  * The ID used when a project is created locally only.

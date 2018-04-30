@@ -1,11 +1,13 @@
 import "monaco-editor"
 import { h } from "hyperapp"
 
+import "./MonacoEditor.scss"
+
 const EDITOR = "__EDITOR"
 const RESIZE_LISTENER = "__RESIZE_LISTENER"
 
 const hasEditor = e => !!e[EDITOR]
-const getEditor = e => e[EDITOR] as monaco.editor.IEditor
+export const getEditor = e => e[EDITOR] as monaco.editor.ICodeEditor
 
 const createEditor = (e: HTMLElement, props: MonacoEditorProps) => {
   if (monaco && !hasEditor(e)) {
@@ -13,7 +15,7 @@ const createEditor = (e: HTMLElement, props: MonacoEditorProps) => {
     const editor = monaco.editor.create(
       e,
       getOptions(),
-      getOverrides ? getOverrides() : undefined
+      getOverrides ? getOverrides(e) : undefined
     )
 
     editor.onDidChangeModelContent(() => {
@@ -27,6 +29,10 @@ const createEditor = (e: HTMLElement, props: MonacoEditorProps) => {
     window.addEventListener("resize", e[RESIZE_LISTENER])
 
     updateModel(e, props)
+
+    if (props.onEditorCreated) {
+      props.onEditorCreated(editor, e)
+    }
   }
 }
 
@@ -53,14 +59,14 @@ const destroyEditor = (e: HTMLElement, props: MonacoEditorProps) => {
 
 export interface MonacoEditorProps {
   getOptions(): monaco.editor.IEditorConstructionOptions
-  getOverrides?: () => monaco.editor.IEditorOverrideServices
-  onEditorCreated?: (editor: monaco.editor.IEditor, e: HTMLElement) => void
-  onEditorDeleted?: (editor: monaco.editor.IEditor, e: HTMLElement) => void
+  getOverrides?: (e: HTMLElement) => monaco.editor.IEditorOverrideServices
+  onEditorCreated?: (editor: monaco.editor.ICodeEditor, e: HTMLElement) => void
+  onEditorDeleted?: (editor: monaco.editor.ICodeEditor, e: HTMLElement) => void
   onModelChanged?: (
-    editor: monaco.editor.IEditor,
+    editor: monaco.editor.ICodeEditor,
     oldModel: monaco.editor.IModel
   ) => void
-  onModelContentChanged?: (editor: monaco.editor.IEditor) => void
+  onModelContentChanged?: (editor: monaco.editor.ICodeEditor) => void
   model?: monaco.editor.IModel
   key?: string
   /**

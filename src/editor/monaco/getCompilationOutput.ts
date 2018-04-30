@@ -1,4 +1,5 @@
 import { LanguageService, EmitOutput, Diagnostic } from "lib/typescript"
+import { getLanguageService } from "./getLanguageService"
 
 export interface CompilationOutput {
   emit: EmitOutput
@@ -47,21 +48,8 @@ export const getCompilationOutput = (
   language: string
 ): Promise<CompilationOutput> => {
   const uri = monaco.Uri.from({ path })
-  if (language === "javascript") {
-    return getOutput(
-      monaco.languages.typescript
-        .getJavaScriptWorker()
-        .then(worker => worker(uri)),
-      uri.toString()
-    )
-  }
-  if (language === "typescript") {
-    return getOutput(
-      monaco.languages.typescript
-        .getTypeScriptWorker()
-        .then(worker => worker(uri)),
-      uri.toString()
-    )
+  if (language === "javascript" || language === "typescript") {
+    return getOutput(getLanguageService(path), uri.toString())
   }
   throw new Error(
     "Invalid language for path " +
