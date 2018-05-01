@@ -6,12 +6,6 @@
   align-self: center;
   flex-grow: 1;
 }
-
-.px-4 {
-  padding-right: 0.8rem;
-  padding-left: 0.8rem;
-}
-
 .py-6 {
   padding-top: 24px;
   padding-bottom: 24px;
@@ -63,11 +57,6 @@
   margin-bottom: 0rem;
   border-radius: 0.3rem;
 }
-
-.set-primary {
-  color: $primary-color;
-}
-
 .create-project {
   font-size: 0.8rem;
   display: flex;
