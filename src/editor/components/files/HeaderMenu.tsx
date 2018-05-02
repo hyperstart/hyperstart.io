@@ -13,7 +13,7 @@ export function HeaderMenu(props: HeaderMenuProps) {
   const actions = props.actions.ui
   return (
     <div class="dropdown dropdown-right float-right">
-      <a href="#" class="btn dropdown-toggle btn-primary" tabindex="0">
+      <a href="#" class="btn dropdown-toggle btn-secondary" tabindex="0">
         <Icon name="bars" class="actions float-right" />
       </a>
       <ul class="menu">
