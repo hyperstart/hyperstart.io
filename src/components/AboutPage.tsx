@@ -17,7 +17,7 @@ export function AboutPage(props: AboutPageProps) {
             JavaScript frameworks.
           </p>
         </div>
-        <div class="col-9 centered">
+        <div class="col-10 centered">
           <h2 class="text-center title-padding">About Us</h2>
           <p>
             Hyperstart was created by Anthony Ferrando and Henrique Spotorno. We
@@ -33,27 +33,25 @@ export function AboutPage(props: AboutPageProps) {
           <p>
             A quick word on monetization, because as a user of this website this
             is something that directly concerns you - Hyperstart is currently
-            supported by us. We will eventually follow a freemium model similar
-            to Github: some features will only be available to premium
-            customers. We won't do anything with your data and your privacy is
-            safe.
+            supported by us. We won't do anything with your data and your
+            privacy is safe.
           </p>
         </div>
         <div class="col-10 centered text-center">
-          <h2>The Team</h2>
-          <div class="columns py-4">
-            <div class="col-3 col-ml-auto py-2 text-left">
+          <h2 class="title-padding">The Team</h2>
+          <div class="columns py-4 px-2">
+            <div class="col-3 py-2 text-left">
               <h3>Anthony, the Developer</h3>
               <h5>Core Product Development</h5>
               <p class="text-justify">
-                Anthony should really send me a picture if he wants to stop
-                being a sleeping dog. He might not read this though in which
-                case this page goes to production.
+                Anthony is passionate about coding and creating things. He
+                worked in many different projects before landing on Hyperstart,
+                to which he now dedicates his full attention.
               </p>
             </div>
             <div class="col-2 col-mx-auto py-4">
               <img
-                src="anthony.png"
+                src="/anthony.jpg"
                 class="round-image"
                 alt="anthony the developer"
                 align="left"
@@ -70,7 +68,7 @@ export function AboutPage(props: AboutPageProps) {
             </div>
             <div class="col-2 col-mr-auto py-4">
               <img
-                src="henrique.jpg"
+                src="/henrique.jpg"
                 class="round-image float-right"
                 alt="henrique the human"
               />
@@ -79,7 +77,7 @@ export function AboutPage(props: AboutPageProps) {
           <div class="columns py-4">
             <div class="col-2 col-ml-auto py-2">
               <img
-                src="miki.png"
+                src="/miki.png"
                 class="round-image"
                 alt="miki the dog"
                 align="left"
