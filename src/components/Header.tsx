@@ -42,7 +42,7 @@ function SaveButton({ state, actions }: HeaderProps) {
     disabled: !hasDirtySources(state.editor) || isLoading(state),
     onclick: () => actions.logger.log(actions.editor.saveProject),
     text: "Save",
-    class: "button btn-primary mr-1"
+    class: "button btn-secondary mr-1"
   })
 }
 
@@ -56,7 +56,9 @@ function RunButton({ state, actions }: HeaderProps) {
     disabled: isLoading(state),
     onclick: () => actions.editor.run(false),
     text: " Run",
-    class: "button btn-primary mr-1"
+    class: `button ${
+      isDebuggable(state.editor) ? "btn-secondary" : "btn-primary"
+    } mr-1`
   })
 }
 
