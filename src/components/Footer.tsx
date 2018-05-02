@@ -60,7 +60,7 @@ export function Footer(props: FooterProps) {
             Blog
           </Link>
           |
-          <Link href="/about" target="_blank" class="text-light">
+          <Link href="/about" class="text-light">
             About
           </Link>
           |

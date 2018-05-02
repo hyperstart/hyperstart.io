@@ -199,3 +199,33 @@ body {
 .large-font {
   font-size: 1.1em;
 }
+.primary-color {
+  color: $light-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $light-color !important;
+  }
+
+  &.selected {
+    background-color: $primary-color-dark;
+    font-weight: bold;
+    &:hover {
+      background-color: $primary-color-dark;
+    }
+  }
+}
+.set-primary {
+  color: $primary-color;
+}
+.huge-font {
+  font-size: 1.5em;
+}
+.px-4 {
+  padding-right: 0.8rem;
+  padding-left: 0.8rem;
+}
+.py-4 {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}

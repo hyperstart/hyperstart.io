@@ -182,11 +182,10 @@ export function IndexPage(props: IndexPageProps) {
               language and brings many of its features to JavaScript, such as
               hot-module reloading, code completeness and no runtime exceptions.
               It contains all the features from the most famous frameworks,
-              while being easy to learn and more performant. I guess what we're
-              trying to say is, you should really check out Hyperapp. If you
-              have any questions, check out the learning resources on our blog.
-              We are happy to answer any questions you might have either by
-              e-mail, or on the Hyperapp Slack channel.{" "}
+              while being easy to learn and more performant. If you have any
+              questions, check out the learning resources on our blog. We are
+              happy to answer any questions you might have either by e-mail, or
+              on the Hyperapp Slack channel.{" "}
             </p>
           </div>
           <div class="column col-6 centered text-center py-2">
