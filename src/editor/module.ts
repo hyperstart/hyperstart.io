@@ -74,8 +74,6 @@ function expandParents(
   return result
 }
 
-let projectToOpen
-
 const _editor: ModuleImpl<api.State, api.InternalActions> = {
   state,
   // # Actions
@@ -94,8 +92,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
 
       monaco.initialize().then(() => {
         actions._setMonacoLoaded()
-        if (projectToOpen) {
-          actions._setState(openProject(state, actions, projectToOpen))
+        if (state.projectToOpen) {
+          actions._setState(openProject(state, actions, state.projectToOpen))
         }
       })
 
@@ -114,10 +112,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     open: (project: projects.Project) => (state, actions) => {
       if (state.monacoLoaded) {
         return openProject(state, actions, project)
-      } else {
-        // TODO this can actually be in the state!
-        projectToOpen = project
       }
+      return { projectToOpen: project }
     },
     close: () => {
       // reset to default state

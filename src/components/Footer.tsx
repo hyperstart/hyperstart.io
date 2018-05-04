@@ -17,7 +17,7 @@ export interface FooterProps {
 
 function ShortcutsButton(props: FooterProps) {
   const { state, actions } = props
-  if (state.editor.project) {
+  if (state.editor.status !== "closed") {
     return (
       <a
         class="text-light"

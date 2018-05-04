@@ -72,6 +72,7 @@ export interface State {
   expandedFolders: ExpandedFolders
   original?: projects.Project
   project?: projects.Project
+  projectToOpen?: projects.Project
   fileTree?: FileTree
   monacoLoaded: boolean
 }

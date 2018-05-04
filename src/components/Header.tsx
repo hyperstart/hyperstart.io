@@ -21,7 +21,7 @@ export interface HeaderProps {
 }
 
 function CreateButton({ state, actions }: HeaderProps) {
-  if (state.editor.project) {
+  if (state.editor.status !== "closed") {
     return null
   }
 
@@ -34,7 +34,7 @@ function CreateButton({ state, actions }: HeaderProps) {
 }
 
 function SaveButton({ state, actions }: HeaderProps) {
-  if (!state.editor.project) {
+  if (state.editor.status === "closed") {
     return null
   }
 
@@ -48,7 +48,7 @@ function SaveButton({ state, actions }: HeaderProps) {
 
 function RunButton({ state, actions }: HeaderProps) {
   const project = state.editor.project
-  if (!project || !project.details.mainPath) {
+  if (state.editor.status === "closed" || !project.details.mainPath) {
     return null
   }
 
@@ -88,7 +88,7 @@ function DebugButton({ state, actions }: HeaderProps) {
 }
 
 function ForkButton({ state, actions }: HeaderProps) {
-  if (!state.editor.project) {
+  if (state.editor.status === "closed") {
     return null
   }
   const toFork = state.editor.project

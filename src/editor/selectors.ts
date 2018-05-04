@@ -56,6 +56,10 @@ export function getPackageJsonInFolder(
 }
 
 export function isDebuggable(state: State): boolean {
+  if (state.status === "closed") {
+    return false
+  }
+
   const pkg = getPackageJsonInFolder(
     state,
     `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}`
