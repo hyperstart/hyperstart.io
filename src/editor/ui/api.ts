@@ -10,7 +10,6 @@ export interface ImportProjectDialog {
 }
 
 export interface State {
-  projectName?: string
   selectedViewPaneTab: string
   importProjectDialog?: ImportProjectDialog
   importNpmPackageModal?: form.State
@@ -20,8 +19,6 @@ export interface State {
 // # Actions
 
 export interface Actions {
-  // ## Project name
-  setProjectName(title: string)
   // ## Import project modal
   importProjectDialog: {
     search: search.Actions

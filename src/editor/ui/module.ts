@@ -24,16 +24,9 @@ const search = createSearch([{ name: "import-project" }])
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
   state: {
-    selectedViewPaneTab: PROJECT_TAB_ID,
-    projectName: null
+    selectedViewPaneTab: PROJECT_TAB_ID
   },
   actions: {
-    // ## Project name
-    setProjectName: (projectName: string) => {
-      return {
-        projectName
-      }
-    },
     // ## Import project dialog
     importProjectDialog: {
       search: search.actions

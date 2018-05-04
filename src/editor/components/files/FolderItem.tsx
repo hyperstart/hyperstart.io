@@ -6,9 +6,8 @@ import { LogFn } from "logger"
 import * as projects from "projects"
 
 import { State, Actions, FileNode } from "../../api"
-
-import "./FolderItem.scss"
 import { getPackageJsonInFolder } from "../../selectors"
+import { Action } from "./Action"
 
 export interface FolderItemProps {
   state: State
@@ -29,14 +28,32 @@ function FolderVersion(props: FolderItemProps) {
 function FolderActions(props: FolderItemProps) {
   const { state, actions, item } = props
 
-  // if (path === projects.ROOT_PATH) {
+  if (item === projects.ROOT_PATH) {
+    return (
+      <span class="actions actions__root">
+        <Action icon="fas fa-plus" onclick={() => {}} tooltip="Add File" />
+      </span>
+    )
+  }
+  if (item === projects.DEPENDENCIES_FOLDER_PATH) {
+    return (
+      <span class="actions actions__dependencies">
+        <Action
+          icon="fas fa-plus"
+          onclick={() => {}}
+          tooltip="Add Dependency"
+        />
+      </span>
+    )
+  }
 
-  // }
-  // if (path === projects.DEPENDENCIES_FOLDER_PATH) {
-
-  // }
-
-  return null // TODO
+  return (
+    <span class="actions actions__folder">
+      <Action icon="fas fa-plus" onclick={() => {}} tooltip="Add File" />
+      <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" />
+      <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+    </span>
+  )
 }
 
 function FolderName(props: FolderItemProps) {
@@ -51,9 +68,12 @@ export function FolderItem(props: FolderItemProps) {
 
   return (
     <div class="file c-hand">
-      <Icon name={node.expanded ? "folder-open" : "folder"} />{" "}
-      {FolderName(props)}
-      {FolderVersion(props)} {FolderActions(props)}
+      <span>
+        <Icon name={node.expanded ? "folder-open" : "folder"} />{" "}
+        {FolderName(props)}
+        {FolderVersion(props)}
+      </span>
+      {FolderActions(props)}
     </div>
   )
 }

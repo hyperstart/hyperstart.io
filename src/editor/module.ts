@@ -91,10 +91,11 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       actions._bundles = global.bundles
 
       monaco.initialize().then(() => {
-        actions._setMonacoLoaded()
-        if (state.projectToOpen) {
-          actions._setState(openProject(state, actions, state.projectToOpen))
+        const s = actions.getState()
+        if (s.projectToOpen) {
+          actions._setState(openProject(state, actions, s.projectToOpen))
         }
+        actions._setMonacoLoaded()
       })
 
       // hide the import npm package modal...
@@ -199,6 +200,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         return actions._projects.save(state.project).then(project => {
           // TODO recompute searches and stuff
           actions._setState({
+            original: project,
             project
           })
         })

@@ -45,8 +45,7 @@ export function openProject(
     status: getStatus(project, actions),
     expandedFolders: { "/": true },
     ui: {
-      selectedViewPaneTab: PROJECT_TAB_ID,
-      projectName: project.details.name
+      selectedViewPaneTab: PROJECT_TAB_ID
     }
   }
 

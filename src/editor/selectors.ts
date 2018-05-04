@@ -25,12 +25,20 @@ export function hasDirtySources(state: State): boolean {
   return state.project.files !== state.original.files
 }
 
+export function isNew(state: State, path: string): boolean {
+  if (!state.project || state.status === "local-only") {
+    return false
+  }
+
+  return state.project.files[path] && !state.original.files[path]
+}
+
 export function isDirty(state: State, path: string): boolean {
   if (!state.project || state.status === "local-only") {
     return false
   }
 
-  return state.project.files[path] === state.original.files[path]
+  return state.project.files[path] !== state.original.files[path]
 }
 
 function compareRuns(r1: Run, r2: Run): number {

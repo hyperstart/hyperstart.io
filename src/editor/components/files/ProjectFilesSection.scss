@@ -7,6 +7,7 @@
 
   .file-tree {
     border: 1px solid $border-color-dark;
+    padding-top: 0.2rem;
     padding-right: 0.1rem;
     overflow-y: auto;
     min-height: 0px;
@@ -21,8 +22,12 @@
     }
 
     .file {
+      display: flex;
+      justify-content: space-between;
+
       .preview {
-        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
 
         &:hover {
           color: $primary-color;
@@ -33,21 +38,21 @@
         background: $secondary-color;
 
         .fa:hover,
+        .fas:hover,
         .far:hover {
           color: $primary-color;
         }
 
         .main-file {
-          visibility: visible;
+          opacity: 1;
         }
 
         .preview {
-          visibility: visible;
+          opacity: 1;
         }
 
         .actions {
-          visibility: visible;
-          border: 1px solid $primary-color;
+          opacity: 1;
 
           &:hover {
             color: $primary-color;
@@ -60,12 +65,27 @@
         padding: 0rem;
       }
       .actions {
-        border: 1px solid $border-color-light;
-        padding: 0.1rem;
-        visibility: hidden;
+        padding: 0rem 0.1rem;
+        height: 1rem;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+
+        button {
+          height: 1rem;
+          padding: 0rem;
+          color: $body-font-color;
+        }
+
+        .fa-times {
+          color: $error-color;
+        }
+        .fa-plus {
+          color: $success-color;
+        }
       }
       .main-file {
-        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
       }
     }
   }
