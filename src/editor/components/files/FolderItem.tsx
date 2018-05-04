@@ -39,10 +39,36 @@ function FolderActions(props: FolderItemProps) {
     return (
       <span class="actions actions__dependencies">
         <Action
-          icon="fas fa-plus"
+          icon="fas fa-box-open"
           onclick={() => {}}
-          tooltip="Add Dependency"
+          tooltip="Add Project as Dependency"
         />
+        <Action
+          icon="fab fa-npm"
+          onclick={() => {}}
+          tooltip="Add Npm package as Dependency"
+        />
+      </span>
+    )
+  }
+  const pkgJson = getPackageJsonInFolder(state, item)
+  if (pkgJson) {
+    if (pkgJson.hyperstart) {
+      return (
+        <span class="actions actions__dependencies">
+          <Action icon="fas fa-sync-alt" onclick={() => {}} tooltip="Update" />
+          <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+        </span>
+      )
+    }
+    return (
+      <span class="actions actions__dependencies">
+        <Action
+          icon="far fa-edit"
+          onclick={() => {}}
+          tooltip="Change Version"
+        />
+        <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
       </span>
     )
   }

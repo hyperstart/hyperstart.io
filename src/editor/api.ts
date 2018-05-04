@@ -115,6 +115,7 @@ export interface Actions extends ModuleActions<State> {
   // ## Files
   createFile(path: string)
   deleteFile(path: string)
+  moveFile(path: string)
   setFileContent(payload: SetFileContentPayload)
   saveProject(): Promise<void>
   // ## Editor

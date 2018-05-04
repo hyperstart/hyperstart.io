@@ -299,6 +299,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     deleteFile: (path: string) => (state, actions) => {
       checkOpen(state)
 
+      // TODO implement for folders
+
       actions.closeFile(path)
 
       const result: Partial<api.State> = {
@@ -312,6 +314,10 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       }
       result.fileTree = getFileTree(result)
       return result
+    },
+    moveFile: (path: string) => (state, actions) => {
+      checkOpen(state)
+      // TODO implement
     },
     setFileContent: (payload: api.SetFileContentPayload) => (
       state,
