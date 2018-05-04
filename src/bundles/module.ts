@@ -1,5 +1,5 @@
 import { ModuleImpl } from "lib/modules"
-import { Bundle, getId, bundle } from "lib/bundle"
+import { Bundle, getId, bundle as createBundle } from "lib/bundle"
 
 import * as api from "./api"
 import { getLatestVersion } from "lib/unpkg"
@@ -36,7 +36,10 @@ const _bundles: ModuleImpl<api.State, Actions> = {
       }
     },
     // ## Public
-    getFromNpmPackage: (payload: api.GetBundlePayload) => (state, actions) => {
+    getFromNpmPackage: (payload: api.GetBundlePayload) => (
+      state,
+      actions
+    ): Promise<Bundle> => {
       const { name, version } = payload
 
       // check local cache
@@ -68,7 +71,7 @@ const _bundles: ModuleImpl<api.State, Actions> = {
           })
           .catch(e => {
             // fallback on the same mechanism
-            return bundle(name, version).then(bundle => {
+            return createBundle(name, version).then(bundle => {
               actions._add({ bundle })
               if (!version) {
                 actions._add({ bundle, version: "latest" })
@@ -78,13 +81,19 @@ const _bundles: ModuleImpl<api.State, Actions> = {
           })
       }
 
-      return bundle(name, version).then(bundle => {
+      return createBundle(name, version).then(bundle => {
         actions._add({ bundle })
         if (!version) {
           actions._add({ bundle, version: "latest" })
         }
         return bundle
       })
+    },
+    getFromNpmPackages: (payload: api.GetBundlePayload[]) => (
+      state,
+      actions
+    ) => {
+      return Promise.all(payload.map(actions.getFromNpmPackage))
     },
     getLatestVersion: (name: string): Promise<string> => {
       return getLatestVersion(name)

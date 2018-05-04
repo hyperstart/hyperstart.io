@@ -1,4 +1,3 @@
-import { SourceNode } from "projects/fileTree"
 import { getExtension } from "utils"
 
 const languages = {
@@ -13,5 +12,5 @@ const languages = {
   md: "markdown"
 }
 
-export const getLanguage = (source: string | SourceNode): string =>
-  languages[getExtension(typeof source === "string" ? source : source.name)]
+export const getLanguage = (source: string): string =>
+  languages[getExtension(source)]

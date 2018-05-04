@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { FormFieldState, FormFieldUpdate } from "./api"
+import { FormFieldOption } from "./api"
 
 // # Field
 
@@ -14,9 +14,22 @@ export interface BaseField {
   loading?: boolean
 }
 
+export interface SetFieldPayload {
+  field: string
+  value: any
+}
+
+export interface FormFieldValue {
+  value: any
+  options?: FormFieldOption[]
+  loading?: boolean
+  error?: string
+  info?: string
+}
+
 export interface BaseProps {
-  state: FormFieldState
-  setField(payload: FormFieldUpdate)
+  state: FormFieldValue
+  setField(payload: SetFieldPayload)
 }
 
 export type Field = SelectField | InputField | CheckboxField | RadioField
@@ -57,7 +70,7 @@ export interface SelectProps extends SelectField, BaseProps {
 
 function Select(props: SelectProps) {
   const { state, setField, name, horizontal } = props
-  const error = state.error
+  const hint = state.error || state.info
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -80,7 +93,7 @@ function Select(props: SelectProps) {
       {state.options.map(opt => <option value={opt.value}>{opt.label}</option>)}
     </select>,
     loading && <i class="form-icon loading" />,
-    <p class="form-input-hint">{error}</p>
+    <p class="form-input-hint">{hint}</p>
   ]
 
   if (horizontal) {
@@ -108,7 +121,6 @@ export interface RadioProps extends RadioField, BaseProps {
 
 function Radio(props: RadioProps) {
   const { state, setField, name, horizontal } = props
-  const error = state.error
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -163,7 +175,7 @@ interface InputProps extends InputField, BaseProps {
 
 function Input(props: InputProps) {
   const { state, setField, name, placeholder = "", type, horizontal } = props
-  const error = state.error
+  const hint = state.error || state.info
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -186,7 +198,7 @@ function Input(props: InputProps) {
       disabled={disabled}
     />,
     loading && <i class="form-icon loading" />,
-    <p class="form-input-hint">{error}</p>
+    <p class="form-input-hint">{hint}</p>
   ]
 
   if (horizontal) {
@@ -214,7 +226,7 @@ export interface CheckboxProps extends CheckboxField, BaseProps {
 
 function Checkbox(props: CheckboxProps) {
   const { type, state, setField, name, horizontal } = props
-  const error = state.error
+  const hint = state.error || state.info
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -239,7 +251,7 @@ function Checkbox(props: CheckboxProps) {
       {props.label && h("i", { class: "form-icon" })}
       {props.label}
     </label>,
-    <p class="form-input-hint">{error}</p>
+    <p class="form-input-hint">{hint}</p>
   ]
 
   if (horizontal) {
@@ -266,7 +278,10 @@ export function FormField(props: FormFieldProps) {
   const { state, type } = props
   const checkbox = type === "checkbox" || type === "switch"
   return (
-    <div class={`form-group ${state.error ? "has-error" : ""}`}>
+    <div
+      class={`form-group ${state.error && "has-error"} ${state.info &&
+        "has-success"}`}
+    >
       {!checkbox && Label(props)}
       {Field(props)}
     </div>

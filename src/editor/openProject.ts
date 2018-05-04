@@ -1,76 +1,56 @@
 import * as api from "./api"
-import { Project, getFileTree, FileTree } from "projects"
+import { Project, Files, NEW_PROJECT_ID } from "projects"
 
 import { configureFor } from "./monaco"
 import { PROJECT_TAB_ID } from "./constants"
 import { State } from "./api"
 
-import * as debug from "./debug"
-import * as sources from "./sources"
-import * as ui from "./ui"
+import { debug } from "./debug/module"
+import { ui } from "./ui/module"
+import { getFileTree } from "./getFileTree"
 
-const isEditable = (project: Project, currentUser: string): boolean =>
-  project.details.owner && currentUser === project.details.owner.id
-
-function getSources(files: FileTree, mainFile: string): sources.State {
-  const index = files.byPath[mainFile]
-  if (!mainFile || !index) {
-    return {
-      opened: [],
-      selected: []
-    }
+function getStatus(project: Project, actions: api.InternalActions): api.Status {
+  const details = project.details
+  if (details.id === NEW_PROJECT_ID) {
+    return "local-only"
+  }
+  const user = actions._users.getCurrentUserSync()
+  if (user && user.id === details.owner.id) {
+    return "editing"
   }
 
-  return {
-    opened: [index],
-    selected: [index]
-  }
+  return "read-only"
 }
 
 export function openProject(
   state: api.State,
-  actions: api.Actions,
-  project: Project,
-  currentUser: string
+  actions: api.InternalActions,
+  project: Project
 ): Partial<State> {
-  if (state.project && state.project.id !== project.details.id) {
+  if (state.project && state.project.details.id !== project.details.id) {
     actions.close()
   }
 
-  const files = getFileTree(project.files)
-  configureFor(files, true)
-  const index = files.byPath[project.details.mainFile]
-  const sources = getSources(files, project.details.mainFile)
+  configureFor(project.files, true)
 
-  const ui = {
-    selectedViewPaneTab: PROJECT_TAB_ID
-  }
-  const debug: debug.State = {
-    ...state.debug,
-    runs: {},
-    paneShown: false,
-    selectedAction: null,
-    logs: []
-  }
+  const mainPath = project.details.mainPath
+  const index = project.files[mainPath]
 
-  const editable = isEditable(project, currentUser)
-
-  const result: Partial<State> = {
-    compilationOutput: null,
-    debug,
-    files,
-    project: project.details,
-    sources,
-    status: editable ? "editing" : "read-only",
-    ui
-  }
-
-  if (!editable) {
-    result.localStore = {
-      ...state.localStore,
-      [project.details.id]: project
+  const result: State = {
+    ...state,
+    original: project,
+    project,
+    selectedSources: index ? [mainPath] : [],
+    openedSources: index ? [mainPath] : [],
+    status: getStatus(project, actions),
+    expandedFolders: { "/": true },
+    ui: {
+      selectedViewPaneTab: PROJECT_TAB_ID,
+      projectName: project.details.name
     }
   }
+
+  result.fileTree = getFileTree(result)
 
   return result
 }

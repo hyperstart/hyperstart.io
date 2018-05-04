@@ -2,10 +2,10 @@ import { StringMap } from "lib/utils"
 
 import { ModuleActions } from "api"
 import * as projects from "projects"
-import { FileTree } from "projects/fileTree"
+import * as users from "users"
+import * as bundles from "bundles"
 
 import * as debug from "./debug"
-import * as sources from "./sources"
 import * as ui from "./ui"
 
 export interface FileNotFound {
@@ -29,7 +29,7 @@ export enum DiagnosticCategory {
 }
 
 export interface CompiledModule {
-  fileId: string
+  path: string
   diagnostics: Diagnostic[]
 }
 
@@ -41,31 +41,45 @@ export interface CompilationOutput {
   compiledModules?: StringMap<CompiledModule>
 }
 
-export type Status = "closed" | "editing" | "read-only"
+export interface ExpandedFolders {
+  [path: string]: boolean
+}
+
+export interface FileNode {
+  type: "folder" | "file"
+  name: string
+  path: string
+  expanded?: boolean
+  children?: string[]
+}
+
+export interface FileTree {
+  [path: string]: FileNode
+}
+
+export type Status = "closed" | "editing" | "local-only" | "read-only"
 
 export interface State {
-  compilationOutput?: CompilationOutput
+  // ## Sub Modules
   debug: debug.State
-  files: projects.FileTree
-  localStore: projects.State
-  monacoLoaded?: boolean
-  project?: projects.Details
-  status: Status
-  sources: sources.State
   ui: ui.State
+  // ## TODO should be a sub-module
+  compilationOutput?: CompilationOutput
+  // ## State
+  status: Status
+  openedSources: string[]
+  selectedSources: string[]
+  expandedFolders: ExpandedFolders
+  original?: projects.Project
+  project?: projects.Project
+  fileTree?: FileTree
+  monacoLoaded: boolean
 }
 
 // # Actions
 
-export interface CreateFilePayload {
-  type: "file" | "folder"
+export interface UpdateDetailsPayload {
   name: string
-  parent?: projects.File
-}
-
-export interface SetFileContentPayload {
-  path: string
-  content: string
 }
 
 export interface ImportNpmPackagePayload {
@@ -73,26 +87,49 @@ export interface ImportNpmPackagePayload {
   version?: string
 }
 
+export interface SetFileContentPayload {
+  path: string
+  content: string
+}
+
+export interface OpenFilesPayload {
+  sources: string | string[]
+  clearOpened?: boolean
+}
+
 export interface Actions extends ModuleActions<State> {
   // ## Sub-modules
   debug: debug.Actions
-  localStore: projects.Actions
-  sources: sources.Actions
   ui: ui.Actions
   // ## Project
   open(project: projects.Project)
   close()
-  submitEdits(): Promise<void>
-  setOwner(owner: projects.Owner): Promise<void>
-  saveAllSources(): Promise<void>
+  fork(newOwner: projects.ProjectOwner)
   run(debug: boolean): Promise<void>
-  importProjects(projects: string[]): Promise<void>
+  setProjectName(name: string)
+  // ## Import
+  importProject(projectId: string): Promise<void>
   importNpmPackage(payload: ImportNpmPackagePayload): Promise<void>
   computeImportingNpmPackageVersions()
   // ## Files
-  toggleFileExpanded(path: string)
-  createFile(file: CreateFilePayload): Promise<void>
-  deleteFile(file: projects.FileNode): Promise<void>
-  previewFile(file: string | projects.File)
-  setFileContent(source: SetFileContentPayload)
+  createFile(path: string)
+  deleteFile(path: string)
+  setFileContent(payload: SetFileContentPayload)
+  saveProject(): Promise<void>
+  // ## Editor
+  openFiles(payload: OpenFilesPayload)
+  closeFile(sources: string | string[])
+  selectFile(source: string | null)
+  closeAllFiles()
+  // ## Folders
+  toggleFolder(path: string)
+}
+
+export interface InternalActions extends Actions {
+  _projects: projects.Actions
+  _users: users.Actions
+  _bundles: bundles.Actions
+  _setMonacoLoaded()
+  _setState(state: Partial<State>)
+  _recomputeFileTree()
 }

@@ -1,7 +1,6 @@
 import { guid, StringMap } from "lib/utils"
 
-import { File } from "./api"
-import { files } from "./utils"
+import { Files } from "./api"
 import { DEPENDENCIES_FOLDER_NAME } from "./constants"
 
 // # Blank sources
@@ -67,47 +66,18 @@ const haHtml = blankHtml
 
 const haCss = blankCss
 
-const haPkg = `{
-  "name": "new-project",
-  "version": "0.0.1",
-  "main": "index.js",
-  dependencies: {
-    "hyperapp": "1.2.5"
+export function createBlankFiles(): Files {
+  return {
+    "/index.css": { edits: 0, content: blankCss },
+    "/index.html": { edits: 0, content: blankHtml },
+    "/index.js": { edits: 0, content: blankJs }
   }
-}`
-
-// # Create file functions
-
-export function createBlankFiles(): StringMap<File> {
-  return (
-    files()
-      .folder(DEPENDENCIES_FOLDER_NAME)
-      .source("index.js", blankJs)
-      .source("index.html", blankHtml)
-      .source("index.css", blankCss)
-      // .source("package.json", blankPkg)
-      .get()
-  )
 }
 
-export function createHyperappFiles(): StringMap<File> {
-  return (
-    files()
-      .folder(DEPENDENCIES_FOLDER_NAME)
-      .source("index.js", haJs)
-      .source("index.html", haHtml)
-      .source("index.css", haCss)
-      // .source("package.json", haPkg)
-      .get()
-  )
+export function createHyperappFiles(): Files {
+  return {
+    "/index.css": { edits: 0, content: haCss },
+    "/index.html": { edits: 0, content: haHtml },
+    "/index.js": { edits: 0, content: haJs }
+  }
 }
-
-// # Old stuff
-
-const jsImport = `import { text } from "./text"
-
-document.getElementById("app").innerHTML = text
-`
-
-const jsText = `export const text = "Hello World"
-`

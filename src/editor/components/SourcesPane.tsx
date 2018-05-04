@@ -1,21 +1,20 @@
 import { h } from "hyperapp"
 
 import { TabItem, Tab } from "lib/components"
-
-import { FileNode, SourceNode } from "projects/fileTree"
+import { getName, getParentName } from "lib/fs"
 
 import { State, Actions } from "../api"
-import { getSelectedSource, isEditable } from "../selectors"
 import { SourceEditor } from "./SourceEditor"
+import { getSelectedFile, isDirty } from "../selectors"
 
 import "./SourcesPane.scss"
 
-function SourceName(source: SourceNode, parent: FileNode, duplicated: boolean) {
+function SourceName(path: string, name, duplicated: boolean) {
   if (duplicated) {
-    const parentName = parent ? parent.name : ""
-    return [<small>{parentName + "/"}</small>, source.name]
+    const parent = getParentName(path)
+    return [<small>{parent + "/"}</small>, name]
   }
-  return source.name
+  return name
 }
 
 export interface SourcesPaneProps {
@@ -23,48 +22,35 @@ export interface SourcesPaneProps {
   actions: Actions
 }
 
-export const SourcesPane = (props: SourcesPaneProps) => {
+export function SourcesPane(props: SourcesPaneProps) {
   const { state, actions } = props
 
   const names: { [name: string]: number } = {}
 
-  state.sources.opened.forEach(id => {
-    const source = state.files.byId[id]
-    names[source.name] = (names[source.name] || 0) + 1
+  state.openedSources.forEach(path => {
+    const name = state.fileTree[path].name
+    names[name] = (names[name] || 0) + 1
   })
 
-  const selected = getSelectedSource(state)
-  const selectedId = selected ? selected.id : null
-  const hideDirty = !isEditable(state)
+  const selected = getSelectedFile(state)
 
-  const tabItems = state.sources.opened.map(id => {
-    const source = state.files.byId[id] as SourceNode
-    const parent = source.parent ? state.files.byId[source.parent] : null
-
+  const tabItems = state.openedSources.map(path => {
     const onClick = (e: Event) => {
       e.preventDefault()
-      actions.sources.select(id)
+      actions.selectFile(path)
     }
 
     const onClose = (e: Event) => {
-      // if (
-      //   source.content !== source.original &&
-      //   !confirm(
-      //     source.name +
-      //       " has unsaved changes, are you sure you want to close it?"
-      //   )
-      // ) {
-      //   return
-      // }
       e.stopPropagation()
-      actions.sources.close(id)
+      actions.closeFile(path)
     }
 
+    const node = state.fileTree[path]
     return (
-      <TabItem active={id === selectedId}>
+      <TabItem active={path === selected.path}>
         <a href="#" onclick={onClick}>
-          {SourceName(source, parent, names[source.name] > 1)}
-          {!hideDirty && source.original !== source.content ? " *" : ""}
+          {SourceName(path, node.name, names[node.name] > 1)}
+          {isDirty(state, path) ? " *" : ""}
           <button class="btn btn-clear" onclick={onClose} />
         </a>
       </TabItem>
@@ -77,7 +63,7 @@ export const SourcesPane = (props: SourcesPaneProps) => {
         <Tab>{tabItems}</Tab>
       </div>
       {selected
-        ? SourceEditor({ state, actions, source: selected })
+        ? SourceEditor({ state, actions, source: selected.path })
         : "No source selected"}
     </div>
   )

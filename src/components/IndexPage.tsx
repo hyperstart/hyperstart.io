@@ -18,41 +18,37 @@ export interface IndexPageProps {
   log: LogFn
 }
 
-function SignUpForm(props: IndexPageProps) {
+function CreateProjectForm(props: IndexPageProps) {
   const { state, actions, log } = props
 
-  if (state.users.user) {
-    const blankTemplate = state.ui.createProjectTemplate === "blank"
-    const create = () => {
-      createProject(state, actions, state.ui.createProjectTemplate)
-    }
-    return (
-      <div class="create-project">
-        <h3 class="text-center">Create a project</h3>
-        <div style={{ display: "flex" }}>
-          <BlankTemplateCard
-            selected={blankTemplate}
-            select={() => actions.ui.selectCreateProjectTemplate("blank")}
-          />
-          <HyperappTemplateCard
-            selected={!blankTemplate}
-            select={() => actions.ui.selectCreateProjectTemplate("hyperapp")}
-          />
-        </div>
-        <div class="padding-card">
-          <Button
-            primary={true}
-            size="lg"
-            block={true}
-            text="Create"
-            onclick={create}
-          />
-        </div>
-      </div>
-    )
+  const blankTemplate = state.ui.createProjectTemplate === "blank"
+  const create = () => {
+    createProject(state, actions, state.ui.createProjectTemplate)
   }
-
-  return <UserSignUpForm state={state.users} actions={actions.users} />
+  return (
+    <div class="create-project">
+      <h3 class="text-center">Create a project</h3>
+      <div style={{ display: "flex" }}>
+        <BlankTemplateCard
+          selected={blankTemplate}
+          select={() => actions.ui.selectCreateProjectTemplate("blank")}
+        />
+        <HyperappTemplateCard
+          selected={!blankTemplate}
+          select={() => actions.ui.selectCreateProjectTemplate("hyperapp")}
+        />
+      </div>
+      <div class="padding-card">
+        <Button
+          primary={true}
+          size="lg"
+          block={true}
+          text="Create"
+          onclick={create}
+        />
+      </div>
+    </div>
+  )
 }
 
 export function IndexPage(props: IndexPageProps) {
@@ -86,7 +82,7 @@ export function IndexPage(props: IndexPageProps) {
               </h5>
             </div>
             <div class="col-4 hide-md text-center py-10 mx-auto centered">
-              <SignUpForm state={state} actions={actions} log={log} />
+              <CreateProjectForm state={state} actions={actions} log={log} />
             </div>
           </div>
         </div>

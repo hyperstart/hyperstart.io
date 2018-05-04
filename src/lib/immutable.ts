@@ -59,3 +59,26 @@ function assign(target: any, obj: any, obj2: any): any {
   }
   return target
 }
+
+export interface MapFn<T> {
+  (value: T): T
+}
+
+export type Update<T> = T | MapFn<T> | { [K in keyof T]?: Update<T[K]> }
+
+export function update<T>(state: T = {} as T, value: Update<T>): T {
+  if (value === state) {
+    return state
+  }
+  if (typeof value === "function") {
+    return value(state)
+  }
+  if (typeof value === "object" && !Array.isArray(value)) {
+    const updated = { ...(state as any) }
+    Object.keys(value).forEach(key => {
+      updated[key] = update(state[key], value[key])
+    })
+    return updated
+  }
+  return value as any
+}

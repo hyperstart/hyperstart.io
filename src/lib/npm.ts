@@ -9,7 +9,7 @@ export interface HyperstartJson {
 export interface PackageJson {
   name: string
   version: string
-  files: string[]
+  files?: string[]
   main?: string
   module?: string
   dependencies?: PackageDependencies

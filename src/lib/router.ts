@@ -187,6 +187,10 @@ export function forward() {
 }
 
 export function replace(url) {
+  if (window.location.pathname === url) {
+    return
+  }
+
   if (intercept(url)) {
     history.replaceState(null, null, url)
     notifyListeners()

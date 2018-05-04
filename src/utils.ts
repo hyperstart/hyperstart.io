@@ -1,4 +1,4 @@
-import { Details } from "projects"
+import { ProjectDetails } from "projects"
 
 export function getExtension(id: string): string {
   const segments = (id || "").split(".")
@@ -8,7 +8,7 @@ export function getExtension(id: string): string {
   return segments[segments.length - 1]
 }
 
-export function getEditorUrl(project: Details): string {
+export function getEditorUrl(project: ProjectDetails): string {
   if (!project) {
     throw new Error("No provided project.")
   }

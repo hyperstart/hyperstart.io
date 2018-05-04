@@ -1,126 +1,101 @@
+import { guid, getErrorMessage, debounce } from "lib/utils"
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
 import { replace } from "lib/router"
 import { set } from "lib/immutable"
-import { guid, getErrorMessage, debounce } from "lib/utils"
 
 import * as bundles from "bundles"
 import * as projects from "projects"
 import * as global from "api"
 import * as users from "users"
-import { createProjects } from "projects/module"
+
 import { LogFn } from "logger"
+import { getEditorUrl } from "utils"
+import { logEvent } from "analytics"
 
 import * as api from "./api"
 import * as monaco from "./monaco"
+
 import { ui } from "./ui/module"
 import { debug } from "./debug/module"
-import { configureFor, deleteModels } from "./monaco"
-import { sources } from "./sources/module"
-import { openProject } from "./openProject"
-import { getDirtySources } from "./selectors"
 import { runProject } from "./runProject"
-import { getEditorUrl } from "utils"
-import { logEvent } from "analytics"
-import { importBundle } from "projects/importBundle"
+import { openProject } from "./openProject"
+import { importBundles } from "projects/importBundles"
 import { computeNpmVersions } from "./computeNpmVersions"
+import { importProjects } from "projects/importProjects"
+import { getFileTree } from "./getFileTree"
+import { getSearches } from "lib/search"
 
-function copyFiles(files: projects.FileTree): projects.Files {
-  const results: projects.Files = {}
+//#region blahh
 
-  Object.keys(files.byId).forEach(id => {
-    const file: any = files.byId[id]
-    results[id] = {
-      id,
-      type: file.type,
-      name: file.name
-    }
-    if (file.parent) {
-      results[id].parent = file.parent
-    }
-    if (typeof file.content === "string") {
-      results[id].content = file.content
-    }
-    if (file.url) {
-      results[id].url = file.url
-    }
-  })
+// hello
 
-  return results
+//#endregion
+
+// # State
+const state: api.State = {
+  // ## Sub-module
+  debug: debug.state,
+  ui: ui.state,
+  // ## State
+  status: "closed",
+  compilationOutput: null,
+  original: null,
+  project: null,
+  expandedFolders: {},
+  openedSources: [],
+  selectedSources: [],
+  monacoLoaded: false
 }
 
-function updateProject(
-  actions: Actions,
-  project: projects.Project,
-  status: api.Status
-) {
-  const state = actions.getState()
-  const files = projects.getFileTree(project.files)
-  configureFor(files, false)
+const arr = (sources: string | string[]): string[] =>
+  typeof sources === "string" ? [sources] : sources
 
-  actions._setState({
-    files,
-    project: project.details,
-    status,
-    sources: {
-      opened: state.sources.opened.filter(id => files.byId[id]),
-      selected: state.sources.selected.filter(id => files.byId[id])
-    }
-  })
+function checkOpen(state: api.State) {
+  if (state.status === "closed" || !state.project) {
+    throw new Error(`Unexpected status: "${state.status}".`)
+  }
 }
 
-const localStore = createProjects(local())
-let usersActions: users.Actions
-let projectsActions: projects.Actions
-let bundleActions: bundles.Actions
-let projectToOpen
+function expandParents(
+  expanded: api.ExpandedFolders,
+  path: string
+): api.ExpandedFolders {
+  const result = { ...expanded }
 
-function getProjects(state: api.State, actions: api.Actions): projects.Actions {
-  if (state.status === "editing") {
-    return projectsActions
+  const segments = path.split("/")
+  segments.pop()
+
+  while (segments.length > 1) {
+    result[segments.join("/")] = true
+    segments.pop()
   }
 
-  return actions.localStore
+  return result
 }
 
-// internal actions
-interface Actions extends api.Actions {
-  _setMonacoLoaded()
-  _setState(state: Partial<api.State>)
-}
+let projectToOpen
 
-const _editor: ModuleImpl<api.State, Actions> = {
-  // # State
-  state: {
-    // ## Sub-module
-    debug: debug.state,
-    localStore: localStore.state,
-    sources: sources.state,
-    ui: ui.state,
-    // ## State
-    files: { byId: {}, byPath: {}, roots: [] },
-    status: "closed"
-  },
+const _editor: ModuleImpl<api.State, api.InternalActions> = {
+  state,
   // # Actions
   actions: {
     // ## Sub-module
     debug: debug.actions,
-    localStore: localStore.actions,
-    sources: sources.actions,
     ui: ui.actions,
     // ## Internal
-    init: (globalActions: global.Actions) => (state, actions) => {
-      usersActions = globalActions.users
-      projectsActions = globalActions.projects
-      bundleActions = globalActions.bundles
+    _bundles: null,
+    _projects: null,
+    _users: null,
+    init: (global: global.Actions) => (state, actions) => {
+      actions._users = global.users
+      actions._projects = global.projects
+      actions._bundles = global.bundles
 
       monaco.initialize().then(() => {
         actions._setMonacoLoaded()
         if (projectToOpen) {
-          const user = usersActions.getState().user
-          actions._setState(
-            openProject(state, actions, projectToOpen, user ? user.id : null)
-          )
+          actions._setState(openProject(state, actions, projectToOpen))
         }
       })
 
@@ -128,262 +103,289 @@ const _editor: ModuleImpl<api.State, Actions> = {
       return { ui: { ...state.ui, importNpmPackageModal: null } }
     },
     _setMonacoLoaded: () => ({ monacoLoaded: true }),
+    _recomputeFileTree: () => (state, actions) => {
+      return {
+        fileTree: getFileTree(state)
+      }
+    },
     _setState: (state: Partial<api.State>) => state,
     getState: () => state => state,
     // ## Project
     open: (project: projects.Project) => (state, actions) => {
       if (state.monacoLoaded) {
-        const user = usersActions.getState().user
-        return openProject(state, actions, project, user ? user.id : null)
+        return openProject(state, actions, project)
       } else {
+        // TODO this can actually be in the state!
         projectToOpen = project
       }
     },
     close: () => {
+      // reset to default state
       return {
-        compilationOutput: null,
-        debug: debug.state,
-        files: null,
-        project: null,
-        sources: sources.state,
-        status: "closed",
-        ui: ui.state
+        ...state,
+        monacoLoaded: true
       }
     },
-    submitEdits: () => (state, actions): Promise<void> => {
-      const form = state.ui.editForm
-      const formActions = actions.ui.editForm
-      const id = state.project.id
-      const name = form["name"].value
-      if (!name || name.trim() === "") {
-        formActions.setField({
-          field: "name",
-          error: "Name cannot be empty."
-        })
-        return Promise.reject("Validation error(s).")
+    setProjectName: (name: string) => (state, actions) => {
+      checkOpen(state)
+
+      const { details, files } = state.project
+
+      return {
+        project: {
+          details: {
+            ...details,
+            name
+          },
+          files
+        }
       }
-
-      formActions.setField({ field: "name", error: null })
-      return projectsActions
-        .update({
-          id,
-          name
-        })
-        .then(project => {
-          actions.ui.stopEdit()
-          actions._setState({
-            project: { ...project.details },
-            status: "editing"
-          })
-        })
-    },
-    setOwner: (owner: projects.Owner) => (state, actions): Promise<void> => {
-      const currentId = state.project.id
-
-      if (!owner) {
-        actions._setState({ status: "read-only" })
-        return projectsActions
-          .fetch(currentId)
-          .then(actions.localStore.save)
-          .then(() => {})
-      }
-
-      const id = currentId.startsWith(owner.id)
-        ? currentId
-        : owner.id + "-" + guid()
-
-      const project: projects.Project = {
-        details: {
-          ...state.project,
-          id,
-          owner
-        },
-        files: copyFiles(state.files)
-      }
-
-      return projectsActions.save(project).then(() => {
-        updateProject(actions, project, "editing")
-        replace("/projects/" + id)
-      })
-    },
-    saveAllSources: () => (state, actions): Promise<void> => {
-      if (state.status !== "editing") {
-        return Promise.resolve()
-      }
-      logEvent("save_all", {
-        event_category: "project",
-        event_label: "SaveAllSources"
-      })
-      const files: any = state.files.byId
-      const projectId = state.project.id
-      const update: projects.UpdateFilesPayload = {
-        id: projectId,
-        files: getDirtySources(state).map(id => ({
-          id,
-          content: files[id].content
-        }))
-      }
-
-      return projectsActions.updateFiles(update).then(() => {
-        updateProject(actions, projectsActions.getState()[projectId], "editing")
-      })
     },
     run: (debug: boolean) => (state, actions): Promise<void> => {
+      checkOpen(state)
       return runProject(state, actions, debug)
     },
-    importProjects: (projects: string[]) => (state, actions): Promise<void> => {
-      const id = state.project.id
-      return Promise.all(projects.map(projectsActions.fetch))
-        .then(projects => {
-          const payload: projects.ImportProjectsPayload = {
-            id,
-            projects: projects.map(project => ({
-              id: project.details.id,
-              name: project.details.name,
-              // version: project.details.version,
-              files: project.files
-            }))
-          }
-          return getProjects(state, actions).importProjects(payload)
+    importProject: (projectId: string) => (state, actions): Promise<void> => {
+      checkOpen(state)
+
+      return actions._projects.fetch(projectId).then(toImport => {
+        const id = toImport.details.id
+        const name = toImport.details.name
+        const mainFile = toImport.details.mainPath
+
+        const project: projects.Project = {
+          details: state.project.details,
+          files: importProjects(state.project.files, [
+            { id, mainFile, name, files: toImport.files }
+          ])
+        }
+
+        actions._setState({
+          project,
+          fileTree: getFileTree({
+            project,
+            expandedFolders: state.expandedFolders
+          })
         })
-        .then(result => {
-          updateProject(
-            actions,
-            getProjects(state, actions).getState()[id],
-            state.status
-          )
-        })
+      })
     },
     importNpmPackage: (payload: api.ImportNpmPackagePayload) => (
       state,
       actions
     ): Promise<void> => {
-      const { name, version } = payload
+      checkOpen(state)
 
-      if (!state.project) {
-        return Promise.reject("No opened project")
-      }
+      return actions._bundles.getFromNpmPackage(payload).then(bundle => {
+        const project: projects.Project = {
+          details: state.project.details,
+          files: importBundles(state.project.files, [bundle])
+        }
 
-      const id = state.project.id
-      return bundleActions
-        .getFromNpmPackage({
-          name,
-          version
+        actions._setState({
+          project,
+          fileTree: getFileTree({
+            project,
+            expandedFolders: state.expandedFolders
+          })
         })
-        .then(bundle => {
-          return getProjects(state, actions)
-            .importBundle({
-              id,
-              bundle
-            })
-            .then(result => {
-              updateProject(
-                actions,
-                getProjects(state, actions).getState()[id],
-                state.status
-              )
-            })
-        })
+      })
     },
     computeImportingNpmPackageVersions: () => (state, actions) => {
-      computeNpmVersions(bundleActions, state, actions)
+      checkOpen(state)
+      computeNpmVersions(state, actions)
     },
-    // ## Files
-    toggleFileExpanded: (path: string) => (state, actions) => {
-      const id = state.files.byPath[path]
-      if (!id) throw new Error("no folder at path " + path)
-      const folder = state.files.byId[id] as projects.FolderNode
-      if (!folder) throw new Error("no folder at path " + path)
+    saveProject: () => (state, actions): Promise<void> => {
+      checkOpen(state)
+      if (state.status === "read-only") {
+        throw new Error(`Status should not be read-only.`)
+      }
+      if (state.status === "editing") {
+        return actions._projects.save(state.project).then(project => {
+          // TODO recompute searches and stuff
+          actions._setState({
+            project
+          })
+        })
+      } else {
+        // save for the first time
+        return actions._users
+          .getCurrentUser()
+          .then(user => {
+            const files = state.project.files
+            const existing = state.project.details
+            const details: projects.ProjectDetails = {
+              id: user.id + "_" + guid(), // TODO remove user.id
+              name: existing.name,
+              hidden: name === "",
+              searches: getSearches(existing.name),
+              mainPath: existing.mainPath,
+              filesUrls: null,
+              owner: {
+                id: user.id,
+                displayName: user.displayName,
+                anonymous: user.anonymous
+              }
+            }
 
-      const files = set(state.files, ["byId", id, "expanded"], !folder.expanded)
-      return { files }
+            return actions._projects.save({
+              details,
+              files
+            })
+          })
+          .then(project => {
+            actions._setState({
+              project,
+              original: project,
+              status: "editing"
+            })
+            replace(`/projects/${project.details.id}`)
+          })
+      }
     },
-    createFile: (payload: api.CreateFilePayload) => (
-      state,
-      actions
-    ): Promise<void> => {
-      const file: projects.File = {
-        id: guid(),
-        type: payload.type,
-        name: payload.name
-      }
-      if (payload.parent) {
-        file.parent = payload.parent.id
-      }
-      if (payload.type === "file") {
-        file.content = ""
-      }
-      const id = state.project.id
-
-      return getProjects(state, actions)
-        .addFiles({ id, files: [file] })
-        .then(result => {
-          updateProject(
-            actions,
-            getProjects(state, actions).getState()[id],
-            state.status
-          )
-          if (payload.type === "file") {
-            actions.sources.open({ sources: file.id })
+    fork: () => (state, actions) => {
+      checkOpen(state)
+      return actions._users
+        .getCurrentUser()
+        .then(user => {
+          const files = state.project.files
+          const name = state.project.details.name
+          const details: projects.ProjectDetails = {
+            id: user.id + "_" + guid(), // TODO remove user id
+            name,
+            hidden: true,
+            searches: {},
+            mainPath: state.project.details.mainPath,
+            filesUrls: null,
+            owner: {
+              id: user.id,
+              displayName: user.displayName,
+              anonymous: user.anonymous
+            }
           }
+
+          return actions._projects.save({
+            details,
+            files
+          })
+        })
+        .then(project => {
+          actions._setState({
+            project,
+            original: project,
+            status: "editing"
+          })
+          replace(`/projects/${project.details.id}`)
         })
     },
-    deleteFile: (file: projects.FileNode) => (
-      state,
-      actions
-    ): Promise<void> => {
-      const id = state.project.id
-      const files = [file.id]
-      if (file.type === "folder") {
-        projects.getChildrenRecursive(state.files, file, files)
+    createFile: (path: string) => (state, actions) => {
+      checkOpen(state)
+
+      actions.openFiles({ sources: path })
+
+      const result: Partial<api.State> = {
+        project: {
+          details: state.project.details,
+          files: {
+            ...state.project.files,
+            [path]: {
+              content: "",
+              edits: 0
+            }
+          }
+        },
+        expandedFolders: expandParents(state.expandedFolders, path)
       }
-
-      const paths = files
-        .map(id => state.files.byId[id])
-        .filter(file => file.type === "file")
-        .map(file => file.path)
-
-      return getProjects(state, actions)
-        .deleteFiles({ id, files })
-        .then(() => {
-          updateProject(
-            actions,
-            getProjects(state, actions).getState()[id],
-            state.status
-          )
-          actions.sources.close(files)
-          deleteModels(paths)
-        })
+      result.fileTree = getFileTree(result)
+      return result
     },
-    previewFile: (fileOrUrl: string | projects.FileNode) => (
+    deleteFile: (path: string) => (state, actions) => {
+      checkOpen(state)
+
+      actions.closeFile(path)
+
+      const result: Partial<api.State> = {
+        project: {
+          details: state.project.details,
+          files: {
+            ...state.project.files,
+            [path]: null
+          }
+        }
+      }
+      result.fileTree = getFileTree(result)
+      return result
+    },
+    setFileContent: (payload: api.SetFileContentPayload) => (
       state,
       actions
     ) => {
-      // cancelling preview
-      if (!fileOrUrl) {
-        replace(getEditorUrl(state.project))
-        return {}
+      checkOpen(state)
+
+      const { path, content } = payload
+      const files = state.project.files
+      const project: projects.Project = {
+        details: state.project.details,
+        files: {
+          ...files,
+          [path]: {
+            content: content,
+            edits: files[path].edits + 1
+          }
+        }
       }
 
-      if (typeof fileOrUrl !== "string") {
-        logEvent("screen_view", { screen_name: "Preview of " + fileOrUrl.path })
-      }
-
-      replace(
-        typeof fileOrUrl === "string"
-          ? fileOrUrl
-          : getEditorUrl(state.project) + fileOrUrl.path
-      )
-      return {}
+      return { project }
     },
-    setFileContent: (source: api.SetFileContentPayload) => (state, actions) => {
-      const id = state.files.byPath[source.path]
-      if (!id) {
-        throw new Error("No source found at path " + source.path)
+    toggleFolder: (path: string) => (state, actions) => {
+      const project = state.project
+      const folders = state.expandedFolders
+      const expandedFolders: api.ExpandedFolders = {
+        ...folders,
+        [path]: !folders[path]
       }
+      const fileTree = getFileTree({ project, expandedFolders })
 
-      const files = set(state.files, ["byId", id, "content"], source.content)
-      return { files }
+      return {
+        expandedFolders,
+        fileTree
+      }
+    },
+    openFiles: (payload: api.OpenFilesPayload) => state => {
+      const openedSources = [...state.openedSources]
+      const array = arr(payload.sources)
+      const selectedSources = state.selectedSources.filter(
+        src => !payload.sources.includes(src)
+      )
+
+      array.forEach(source => {
+        if (!openedSources.includes(source)) {
+          openedSources.push(source)
+        }
+
+        selectedSources.unshift(source)
+      })
+
+      return { openedSources, selectedSources }
+    },
+    closeFile: (sources: string | string[]) => state => {
+      const array = arr(sources)
+      const selectedSources = state.selectedSources.filter(
+        src => !array.includes(src)
+      )
+      const openedSources = state.openedSources.filter(
+        src => !array.includes(src)
+      )
+      return { openedSources, selectedSources }
+    },
+    closeAllFiles: () => {
+      return { opened: [], selected: [] }
+    },
+    selectFile: (source: string) => state => {
+      const selectedSources = state.selectedSources.filter(
+        src => src !== source
+      )
+      selectedSources.unshift(source)
+      return { selectedSources }
     }
   }
 }

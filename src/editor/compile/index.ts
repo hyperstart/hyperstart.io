@@ -24,7 +24,7 @@ export const compile = (
     plugins.unshift(debug(state, result))
   }
   return rollup({
-    input: state.project.mainFile,
+    input: state.project.details.mainPath,
     plugins
   })
     .then(bundle => {

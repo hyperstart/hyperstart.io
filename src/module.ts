@@ -12,13 +12,11 @@ import { createSearch } from "lib/search/module"
 import { ui } from "ui/module"
 import { users } from "users/module"
 import { AuthListener } from "users"
-import { COLLECTION, Owner } from "projects"
+import { COLLECTION, ProjectOwner } from "projects"
 import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
-import { createProject } from "projects/createProject"
-import { createProject as create } from "./createProject"
+import { createProject } from "./createProject"
 import { logConfig, logEvent } from "analytics"
-import { LOCAL_PROJECT_ID } from "projects/constants"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -61,22 +59,23 @@ export const module: ModuleImpl<State, Actions> = {
       const authListener: AuthListener = user => {
         const state = actions.editor.getState()
         const project = state.project
-        if (
-          user &&
-          project &&
-          (!project.owner || project.owner.id === user.id)
-        ) {
-          // currently editing an artifact locally, save it on login
-          actions.logger.log(
-            actions.editor.setOwner({
-              id: user.id,
-              displayName: user.displayName
-            })
-          )
-        } else if (!user && project && state.status === "editing") {
-          // currently editing own artifact, switch to local mode.
-          actions.logger.log(actions.editor.setOwner(null))
-        }
+        // TODO fix this with anonymous login and everything...
+        // if (
+        //   user &&
+        //   project &&
+        //   (project.details.owner.id === user.id)
+        // ) {
+        //   // currently editing an artifact locally, save it on login
+        //   actions.logger.log(
+        //     actions.editor.setOwner({
+        //       id: user.id,
+        //       displayName: user.displayName
+        //     })
+        //   )
+        // } else if (!user && project && state.status === "editing") {
+        //   // currently editing own artifact, switch to local mode.
+        //   actions.logger.log(actions.editor.setOwner(null))
+        // }
       }
       actions.users.initAuthentication([authListener])
 
@@ -107,13 +106,9 @@ export const module: ModuleImpl<State, Actions> = {
         if (actions.getState().editor.project) {
           return
         }
-        if (id === LOCAL_PROJECT_ID) {
-          const store = actions.editor.localStore.getState()
-          if (store[id]) {
-            actions.editor.open(store[id])
-          } else {
-            create(actions.getState(), actions, "hyperapp")
-          }
+        // when /projects/new, create
+        if (id === "new") {
+          createProject(actions.getState(), actions, "hyperapp")
         }
         actions.logger.log(actions.fetchProject({ id, open: true }))
       })
@@ -130,41 +125,15 @@ export const module: ModuleImpl<State, Actions> = {
         return null
       }
       actions.ui.closeCreateProjectModal()
-      const user = state.users.user
-      const owner: Owner = user
-        ? { id: user.id, displayName: user.displayName }
-        : null
 
-      const projectActions = state.users.user
-        ? actions.projects
-        : actions.editor.localStore
-
-      return createProject({
-        fetch: actions.bundles.getFromNpmPackage,
-        template,
-        owner
-      })
-        .then(project => {
-          if (state.users.user) {
-            return actions.projects.save(project)
-          } else {
-            return actions.editor.localStore.save(project)
-          }
-        })
-        .then(project => {
-          actions.editor.open(project)
-          replace("/projects/" + project.details.id)
-          logEvent("create_project", {
-            event_category: "project",
-            event_label: "Create" + template + "ProjectFromHeader"
-          })
-        })
+      return createProject(state, actions, template)
     },
     fetchProject: (payload: FetchProjectPayload) => (state, actions) => {
       if (isLoading(state)) {
         return
       }
-      if (state.editor.project && state.editor.project.id === payload.id) {
+      const edited = state.editor.project
+      if (edited && edited.details.id === payload.id) {
         return
       }
 

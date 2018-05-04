@@ -1,14 +1,12 @@
 import { h } from "hyperapp"
 
-import { SourceNode } from "projects/FileTree"
-
 import { MonacoEditor, getModel, getEditor } from "../monaco"
 import { State, Actions } from "../api"
 
 export interface SourceEditorProps {
   state: State
   actions: Actions
-  source: SourceNode
+  source: string
 }
 // monaco.editor.IEditorOptions
 function getOptions(): any {
@@ -38,16 +36,12 @@ export function SourceEditor(props: SourceEditorProps) {
       editorService: {
         openEditor: function(input, sideBySide): Promise<any> {
           const path = input.resource.path
-          const id = actions.getState().files.byPath[path]
-          if (id) {
-            actions.sources.open({ sources: id })
-            if (input.options && input.options.selection) {
-              getEditor(e).setModel(getModel(path))
-              getEditor(e).revealRangeAtTop(input.options.selection)
-            }
-          } else {
-            console.log("Tried to open non-existing source " + path)
+          actions.openFiles(path)
+          if (input.options && input.options.selection) {
+            getEditor(e).setModel(getModel(path))
+            getEditor(e).revealRangeAtTop(input.options.selection)
           }
+
           return Promise.resolve({ getControl: () => getEditor(e) })
         }
       },
@@ -70,7 +64,7 @@ export function SourceEditor(props: SourceEditorProps) {
     }
   }
 
-  const model = source ? getModel(source.path) : undefined
+  const model = source ? getModel(source) : undefined
   return MonacoEditor({
     getOptions,
     getOverrides,

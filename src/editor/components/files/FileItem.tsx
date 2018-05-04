@@ -1,87 +1,48 @@
 import { h } from "hyperapp"
 
-import { SourceNode } from "projects/fileTree"
-import { Icon } from "lib/components"
+import { LogFn } from "logger"
 
-import { State, Actions } from "../../api"
-import { isDirty, isEditable } from "../../selectors"
+import * as projects from "projects"
 
-const stopPropagation = (e: Event) => {
-  e.stopPropagation()
-}
+import { State, Actions, FileNode } from "../../api"
+import { isDirty } from "../../selectors"
 
-interface FileDropdownProps {
-  state: State
-  actions: Actions
-  item: SourceNode
-}
-
-const FileDropdown = (props: FileDropdownProps) => {
-  const { state, actions, item } = props
-  if (item.path === state.project.mainFile) {
-    return <span class="float-right main-file">main</span>
-  }
-  return (
-    <div class="dropdown dropdown-right float-right" onclick={stopPropagation}>
-      <a href="#" class="dropdown-toggle" tabindex="0">
-        <Icon name="bars" class="actions float-right primary-color" />
-      </a>
-      <ul class="menu">
-        <li class="menu-item">
-          <a
-            href="#"
-            onclick={() => props.actions.ui.openDeleteFileModal(props.item)}
-          >
-            Delete
-          </a>
-        </li>
-      </ul>
-    </div>
-  )
-}
-
-// ## File
+import "./FileItem.scss"
 
 export interface FileItemProps {
   state: State
   actions: Actions
-  item: SourceNode
+  log: LogFn
+  item: string
 }
 
-function getFileSuffix(state: State, file: SourceNode): string {
-  if (isEditable(state) && isDirty(file)) {
+function getFileSuffix(state: State, file: FileNode): string {
+  if (isDirty(state, file.path)) {
     return "*"
   }
   return ""
 }
 
-export const FileItem = (props: FileItemProps) => {
-  const { state, actions, item } = props
-  const onselect = e => {
-    actions.sources.open({ sources: item.id })
-  }
+function FileActions(FileItemProps) {
+  // TODO
+}
 
-  const onpreview = (e: Event) => {
-    e.stopPropagation()
-    actions.previewFile(item)
+export function FileItem(props: FileItemProps) {
+  const { state, actions, item } = props
+  const node = state.fileTree[item]
+
+  function onselect(e: Event) {
+    e.stopImmediatePropagation()
+    actions.openFiles({
+      sources: item
+    })
   }
 
   return (
     <div class="file c-hand" onclick={onselect}>
       <i class="far fa-file-alt" aria-hidden="true" />
-      <span>{" " + item.name + getFileSuffix(state, item)}</span>{" "}
-      <span
-        class="tooltip tooltip-bottom"
-        data-tooltip={`View a read-only version of the file.
-Useful to copy/paste code in your project.`}
-      >
-        <i
-          class="fas fa-eye preview"
-          aria-label="Preview"
-          onclick={onpreview}
-        />
-      </span>
-      {FileDropdown(props)}
+      <span>{" " + node.name + getFileSuffix(state, node)}</span>{" "}
+      {FileActions(props)}
     </div>
   )
 }

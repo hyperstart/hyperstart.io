@@ -10,8 +10,8 @@ import { PROJECT_TAB_ID } from "../constants"
 import * as api from "./api"
 import { debounce } from "lib/utils"
 
-const editForm = createForm()
 const createFileForm = createForm()
+const editForm = createForm()
 const importNpmPackageForm = createForm({
   name: "",
   version: [],
@@ -24,28 +24,21 @@ const search = createSearch([{ name: "import-project" }])
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
   state: {
-    selectedViewPaneTab: PROJECT_TAB_ID
+    selectedViewPaneTab: PROJECT_TAB_ID,
+    projectName: null
   },
   actions: {
-    // ## Edit form
-    editForm: editForm.actions,
-    startEdit: (project: projects.Details) => state => {
-      logEvent("edit", {
-        event_category: "project",
-        event_label: "StartEdit"
-      })
+    // ## Project name
+    setProjectName: (projectName: string) => {
       return {
-        editForm: createFormState({ name: project.name })
+        projectName
       }
-    },
-    stopEdit: () => state => {
-      return { editForm: null }
     },
     // ## Import project dialog
     importProjectDialog: {
       search: search.actions
     },
-    openImportProjectDialog: () => state => {
+    openImportProjectDialog: () => {
       logEvent("screen_view", { screen_name: "Add Dependency" })
       return {
         importProjectDialog: {
@@ -77,41 +70,35 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
         importNpmPackageModal: null
       }
     },
+    // ## View pane's tabs
+    selectViewPaneTab: (selectedViewPaneTab: string | null) => {
+      return { selectedViewPaneTab }
+    },
+    // ## Shortcut modal
+    showShortcutsModal: () => ({ shortcutsModal: true }),
+    hideShortcutsModal: () => ({ shortcutsModal: false }),
+    // ## Create file modal
+    createFileModal: createFileForm.actions,
+    openCreateFileModal: (path: string) => {
+      return {
+        createModal: {
+          path: { value: path, original: path }
+        }
+      }
+    },
+    closeCreateFileModal: () => {
+      return { createModal: null }
+    },
     // ## Delete file modal
-    openDeleteFileModal: (deletingFile: projects.FileNode) => {
+    openDeleteFileModal: (deletingFile: string) => {
       return { deletingFile }
     },
     closeDeleteFileModal: () => state => {
       return { deletingFile: null }
     },
-    // ## Create file modal
-    createFileDialog: createFileForm.actions,
-    openCreateFileModal: (payload: api.OpenFileModalPayload) => state => {
-      return {
-        createFileDialog: {
-          name: { value: "", original: "" },
-          type: { value: payload.type, original: payload.type },
-          parent: { value: payload.parent, original: payload.parent }
-        }
-      }
-    },
-    closeCreateFileModal: () => state => {
-      return { createFileDialog: null }
-    },
-    // ## Selected file
-    select: (selectedFile: string | null) => state => {
-      return { selectedFile }
-    },
     // ## Previewed file
-    preview: (previewedFile: string | null) => state => {
+    previewFile: (previewedFile: string | null) => state => {
       return { previewedFile }
-    },
-    // ## View pane's tabs
-    selectViewPaneTab: (selectedViewPaneTab: string | null) => state => {
-      return { selectedViewPaneTab }
-    },
-    // ## Shortcut modal
-    showShortcutsModal: () => ({ shortcutsModal: true }),
-    hideShortcutsModal: () => ({ shortcutsModal: false })
+    }
   }
 }

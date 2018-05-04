@@ -3,47 +3,52 @@ import { getSearches } from "lib/search"
 
 import { importProjects } from "./importProjects"
 import { createBlankFiles, createHyperappFiles } from "./createFiles"
-import { Actions, File, Owner, Project, Details, Template } from "./api"
-import { LOCAL_PROJECT_ID } from "./constants"
+import {
+  Actions,
+  File,
+  ProjectOwner,
+  Project,
+  ProjectDetails,
+  Template
+} from "./api"
 import { Bundle } from "lib/bundle"
-import { importBundle } from "./importBundle"
+import { importBundles } from "./importBundles"
+import { NEW_PROJECT_ID } from "."
 
-export interface FetchBundlePayload {
+export interface BundleToFetch {
   name: string
-  version?: string
+  version: string
 }
 
 export interface Payload {
-  fetch: (payload: FetchBundlePayload) => Promise<Bundle>
+  fetchBundles: (bundles: BundleToFetch[]) => Promise<Bundle[]>
   name?: string
-  owner?: Owner
+  owner?: ProjectOwner
   template: Template
 }
 
 export function createProject(payload: Payload): Promise<Project> {
-  const { fetch, name = "new-project", owner, template } = payload
-  const local = !owner
-  const id = local ? LOCAL_PROJECT_ID : payload.owner.id + "-" + guid()
+  const { fetchBundles, name = "", owner, template } = payload
 
-  const details: Details = {
-    id,
+  const details: ProjectDetails = {
+    id: NEW_PROJECT_ID,
     name,
     owner: payload.owner,
-    searches: getSearches(name),
-    hidden: false,
-    mainFile: "/index.js"
+    searches: name === "" ? {} : getSearches(name),
+    hidden: name === "",
+    mainPath: "/index.js",
+    filesUrls: null
   }
-
-  const files =
-    template === "hyperapp" ? createHyperappFiles() : createBlankFiles()
 
   if (template === "hyperapp") {
-    return fetch({ name: "hyperapp", version: "1.2.5" }).then(hyperapp => {
-      return {
-        details,
-        files: importBundle(files, hyperapp)
+    return fetchBundles([{ name: "hyperapp", version: "1.2.5" }]).then(
+      bundles => {
+        return {
+          details,
+          files: importBundles(createHyperappFiles(), bundles)
+        }
       }
-    })
+    )
   }
-  return Promise.resolve({ details, files })
+  return Promise.resolve({ details, files: createBlankFiles() })
 }

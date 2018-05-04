@@ -6,15 +6,15 @@ import * as form from "lib/form"
 
 export interface User {
   id: string
-  displayName: string
-  email: string
-  emailVerified: boolean
+  displayName?: string
+  email?: string
+  emailVerified?: boolean
+  anonymous: boolean
 }
 
 export interface State {
   loading: boolean
   selectedEmail?: string
-  user?: User
   signUpForm: form.State
   signInModal?: form.State
   signUpModal?: form.State
@@ -29,12 +29,15 @@ export interface AuthListener {
 export interface Actions extends ModuleActions<State> {
   // ## Authentication
   initAuthentication(listeners: AuthListener[])
-  resetIdentity()
   signUp(source: "form" | "modal"): Promise<void>
   signIn(): Promise<void>
   signInWithGoogle(): Promise<void>
   signInWithGithub(): Promise<void>
   signOut(): Promise<void>
+  /** Get the current user, authenticate anonymously if needed. */
+  getCurrentUser(): Promise<User>
+  /** Get the current user, DOES NOT authenticate anonymously. */
+  getCurrentUserSync(): User | null
   // ## UI
   signUpForm: form.Actions
   signInModal: form.Actions

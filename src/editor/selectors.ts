@@ -1,77 +1,36 @@
 import { StringMap } from "lib/utils"
+import { PackageJson, inferMainFile } from "lib/npm"
+import { concat } from "lib/fs"
 
-import {
-  SourceNode,
-  FileNode,
-  getFile,
-  getPackageJsonInFolder
-} from "projects/fileTree"
-import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, Files } from "projects"
+import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, File, Files } from "projects"
 
-import { State, FileNotFound } from "./api"
+import { State, FileNode } from "./api"
 import { Run } from "./debug/api"
-import { inferMainFile } from "lib/npm"
 
-export function isEditable(state: State): boolean {
-  return state.status === "editing"
+export function getFile(state: State, path: string): File | null {
+  return (state.project && state.project.files[path]) || null
 }
 
-export function fileExists(
-  state: State,
-  name: string,
-  parent?: string
-): boolean {
-  const files = state.files.byId
-  for (let id in files) {
-    const file = files[id]
-    if (file.name === name && file.parent == parent) {
-      return true
-    }
-  }
-
-  return false
-}
-
-export function isDirty(source: FileNode): boolean {
-  return source.type === "file" && source.content !== source.original
-}
-
-export function getDirtySources(state: State): string[] {
-  const files: any = state.files.byId
-  return Object.keys(files).filter(key => isDirty(files[key]))
+export function getFileNode(state: State, path: string): FileNode | null {
+  return state.fileTree[path] || null
 }
 
 export function hasDirtySources(state: State): boolean {
-  const files: any = state.files.byId
-  return Object.keys(files).findIndex(key => isDirty(files[key])) >= 0
+  if (!state.project) {
+    return false
+  }
+  if (state.status === "local-only") {
+    return true
+  }
+  return state.project.files !== state.original.files
 }
 
-export function isNotFound(file: any): file is FileNotFound {
-  return file.notFound === true
-}
-
-export function getPreviewedFile(
-  state: State
-): SourceNode | FileNotFound | null {
-  const paths = window.location.pathname.substr(1).split("/")
-  if (paths.length < 3) {
-    return null
+export function isDirty(state: State, path: string): boolean {
+  if (!state.project || state.status === "local-only") {
+    return false
   }
 
-  paths.shift()
-  paths.shift()
-  const path = "/" + paths.join("/")
-  const id = state.files.byPath[path]
-  if (!id) {
-    return { notFound: true, path }
-  }
-
-  const result = state.files.byId[id] as SourceNode
-  if (!result || result.type !== "file") {
-    return { notFound: true, path }
-  }
-
-  return result
+  return state.project.files[path] === state.original.files[path]
 }
 
 function compareRuns(r1: Run, r2: Run): number {
@@ -84,63 +43,39 @@ export function getRuns(runs: StringMap<Run>): Run[] {
     .sort(compareRuns)
 }
 
-export function getSelectedSource(state: State): SourceNode | null {
-  const selected = state.sources.selected
-  if (selected.length === 0) {
+export function getPackageJsonInFolder(
+  state: State,
+  path: string
+): PackageJson | null {
+  const file = getFile(state, concat(path, "/package.json"))
+  if (!file) {
     return null
   }
-  const id = selected[0]
-  return <SourceNode>state.files.byId[id]
-}
 
-export function getSource(
-  state: State,
-  path: string,
-  failOnNull: boolean
-): SourceNode | null {
-  const id = state.files.byPath[path]
-  const result = id ? state.files.byId[id] : null
-  if (result && result.type === "file") {
-    return result
-  }
-  if (failOnNull) {
-    throw new Error(
-      "Error while loading source at " +
-        path +
-        ". Source: " +
-        JSON.stringify(result)
-    )
-  }
-  return null
+  return JSON.parse(file.content)
 }
 
 export function isDebuggable(state: State): boolean {
-  if (!state.files) {
-    return false
-  }
-
   const pkg = getPackageJsonInFolder(
-    state.files,
+    state,
     `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}`
   )
-
   if (pkg && pkg.version === "1.2.5") {
     return true
   }
 
   // fallback for old projects
   const path = `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}/index.js`
-  const id = state.files.byPath[path]
-  return !!id
+  return !!getFile(state, path)
 }
 
 export function getHyperappJsMainFile(state: State): string | null {
-  if (!state.files) {
+  if (!state.project) {
     return null
   }
 
   const pkg = getPackageJsonInFolder(
-    state.files,
+    state,
     `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}`
   )
   return `${DEPENDENCIES_FOLDER_PATH}/${HYPERAPP_NAME}/${
@@ -148,13 +83,103 @@ export function getHyperappJsMainFile(state: State): string | null {
   }`
 }
 
-export function getFiles(state: State): Files {
-  const result: Files = {}
-
-  const files = state.files.byId
-  Object.keys(files).forEach(id => {
-    result[id] = getFile(files[id])
-  })
-
-  return result
+export function getSelectedFile(state: State): FileNode | null {
+  const selected = state.selectedSources
+  if (selected.length === 0) {
+    return null
+  }
+  const path = selected[0]
+  return state.fileTree[path]
 }
+
+// import { State, FileNotFound } from "./api"
+// import { inferMainFile } from "lib/npm"
+
+// export function isEditable(state: State): boolean {
+//   return state.status === "editing"
+// }
+
+// export function fileExists(
+//   state: State,
+//   name: string,
+//   parent?: string
+// ): boolean {
+//   const files = state.files.byId
+//   for (let id in files) {
+//     const file = files[id]
+//     if (file.name === name && file.parent == parent) {
+//       return true
+//     }
+//   }
+
+//   return false
+// }
+
+// export function isDirty(source: FileNode): boolean {
+//   return source.type === "file" && source.content !== source.original
+// }
+
+// export function getDirtySources(state: State): string[] {
+//   const files: any = state.files.byId
+//   return Object.keys(files).filter(key => isDirty(files[key]))
+// }
+
+// export function isNotFound(file: any): file is FileNotFound {
+//   return file.notFound === true
+// }
+
+// export function getPreviewedFile(
+//   state: State
+// ): SourceNode | FileNotFound | null {
+//   const paths = window.location.pathname.substr(1).split("/")
+//   if (paths.length < 3) {
+//     return null
+//   }
+
+//   paths.shift()
+//   paths.shift()
+//   const path = "/" + paths.join("/")
+//   const id = state.files.byPath[path]
+//   if (!id) {
+//     return { notFound: true, path }
+//   }
+
+//   const result = state.files.byId[id] as SourceNode
+//   if (!result || result.type !== "file") {
+//     return { notFound: true, path }
+//   }
+
+//   return result
+// }
+
+// export function getSource(
+//   state: State,
+//   path: string,
+//   failOnNull: boolean
+// ): SourceNode | null {
+//   const id = state.files.byPath[path]
+//   const result = id ? state.files.byId[id] : null
+//   if (result && result.type === "file") {
+//     return result
+//   }
+//   if (failOnNull) {
+//     throw new Error(
+//       "Error while loading source at " +
+//         path +
+//         ". Source: " +
+//         JSON.stringify(result)
+//     )
+//   }
+//   return null
+// }
+
+// export function getFiles(state: State): Files {
+//   const result: Files = {}
+
+//   const files = state.files.byId
+//   Object.keys(files).forEach(id => {
+//     result[id] = getFile(files[id])
+//   })
+
+//   return result
+// }

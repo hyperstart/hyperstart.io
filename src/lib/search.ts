@@ -38,6 +38,10 @@ export function getWords(text: string): string[] {
 export function getSearches(name: string, keywords: string[] = []): Searches {
   const result: Searches = {}
 
+  if (!name || name === "") {
+    return result
+  }
+
   const generated = getWords(name)
 
   // add the generated keywords

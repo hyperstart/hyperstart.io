@@ -1,3 +1,5 @@
+import firebase from "firebase"
+
 import { h } from "hyperapp"
 
 import { Button, Icon } from "lib/components"
@@ -15,7 +17,8 @@ export interface UserIconButtonProps {
 
 export function UserIconButton(props: UserIconButtonProps) {
   const { state, actions, log } = props
-  const user = state.user
+  const currentUser = firebase.auth().currentUser
+  const user = currentUser && !currentUser.isAnonymous ? currentUser : null
   if (user) {
     const logout = (e: Event) => {
       actions.signOut()

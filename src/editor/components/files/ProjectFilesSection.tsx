@@ -1,18 +1,15 @@
 import { h } from "hyperapp"
 
-import { File, FileNode, FolderNode, SourceNode } from "projects"
+import { Tree } from "lib/components"
+
 import { LogFn } from "logger"
 
-import { State, Actions } from "../../api"
-import { getPreviewedFile } from "../../selectors"
-import { CreateFileModal } from "./CreateFileModal"
-import { DeleteFileModal } from "./DeleteFileModal"
-import { FileTree } from "./FileTree"
-import { FilePreview } from "./FilePreview"
-import { HeaderMenu } from "./HeaderMenu"
+import { State, Actions, FileNode } from "../../api"
+import { FolderItem } from "./FolderItem"
+import { FileItem } from "./FileItem"
 
 import "./ProjectFilesSection.scss"
-import { logEvent } from "analytics"
+import { ROOT_PATH } from "projects"
 
 export interface ProjectFilesSectionProps {
   state: State
@@ -20,35 +17,44 @@ export interface ProjectFilesSectionProps {
   log: LogFn
 }
 
-export const ProjectFilesSection = (props: ProjectFilesSectionProps) => {
-  const { state, actions, log } = props
-  const file = getPreviewedFile(state)
+interface ViewProps {
+  state: State
+  actions: Actions
+  log: LogFn
+  item: string
+}
 
-  function createFile(type: "file" | "folder", name: string, parent?: File) {
-    logEvent("create_file", {
-      event_category: "project",
-      event_label: "Create " + type
-    })
-    log(actions.createFile({ type, name, parent }))
+function View(props: ViewProps) {
+  const { state, item } = props
+  const node = state.fileTree[item]
+  if (node.type === "folder") {
+    return FolderItem(props)
   }
-  function onDeleteFile(file: FileNode) {
-    logEvent("delete_file", {
-      event_category: "project",
-      event_label: "Delete"
-    })
-    log(actions.deleteFile(file))
+  return FileItem(props)
+}
+
+export function ProjectFilesSection(props: ProjectFilesSectionProps) {
+  const { state, actions, log } = props
+
+  function getChildren(path: string) {
+    const node = state.fileTree[path]
+    if (node.type === "folder") {
+      return node.expanded ? node.children : []
+    }
+    return null
   }
 
   return (
-    <div class="m-2 project-files">
-      <h2>Files {HeaderMenu(props)}</h2>
-      {file ? FilePreview({ state, actions, file }) : FileTree(props)}
-      <DeleteFileModal
-        deleting={state.ui.deletingFile}
-        close={actions.ui.closeDeleteFileModal}
-        confirm={onDeleteFile}
-      />
-      <CreateFileModal state={state} actions={actions} confirm={createFile} />
+    <div class="project-files-section">
+      {Tree({
+        View,
+        items: ["/"],
+        getChildren,
+        toggleExpanded: actions.toggleFolder,
+        itemProps: props,
+        class: "file-tree",
+        nodeClass: "file-node"
+      })}
     </div>
   )
 }

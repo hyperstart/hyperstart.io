@@ -1,4 +1,4 @@
-import { Template, Owner } from "projects"
+import { Template, ProjectOwner } from "projects"
 import { State, Actions } from "api"
 import { createProject as create } from "projects/createProject"
 import { replace } from "lib/router"
@@ -9,19 +9,20 @@ export function createProject(
   actions: Actions,
   template: Template
 ) {
-  const user = state.users.user
-  const owner: Owner = user
-    ? { id: user.id, displayName: user.displayName }
-    : null
-
   return actions.logger.log(
-    create({ fetch: actions.bundles.getFromNpmPackage, template, owner })
-      .then(project => {
-        if (state.users.user) {
-          return actions.projects.save(project)
-        } else {
-          return actions.editor.localStore.save(project)
+    actions.users
+      .getCurrentUser()
+      .then(user => {
+        const owner: ProjectOwner = {
+          id: user.id,
+          displayName: user.displayName,
+          anonymous: user.anonymous
         }
+        return create({
+          fetchBundles: actions.bundles.getFromNpmPackages,
+          template,
+          owner
+        })
       })
       .then(project => {
         actions.editor.open(project)

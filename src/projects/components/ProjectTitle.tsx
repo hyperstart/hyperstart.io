@@ -2,12 +2,12 @@ import { h } from "hyperapp"
 
 import { UrlIcon } from "lib/components"
 
-import { Details } from "../api"
+import { ProjectDetails } from "../api"
 
 // # Project Title
 
 export interface ProjectTitleProps {
-  project: Details
+  project: ProjectDetails
   Tag?: string
   class?: string
 }

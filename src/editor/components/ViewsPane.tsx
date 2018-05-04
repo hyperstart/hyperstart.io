@@ -24,7 +24,7 @@ const PROJECT_TAB_NAME = "Project"
 const PREVIEW_TAB_NAME = "Output"
 
 const getTabs = (state: State): ViewTab[] => {
-  if (state.project && state.project.mainFile) {
+  if (state.project && state.project.details.mainPath) {
     return [
       {
         id: PROJECT_TAB_ID,
@@ -50,7 +50,6 @@ interface ViewsPaneContentProps {
   state: State
   actions: Actions
   tab: ViewTab
-  currentUser: User | null
   log: LogFn
   loading: boolean
 }
@@ -75,7 +74,6 @@ function ViewsPaneContent(props: ViewsPaneContentProps) {
 export interface ViewsPaneProps {
   state: State
   actions: Actions
-  currentUser: User | null
   log: LogFn
   loading: boolean
 }

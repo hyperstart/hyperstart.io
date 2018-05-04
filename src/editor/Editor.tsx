@@ -7,7 +7,7 @@ import { getEditorUrl } from "utils"
 import { User } from "users"
 
 import { DebuggerPane, SourcesPane, ViewsPane } from "./components"
-import { hasDirtySources, isDebuggable } from "./selectors"
+import { isDebuggable } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
 
@@ -16,7 +16,6 @@ import "./Editor.scss"
 export interface EditorProps {
   state: State
   actions: Actions
-  currentUser: User | null
   log: LogFn
   loading: boolean
 }
@@ -40,26 +39,27 @@ export function Editor(props: EditorProps) {
   // ## oncreate
   const oncreate = (e: HTMLElement) => {
     // ### Confirm on exit
-    e[INTERCEPTOR] = (url: string) => {
-      if (
-        !url.includes(getEditorUrl(state.project)) &&
-        hasDirtySources(state)
-      ) {
-        return confirm(
-          "This project has unsaved changes, are you sure you want to leave this page?"
-        )
-      }
-      return true
-    }
-    addInterceptor(e[INTERCEPTOR])
+    // TODO add back
+    // e[INTERCEPTOR] = (url: string) => {
+    //   if (
+    //     !url.includes(getEditorUrl(state.project.details)) &&
+    //     hasDirtySources(state)
+    //   ) {
+    //     return confirm(
+    //       "This project has unsaved changes, are you sure you want to leave this page?"
+    //     )
+    //   }
+    //   return true
+    // }
+    // addInterceptor(e[INTERCEPTOR])
 
-    e[UNLOAD] = (e: BeforeUnloadEvent) => {
-      if (hasDirtySources(state)) {
-        e.returnValue =
-          "This project has unsaved changes, are you sure you want to leave this page?"
-      }
-    }
-    window.addEventListener("beforeunload", e[UNLOAD])
+    // e[UNLOAD] = (e: BeforeUnloadEvent) => {
+    //   if (hasDirtySources(state)) {
+    //     e.returnValue =
+    //       "This project has unsaved changes, are you sure you want to leave this page?"
+    //   }
+    // }
+    // window.addEventListener("beforeunload", e[UNLOAD])
 
     // ### Debugger
     e[IFRAME_LISTENER] = (e: MessageEvent) => {
@@ -109,15 +109,15 @@ export function Editor(props: EditorProps) {
       if (isCtrlKeyDown(event, 83)) {
         // CTRL+S or CMD+S -> save sources
         const state = actions.getState()
-        if (state.status === "editing") {
-          log(actions.saveAllSources())
+        if (state.project) {
+          log(actions.saveProject())
         }
         event.preventDefault()
       }
       if (isCtrlKeyDown(event, 82)) {
         // CTRL+R or CMD+R -> run project
         const state = actions.getState()
-        if (state.status === "editing" || state.status === "read-only") {
+        if (state.project) {
           log(actions.run(false))
         }
         event.preventDefault()
@@ -125,10 +125,7 @@ export function Editor(props: EditorProps) {
       if (isCtrlKeyDown(event, 68)) {
         // CTRL+D or CMD+D -> debug project
         const state = actions.getState()
-        if (
-          state.status === "editing" ||
-          (state.status === "read-only" && isDebuggable(state))
-        ) {
+        if (isDebuggable(state)) {
           log(actions.run(true))
         }
         event.preventDefault()
@@ -139,8 +136,9 @@ export function Editor(props: EditorProps) {
 
   const ondestroy = (e: HTMLElement) => {
     actions.close()
-    removeInterceptor(e[INTERCEPTOR])
-    window.removeEventListener("beforeunload", e[UNLOAD])
+    // TODO add back
+    // removeInterceptor(e[INTERCEPTOR])
+    // window.removeEventListener("beforeunload", e[UNLOAD])
     window.removeEventListener("message", e[IFRAME_LISTENER])
     window.removeEventListener("keydown", e[SHORTCUTS_LISTENER])
   }

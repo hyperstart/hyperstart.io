@@ -1,13 +1,16 @@
-import { Project, Owner } from "./api"
+import { Project, ProjectOwner } from "./api"
 import { guid } from "lib/utils"
-import { LOCAL_PROJECT_ID } from "."
 
-export function copyProject(project: Project, newOwner: Owner): Project {
+export function copyProject(project: Project, newOwner: ProjectOwner): Project {
   return {
     details: {
-      ...project.details,
-      id: newOwner ? newOwner.id + "-" + guid() : LOCAL_PROJECT_ID,
-      owner: newOwner
+      id: newOwner.id + "-" + guid(),
+      name: project.details.name,
+      hidden: true,
+      searches: {},
+      owner: newOwner,
+      mainPath: project.details.mainPath,
+      filesUrls: null
     },
     files: project.files
   }

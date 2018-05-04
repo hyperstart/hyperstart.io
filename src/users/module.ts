@@ -19,7 +19,7 @@ interface Actions extends api.Actions {
 }
 
 function getDisplayNameFromEmail(email: string = ""): string {
-  const segments = email.split("@")
+  const segments = email ? email.split("@") : []
   if (segments.length < 1 || segments[0] === "") {
     return "Anonymous"
   }
@@ -32,7 +32,8 @@ function toUser(user?: firebase.User): api.User | null {
         displayName: user.displayName || getDisplayNameFromEmail(user.email),
         email: user.email,
         emailVerified: user.emailVerified,
-        id: user.uid
+        id: user.uid,
+        anonymous: user.isAnonymous
       }
     : null
 }
@@ -104,11 +105,18 @@ const _users: ModuleImpl<api.State, Actions> = {
         listeners.map(listener => listener(user2))
       })
     },
-    resetIdentity: () => {
-      return {
-        user: null,
-        error: null
+    getCurrentUser: (): Promise<api.User> => {
+      if (firebase.auth().currentUser) {
+        return Promise.resolve(toUser(firebase.auth().currentUser))
       }
+
+      return firebase
+        .auth()
+        .signInAnonymously()
+        .then(user => toUser(user))
+    },
+    getCurrentUserSync: (): api.User | null => {
+      return toUser(firebase.auth().currentUser)
     },
     signUp: (source: "form" | "modal") => (state, actions): Promise<void> => {
       const form = source === "form" ? state.signUpForm : state.signUpModal

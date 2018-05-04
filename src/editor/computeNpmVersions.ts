@@ -2,13 +2,9 @@ import { getLatestVersion } from "lib/unpkg"
 import { debounce } from "lib/utils"
 
 import { Actions as BundleActions } from "bundles"
-import { State, Actions } from "./api"
+import { State, InternalActions } from "./api"
 
-function _computeNpmVersions(
-  bundleActions: BundleActions,
-  state: State,
-  actions: Actions
-) {
+function _computeNpmVersions(state: State, actions: InternalActions) {
   const modal = state.ui.importNpmPackageModal
   if (!modal) {
     return
@@ -80,7 +76,7 @@ function _computeNpmVersions(
       })
   } else {
     // get all versions
-    bundleActions
+    actions._bundles
       .getVersions(pkg)
       .then(versions => {
         if (!state.ui.importNpmPackageModal) {

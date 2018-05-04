@@ -6,7 +6,7 @@ import { SearchField } from "lib/search/SearchField"
 
 import { Status, LogFn } from "logger"
 import { State, Actions } from "api"
-import { isLoading, getEditedProject } from "selectors"
+import { isLoading } from "selectors"
 import { hasDirtySources, isDebuggable } from "editor/selectors"
 import { UserIconButton } from "users/UserIconButton"
 
@@ -34,23 +34,21 @@ function CreateButton({ state, actions }: HeaderProps) {
 }
 
 function SaveButton({ state, actions }: HeaderProps) {
-  const status = state.editor.status
-  if (status !== "editing") {
+  if (!state.editor.project) {
     return null
   }
 
   return Button({
     disabled: !hasDirtySources(state.editor) || isLoading(state),
-    onclick: actions.editor.saveAllSources,
+    onclick: () => actions.logger.log(actions.editor.saveProject),
     text: "Save",
     class: "button btn-primary mr-1"
   })
 }
 
 function RunButton({ state, actions }: HeaderProps) {
-  const status = state.editor.status
-  const project: any = state.editor.project || {}
-  if (status === "closed" || !project.mainFile) {
+  const project = state.editor.project
+  if (!project || !project.details.mainPath) {
     return null
   }
 
@@ -63,9 +61,7 @@ function RunButton({ state, actions }: HeaderProps) {
 }
 
 function DebugButton({ state, actions }: HeaderProps) {
-  const status = state.editor.status
-  const project: any = state.editor.project || {}
-  if (status === "closed" || !project.mainFile || !isDebuggable(state.editor)) {
+  if (!isDebuggable(state.editor)) {
     return null
   }
 
@@ -90,11 +86,10 @@ function DebugButton({ state, actions }: HeaderProps) {
 }
 
 function ForkButton({ state, actions }: HeaderProps) {
-  const status = state.editor.status
-  if (status === "closed") {
+  if (!state.editor.project) {
     return null
   }
-  const toFork = getEditedProject(state, true)
+  const toFork = state.editor.project
   if (!toFork) {
     return null
   }

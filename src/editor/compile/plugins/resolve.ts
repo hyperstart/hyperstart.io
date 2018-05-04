@@ -1,15 +1,14 @@
 import { DiagnosticCategory } from "lib/typescript"
-import { fetchSource } from "lib/fetchSource"
+import { fetchContentString } from "lib/fetchContent"
+import { createPairMap } from "lib/pairMap"
+import { getErrorMessage } from "lib/utils"
 import { concat } from "lib/fs"
 
 import { DEPENDENCIES_FOLDER_PATH } from "projects"
-import { getByPath, existsByPath } from "projects/fileTree"
 
-import { getSource } from "../../selectors"
 import { State } from "../../api"
 import { CompileOutput } from "../api"
-import { getErrorMessage } from "lib/utils"
-import { createPairMap } from "lib/pairMap"
+import { getFile, getFileNode } from "../../selectors"
 import { inferMainFile, PackageJson } from "lib/npm"
 
 const suffixes = [
@@ -67,8 +66,7 @@ function getEnclosingProjectsRoots(state: State, path: string): string[] {
   return candidates
     .filter(
       candidate =>
-        candidate === "" ||
-        existsByPath(state.files, concat(candidate, "/package.json"))
+        candidate === "" || getFile(state, concat(candidate, "/package.json"))
     )
     .reverse()
 }
@@ -76,8 +74,8 @@ function getEnclosingProjectsRoots(state: State, path: string): string[] {
 function getMainFilePath(state: State, rootPath: string): string {
   const pkgJsonPath = concat(rootPath, "/package.json")
 
-  const pkgJsonFile = getByPath(state.files, pkgJsonPath)
-  if (!pkgJsonFile || pkgJsonFile.type !== "file") {
+  const pkgJsonFile = getFile(state, pkgJsonPath)
+  if (!pkgJsonFile) {
     // return the default main file
     return concat(rootPath, "/index.js")
   }
@@ -140,8 +138,8 @@ function getGlobalPath(
   const enclosingProjects = getEnclosingProjectsRoots(state, relativeTo)
   for (const project of enclosingProjects) {
     const rootPath = concat(project, "/dependencies", localPath)
-    const rootFolder = getByPath(state.files, rootPath)
-    if (!rootFolder || rootFolder.type !== "folder") {
+    const node = getFileNode(state, rootPath)
+    if (!node || node.type === "folder") {
       continue
     }
 
@@ -168,7 +166,7 @@ const resolveId = (
   // try all possible suffixes
   for (const suffix of suffixes) {
     const resolved = path + suffix
-    if (getSource(state, resolved, false)) {
+    if (state.project.files[resolved]) {
       return resolved
     }
   }
@@ -204,17 +202,13 @@ export function resolve(state: State, result: CompileOutput): any {
       }
       // TODO code better
       if (id.startsWith("http")) {
-        return fetchSource(id).catch(e => {
+        return fetchContentString(id).catch(e => {
           throw new Error("Cannot fetch " + id + ": " + getErrorMessage(e))
         })
       }
-      const source = getSource(state, id, true)
+      const source = state.project.files[id]
       if (typeof source.content === "string") {
         return source.content
-      }
-
-      if (source.url) {
-        return fetchSource(source.url)
       }
 
       throw new Error("Cannot load " + id)

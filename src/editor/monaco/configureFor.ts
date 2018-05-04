@@ -1,6 +1,6 @@
 import "monaco-editor"
 
-import { FileTree } from "projects"
+import { Files } from "projects"
 
 import { State } from "../api"
 import { getLanguage } from "./languages"
@@ -23,22 +23,18 @@ function oldPathHasMapping(name: string, path: string): boolean {
   return oldPaths && oldPaths[name] && oldPaths[name][0] === path
 }
 
-function getPathsIfDifferent(files: FileTree, force: boolean): Paths {
+function getPathsIfDifferent(files: Files, force: boolean): Paths {
   const paths: Paths = {}
   let equals = true
-  Object.keys(files.byId).forEach(id => {
-    const file = files.byId[id]
-    if (
-      file.type === "folder" ||
-      file.name !== "package.json" ||
-      !file.content
-    ) {
+  Object.keys(files).forEach(path => {
+    if (!path.endsWith("/package.json")) {
       return
     }
 
+    const file = files[path]
     const json: PackageJson = JSON.parse(file.content)
     const main = inferMainFile(json)
-    const resolved = file.path
+    const resolved = path
       .replace("package.json", main)
       .replace(".js", "")
       .substring(1)
@@ -55,12 +51,10 @@ function getPathsIfDifferent(files: FileTree, force: boolean): Paths {
     return null
   }
 
-  console.log("Recomputed paths", paths)
-
   return paths
 }
 
-function configureCompiler(files: FileTree, force: boolean): void {
+function configureCompiler(files: Files, force: boolean): void {
   const paths = getPathsIfDifferent(files, force)
   if (!paths) {
     // no need to set the compiler options if the paths haven't changed
@@ -105,20 +99,18 @@ function configureCompiler(files: FileTree, force: boolean): void {
   )
 }
 
-function createModelsFor(files: FileTree, override?: boolean): void {
-  Object.keys(files.byId).forEach(id => {
-    const file = files.byId[id]
-    if (file.type === "file") {
-      if (!hasModel(file.path)) {
-        createModel(file.content, getLanguage(file), file.path)
-      } else if (override) {
-        updateModel(file.content, file.path)
-      }
+function createModelsFor(files: Files, override?: boolean): void {
+  Object.keys(files).forEach(path => {
+    const file = files[path]
+    if (!hasModel(path)) {
+      createModel(file.content, getLanguage(path), path)
+    } else if (override) {
+      updateModel(file.content, path)
     }
   })
 }
 
-export function configureFor(files: FileTree, newlyOpened: boolean): void {
+export function configureFor(files: Files, newlyOpened: boolean): void {
   configureCompiler(files, newlyOpened)
 
   if (newlyOpened) {

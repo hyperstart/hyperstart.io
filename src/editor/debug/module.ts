@@ -75,7 +75,6 @@ function appendActionEvent(
     } else {
       // error case
       console.log("Previous action is done and event.callDone", action, event)
-      // TODO what to return?!
       return action
     }
   } else {

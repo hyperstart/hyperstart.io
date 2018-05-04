@@ -2,7 +2,7 @@ import { h } from "hyperapp"
 
 import { replace } from "lib/router"
 
-import { Details } from "projects/api"
+import { ProjectDetails } from "projects/api"
 import { ProjectOwner } from "projects/components"
 
 import { SearchPane } from "./SearchPane"
@@ -11,7 +11,7 @@ import { LogFn } from "logger"
 
 // # Search Project
 
-function SingleProject(result: Details) {
+function SingleProject(result: ProjectDetails) {
   return (
     <div class="tile">
       <div class="tile-content">
@@ -35,7 +35,7 @@ function SingleProject(result: Details) {
   )
 }
 
-function ProjectListRow(result: Details, index: number) {
+function ProjectListRow(result: ProjectDetails, index: number) {
   return [
     index === 0 ? <div class="divider" /> : null,
     SingleProject(result),

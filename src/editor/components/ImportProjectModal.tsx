@@ -2,7 +2,7 @@ import { h } from "hyperapp"
 
 import { TextField, SearchResults, Pagination } from "lib/search/components"
 
-import { Project, Details } from "projects/api"
+import { Project, ProjectDetails } from "projects/api"
 import { ProjectTitle, ProjectOwner } from "projects/components"
 
 import { State, Actions } from "../api"
@@ -11,7 +11,7 @@ import { LogFn } from "logger"
 import "./ImportProjectModal.scss"
 
 function ProjectTableRow(
-  project: Details,
+  project: ProjectDetails,
   index: number,
   props: ImportProjectModalProps
 ) {
@@ -68,7 +68,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
     const project = modal.selected
     if (project) {
       e.preventDefault()
-      log(actions.importProjects([project]))
+      log(actions.importProject(project))
       actions.ui.closeImportProjectDialog()
     }
   }

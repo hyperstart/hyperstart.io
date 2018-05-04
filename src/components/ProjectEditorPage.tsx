@@ -25,16 +25,14 @@ export function ProjectEditorPage(props: ProjectEditorPageProps) {
   }
 
   const editor = state.editor
-  if (editor.status === "closed") {
+  if (!editor.project) {
     return <div style={{ flex: "1 1 auto" }}> </div>
   }
 
   const loading = isLoading(state)
-  const currentUser = state.users.user
   return Editor({
     state: state.editor,
     actions: actions.editor,
-    currentUser,
     log: actions.logger.log,
     loading
   })

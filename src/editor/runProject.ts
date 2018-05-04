@@ -1,12 +1,12 @@
 import { map, getErrorMessage } from "lib/utils"
 
-import { SourceNode } from "projects"
+import { LogFn } from "logger"
+import { logEvent } from "analytics"
 
 import * as api from "./api"
 import { OUTPUT_TAB_ID } from "./constants"
+import { getFile } from "./selectors"
 import { compile } from "./compile"
-import { LogFn } from "logger"
-import { logEvent } from "analytics"
 
 export interface Actions extends api.Actions {
   _setMonacoLoaded()
@@ -23,18 +23,13 @@ export function runProject(
   }
   actions._setState({ compilationOutput: { loading: true, success: false } })
   actions.ui.selectViewPaneTab(OUTPUT_TAB_ID)
-  return actions
-    .saveAllSources()
-    .then(() => {
-      state = actions.getState()
-      return compile(state, debug)
-    })
+  return compile(state, debug)
     .then(output => {
       if (!output.success) {
         const compiledModules = map(output.modules, (diagnostics, path) => {
           const result: api.CompiledModule = {
             diagnostics,
-            fileId: state.files.byPath[path]
+            path
           }
           return result
         })
@@ -48,10 +43,9 @@ export function runProject(
         })
         throw "Compilation error(s)!"
       }
-      const indexHtmlId = state.files.byPath["/index.html"]
-      const indexHtml = state.files.byId[indexHtmlId] as SourceNode
+      const indexHtml = getFile(state, "/index.html")
 
-      if (!indexHtmlId || !indexHtml) {
+      if (!indexHtml) {
         throw new Error("No index.html found in files")
       }
 

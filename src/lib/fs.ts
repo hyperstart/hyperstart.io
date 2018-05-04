@@ -14,3 +14,20 @@ export function concat(...paths: (string | string[])[]): string {
   }
   return result
 }
+
+export function getName(path: string): string {
+  const index = path.lastIndexOf("/")
+  if (index < 0) {
+    return path
+  }
+  return path.substring(index + 1)
+}
+
+export function getParentName(path: string): string {
+  const last = path.lastIndexOf("/")
+  const first = path.lastIndexOf("/", last)
+  if (first < 0) {
+    return path
+  }
+  return path.substring(first + 1, last)
+}
