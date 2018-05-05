@@ -118,8 +118,10 @@ body {
 }
 
 .form-input {
-  background-color: $bg-color-input;
+  background-color: $bg-color-toolbar;
   color: $input-font-color;
+  border-width: 0px;
+  border-bottom-width: 1px;
 
   &::placeholder {
     color: $placeholder-font-color;
@@ -142,6 +144,7 @@ body {
 
 .form-select {
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .form-group .has-icon-right i.loading {
@@ -228,4 +231,31 @@ body {
 .py-4 {
   padding-top: 0.8rem;
   padding-bottom: 0.8rem;
+}
+.btn-green {
+  background: #3cb878;
+  border-color: darken(#3cb878, 5%);
+  color: $light-color;
+
+  &:focus,
+  &:hover {
+    background: darken(#3cb878, 50%);
+    border-color: darken(#3cb878, 55%);
+    color: $light-color;
+  }
+  &:active,
+  &.active {
+    background: darken(#3cb878, 9%);
+    border-color: darken(#3cb878, 12%);
+    color: $light-color;
+  }
+  &.loading {
+    &::after {
+      border-bottom-color: $light-color;
+      border-left-color: $light-color;
+    }
+  }
+}
+.title {
+  text-transform: uppercase;
 }

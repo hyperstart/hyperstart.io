@@ -24,9 +24,10 @@ export function BlankTemplateCard(props: TemplateCardProps) {
       onclick={props.select}
     >
       <div class="card-header">
+        <img src="/package.svg" width="32" />
         <h5 class="card-title">Blank</h5>
       </div>
-      <div class="card-body text-left">
+      <div class="card-body text-center">
         <p>
           Selecting this template will create a minimal project with JS, CSS and
           HTML.
@@ -43,9 +44,10 @@ export function HyperappTemplateCard(props: TemplateCardProps) {
       onclick={props.select}
     >
       <div class="card-header">
+        <img src="/hyperapp_logo.png" width="32" />
         <h5 class="card-title">Hyperapp</h5>
       </div>
-      <div class="card-body text-left">
+      <div class="card-body text-center">
         <p>
           Selecting this template will create a project pre-configured for{" "}
           <a

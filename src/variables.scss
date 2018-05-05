@@ -37,7 +37,7 @@ $input-font-color: darken($body-font-color, 0%);
 $placeholder-font-color: darken($body-font-color, 40%) !default;
 
 // Toolbars colors
-$bg-color-toolbar: darken($bg-color, 5%) !default;
+$bg-color-toolbar: #111111; //darken($bg-color, 5%) !default;
 $font-color-toolbar: darken($body-font-color, 5%) !default;
 
 // Text color for primary stuff & on hover

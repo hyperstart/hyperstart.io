@@ -27,7 +27,7 @@ function CreateProjectForm(props: IndexPageProps) {
   }
   return (
     <div class="create-project">
-      <h3 class="text-center">Create a project</h3>
+      <h4 class="text-center title">Create a project</h4>
       <div style={{ display: "flex" }}>
         <BlankTemplateCard
           selected={blankTemplate}
@@ -40,11 +40,11 @@ function CreateProjectForm(props: IndexPageProps) {
       </div>
       <div class="padding-card">
         <Button
-          primary={true}
           size="lg"
           block={true}
-          text="Create"
+          text="CREATE"
           onclick={create}
+          class="btn-green"
         />
       </div>
     </div>
@@ -59,29 +59,32 @@ export function IndexPage(props: IndexPageProps) {
       <div class="jumbotron jumbotron-home">
         <div clas="container">
           <div class="columns">
-            <div class="col-6 col-md-12 px-2">
-              <h1 class="hero-header text-center py-6 px-2">
+            <div class="col-5 col-ml-auto col-md-12 px-2 text-center">
+              <h1 class="hero-header px-2 title">
                 Code JavaScript apps faster using Hyperapp
               </h1>
-              <h5 class="py-6 px-2 text-justify">
+              <h5 class="px-2 font-light">
                 Hyperstart allows you to create and share JavaScript projects,
                 ranging from code snippets to fully-fledged projects, with zero
-                setup. Use{" "}
-                <a href="https://github.com/hyperapp/hyperapp" target="_blank">
+                setup. <br />
+                <br />
+                Use{" "}
+                <a
+                  href="https://github.com/hyperapp/hyperapp"
+                  target="_blank"
+                  class="white-color"
+                >
                   Hyperapp
                 </a>{" "}
                 and our integrated devtools to speed up your project development
                 cycle.
               </h5>
               <h5 class="px-2 pb-30 hide-md">
-                Create an account for free and try it out &nbsp;
-                <i
-                  class="fas fa-long-arrow-alt-right set-primary"
-                  aria-hidden="true"
-                />
+                Create an account for free and try it out.
               </h5>
             </div>
-            <div class="col-4 hide-md text-center py-10 mx-auto centered">
+            <div class="col-2" />
+            <div class="col-4 col-ml-autop hide-md text-center py-10 mx-auto centered">
               <CreateProjectForm state={state} actions={actions} log={log} />
             </div>
           </div>
@@ -92,12 +95,9 @@ export function IndexPage(props: IndexPageProps) {
           <div class="column col-12 py-4">
             <h2 class="text-center">Features</h2>
           </div>
-          <div class="col-4 col-md-12 centered py-2 px-4">
-            <i
-              class="fas fa-cogs fa-5x text-center col-12 m-2"
-              aria-hidden="true"
-            />
-            <h4 class="text-center py-2">Integrated Devtools</h4>
+          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+            <i class="fas fa-cogs fa-5x col-12 m-2" aria-hidden="true" />
+            <h4 class="py-2">Integrated Devtools</h4>
             <p>
               We don't just provide a development environment, we also integrate
               ways to create better code in it and speed up your development
@@ -119,29 +119,27 @@ export function IndexPage(props: IndexPageProps) {
             </a>
           </div>
 
-          <div class="col-4 col-md-12 centered py-2 px-4">
-            <i
-              class="fas fa-redo fa-5x text-center col-12 m-2"
-              aria-hidden="true"
-            />
-            <h4 class="text-center py-2">Reusability</h4>
+          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+            <i class="fas fa-redo fa-5x col-12 m-2" aria-hidden="true" />
+            <h4 class="py-2">Reusability</h4>
             <p>
               We believe in open-source: this website is completely open and
               available on{" "}
-              <a href="https://github.com/hyperstart/hyperstart.io">Github</a>.
-              Since all projects hosted on Hyperstart are also open-source, you
-              can search available projects and re-use them as dependencies on
-              your code.
+              <a
+                href="https://github.com/hyperstart/hyperstart.io"
+                target="_blank"
+              >
+                Github
+              </a>. Since all projects hosted on Hyperstart are also
+              open-source, you can search available projects and re-use them as
+              dependencies on your code.
             </p>
             <a href="#search">Search for an existing project.</a>
           </div>
 
-          <div class="col-4 col-md-12 centered py-2 px-4">
-            <i
-              class="fab fa-npm fa-5x text-center col-12 m-2"
-              aria-hidden="true"
-            />
-            <h4 class="text-center py-2">NPM Support</h4>
+          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+            <i class="fab fa-npm fa-5x col-12 m-2" aria-hidden="true" />
+            <h4 class="py-2">NPM Support</h4>
             <p>
               All of your usual libraries are supported here without any changes
               required. Projects can import from any npm package and use them as
@@ -151,7 +149,7 @@ export function IndexPage(props: IndexPageProps) {
             <a href="/docs">Visit our documentation to learn more.</a>
           </div>
 
-          <div class="column col-4 centered hide-md text-center py-14">
+          <div class="column col-4 centered hide-md py-14">
             <Button
               primary={true}
               text="Create an Account"
@@ -170,7 +168,7 @@ export function IndexPage(props: IndexPageProps) {
           <div class="column col-12 centered text-center py-6">
             <h2>Developed For Hyperapp</h2>
           </div>
-          <div class="column col-8 centered text-left py-2">
+          <div class="column col-8 col-md-12 centered text-center py-2">
             <p>
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
@@ -188,7 +186,7 @@ export function IndexPage(props: IndexPageProps) {
             <a
               href="https://github.com/hyperapp/hyperapp"
               target="_blank"
-              class="px-2 float-left"
+              class="px-2 float-left hide-md"
             >
               Check out the project on Github.
             </a>
@@ -207,9 +205,9 @@ export function IndexPage(props: IndexPageProps) {
         <div class="columns">
           <a name="search" />
           <div class="column col-12 py-14">
-            <h2 class="text-center p-2">Explore Existing Projects</h2>
-            <div class="col-9 col-md-12 centered text-left">
-              <p class="py-2">
+            <h2 class="p-2 text-center">Explore Existing Projects</h2>
+            <div class="col-9 col-md-12 centered">
+              <p class="py-2 text-center">
                 You can find a list of all available projects here. Try typing
                 "Hyperapp" into the search below to see our own examples and
                 learn how to use the framework, or search for any existing

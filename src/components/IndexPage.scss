@@ -1,57 +1,54 @@
 @import "../variables.scss";
 
 .index-page {
-  width: 85%;
-  margin-top: 1rem;
+  width: 100%;
   align-self: center;
   flex-grow: 1;
+  padding-left: 7.5%;
+  padding-right: 7.5%;
 }
 .py-6 {
   padding-top: 24px;
   padding-bottom: 24px;
 }
-
 .py-10 {
   padding-top: 40px;
   padding-bottom: 40px;
 }
-
 .py-14 {
   padding-top: 56px;
   padding-bottom: 56px;
 }
-
 .hero-header {
   padding-top: 0 !important;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
-  font-size: 44px;
+  font-size: 1.6rem;
 }
-
-.hero-subheader {
-  font-weight: 300;
-  font-size: 23px !important;
-  line-height: 1.1em;
-}
-
 .jumbotron-home {
   padding-top: 5%;
+  margin-left: -10%;
+  margin-right: -10%;
+  background-color: inherit;
+  min-height: 95vh;
+  align-items: center;
+  display: flex;
+  background-image: url("/Hyperapp_banner.jpg");
+  background-size: auto;
+  background-repeat: no-repeat;
 }
-
 .btn-large-font {
   font-size: 1.4em !important;
   padding: 10px;
   height: 2.5em !important;
   width: 100%;
 }
-
 .btn-medium-font {
   font-size: 1.2em !important;
   padding: 10px;
   height: 2.5em !important;
   width: 100%;
 }
-
 .jumbotron {
   padding: 2rem 1rem;
   margin-bottom: 0rem;
@@ -64,20 +61,38 @@
 
   .card {
     width: 280px;
-    margin: 11px;
+    margin: 6px;
     padding: 2px;
-    border: 1px solid $border-color-dark;
-    background-color: $bg-color;
+    border: 2px solid $light-color;
+    background: (0, 0, 0, 0);
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
 
     &.active {
       background-color: $bg-color-dark;
-      border: 5px solid $primary-color-dark;
-      padding: 0px;
-      margin: 10px;
+      border: 2px solid #00aeef;
     }
   }
 }
 .padding-card {
   padding-left: 11px;
   padding-right: 11px;
+  padding-top: 4px;
+}
+.search-field {
+  border-width: 0px !important;
+}
+.font-light {
+  font-weight: 300;
+}
+.white-color {
+  color: #fff;
+  font-weight: 500;
+  &:active,
+  &:hover,
+  &:focus {
+    color: #000;
+  }
 }

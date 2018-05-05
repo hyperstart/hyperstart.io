@@ -29,7 +29,7 @@ function CreateButton({ state, actions }: HeaderProps) {
     disabled: isLoading(state),
     onclick: actions.ui.openCreateProjectModal,
     text: window.innerWidth < 840 ? "Create" : "Create a Project",
-    class: "button btn-primary"
+    class: "button btn-primary ml-2"
   })
 }
 
@@ -111,10 +111,9 @@ export function Header(props: HeaderProps) {
   return (
     <header class="header navbar">
       <section class="navbar-section">
-        <Link href="/" class="navbar-brand mr-2 p-2 text-light">
-          Hyperstart
+        <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
+          <strong>Hyper</strong>start
         </Link>
-        {CreateButton(props)}
         {SaveButton(props)}
         {RunButton(props)}
         {DebugButton(props)}
@@ -124,6 +123,7 @@ export function Header(props: HeaderProps) {
       </section>
       <section class="navbar-section">
         {ForkButton(props)}
+
         {SearchField({
           state: state.search,
           actions: actions.search,
@@ -135,6 +135,7 @@ export function Header(props: HeaderProps) {
           placeholder: "Search projects...",
           class: "hide-md"
         })}
+        {CreateButton(props)}
         {UserIconButton({
           state: state.users,
           actions: actions.users,
