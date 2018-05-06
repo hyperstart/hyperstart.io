@@ -6,8 +6,8 @@ $rtl: false !default;
 
 // Primary color: font color for links, buttons, etc
 // background color for primary buttons
-$primary-color: #3d8cc0 !default; //blue: #56a3d7 //green: #67b64b
-$primary-color-dark: darken($primary-color, 15%) !default;
+$primary-color: #0f6daf; //#3d8cc0 !default; //blue: #56a3d7 //green: #67b64b
+$primary-color-dark: darken($primary-color, 10%) !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 
 // Secondary color: background for hovers (button, menu, etc...)

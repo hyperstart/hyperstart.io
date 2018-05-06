@@ -23,8 +23,8 @@ export function BlankTemplateCard(props: TemplateCardProps) {
       class={"card" + (props.selected ? " active" : "")}
       onclick={props.select}
     >
-      <div class="card-header">
-        <img src="/package.svg" width="32" />
+      <div class="card-header text-center">
+        <i class="fas fa-box-open fa-2x" id="blank" />
         <h5 class="card-title">Blank</h5>
       </div>
       <div class="card-body text-center">
@@ -43,22 +43,14 @@ export function HyperappTemplateCard(props: TemplateCardProps) {
       class={"card" + (props.selected ? " active" : "")}
       onclick={props.select}
     >
-      <div class="card-header">
-        <img src="/hyperapp_logo.png" width="32" />
+      <div class="card-header text-center">
+        <img src="/hyperapp_logo.png" width="32" id="hyperapp" />
         <h5 class="card-title">Hyperapp</h5>
       </div>
       <div class="card-body text-center">
         <p>
-          Selecting this template will create a project pre-configured for{" "}
-          <a
-            href="https://github.com/hyperapp/hyperapp"
-            target="_blank"
-            onclick={(e: Event) => {
-              e.stopPropagation()
-            }}
-          >
-            Hyperapp
-          </a>.
+          Selecting this template will create a project pre-configured for
+          Hyperapp.
         </p>
       </div>
     </div>

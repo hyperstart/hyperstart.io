@@ -6,16 +6,25 @@
 
   .modal-body .card {
     width: 280px;
-    margin: 11px;
+    margin: 6px;
     padding: 2px;
-    border: 1px solid $border-color-dark;
+    border: 2px solid $border-color-dark;
     background-color: $bg-color;
 
     &.active {
       background-color: $bg-color-dark;
-      border: 5px solid $primary-color-dark;
-      padding: 0px;
-      margin: 10px;
+      border: 2px solid $primary-color-dark;
+      padding: 2px;
+      margin: 6px;
+      #hyperapp {
+        background-color: $primary-color;
+      }
+      #blank {
+        color: $primary-color;
+      }
+      h5 {
+        color: $primary-color;
+      }
     }
   }
 }

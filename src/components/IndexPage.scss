@@ -73,12 +73,21 @@
     &.active {
       background-color: $bg-color-dark;
       border: 2px solid #00aeef;
+      #hyperapp {
+        background-color: $primary-color;
+      }
+      #blank {
+        color: $primary-color;
+      }
+      h5 {
+        color: $primary-color;
+      }
     }
   }
 }
 .padding-card {
-  padding-left: 11px;
-  padding-right: 11px;
+  padding-left: 6px;
+  padding-right: 6px;
   padding-top: 4px;
 }
 .search-field {

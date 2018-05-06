@@ -84,6 +84,9 @@ body {
     color: $placeholder-font-color;
     opacity: 1;
   }
+  &:focus {
+    box-shadow: 0 0 0 0;
+  }
 }
 
 // this is to override the spectre defaults
