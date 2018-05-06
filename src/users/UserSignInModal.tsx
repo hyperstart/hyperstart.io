@@ -19,7 +19,6 @@ export function UserSignInModal(props: UserSignInModalProps) {
   return ModalForm({
     state: state.signInModal,
     actions: actions.signInModal,
-    active: true,
     close: actions.hideSignInModal,
     title: "Sign in with email",
     submit: actions.signIn,

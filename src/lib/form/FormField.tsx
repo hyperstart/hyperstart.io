@@ -12,6 +12,8 @@ export interface BaseField {
   horizontal?: string[] | false
   disabled?: boolean
   loading?: boolean
+  error?: string
+  info?: string
 }
 
 export interface SetFieldPayload {
@@ -39,6 +41,11 @@ export type FormFieldProps =
   | InputProps
   | CheckboxProps
   | RadioProps
+
+function getHint(props: BaseProps & BaseField): string {
+  const { state, error, info } = props
+  return state.error || state.info || error || info
+}
 
 // # Label
 
@@ -70,7 +77,7 @@ export interface SelectProps extends SelectField, BaseProps {
 
 function Select(props: SelectProps) {
   const { state, setField, name, horizontal } = props
-  const hint = state.error || state.info
+  const hint = getHint(props)
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -119,6 +126,7 @@ export interface RadioProps extends RadioField, BaseProps {
   // empty
 }
 
+// TODO no hint for the radio, shall we implement it?
 function Radio(props: RadioProps) {
   const { state, setField, name, horizontal } = props
   const value = state.value
@@ -175,7 +183,7 @@ interface InputProps extends InputField, BaseProps {
 
 function Input(props: InputProps) {
   const { state, setField, name, placeholder = "", type, horizontal } = props
-  const hint = state.error || state.info
+  const hint = getHint(props)
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -226,7 +234,7 @@ export interface CheckboxProps extends CheckboxField, BaseProps {
 
 function Checkbox(props: CheckboxProps) {
   const { type, state, setField, name, horizontal } = props
-  const hint = state.error || state.info
+  const hint = getHint(props)
   const value = state.value
   const loading = state.loading || props.loading
   const disabled = loading || props.disabled
@@ -279,8 +287,8 @@ export function FormField(props: FormFieldProps) {
   const checkbox = type === "checkbox" || type === "switch"
   return (
     <div
-      class={`form-group ${state.error && "has-error"} ${state.info &&
-        "has-success"}`}
+      class={`form-group ${(state.error || props.error) &&
+        "has-error"} ${(state.info || props.info) && "has-success"}`}
     >
       {!checkbox && Label(props)}
       {Field(props)}

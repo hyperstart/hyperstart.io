@@ -39,63 +39,20 @@
 // @import "node_modules/spectre.css/src/_popovers";
 // @import "node_modules/spectre.css/src/_steps";
 @import "node_modules/spectre.css/src/_tabs";
+@import "node_modules/spectre.css/src/_tooltips";
 // @import "node_modules/spectre.css/src/_tiles";
 // @import "node_modules/spectre.css/src/_toasts";
-
-// Tooltips
-.tooltip {
-  position: relative;
-  &::after {
-    background: $bg-color-light;
-    border-radius: $border-radius;
-    bottom: 100%;
-    color: $body-font-color-light;
-    content: attr(data-tooltip);
-    display: block;
-    font-size: $font-size-sm;
-    left: 50%;
-    max-width: $control-width-sm;
-    opacity: 0;
-    overflow: hidden;
-    padding: $unit-1 $unit-2;
-    pointer-events: none;
-    position: absolute;
-    text-overflow: ellipsis;
-    transform: translate(-20%, $unit-2);
-    transition: all 0.2s ease;
-    white-space: pre;
-    z-index: $zindex-3;
-  }
-  &:focus,
-  &:hover {
-    &::after {
-      opacity: 1;
-      transform: translate(-20%, -$unit-1);
-    }
-  }
-  &[disabled],
-  &.disabled {
-    pointer-events: auto;
-  }
-
-  &.tooltip-bottom {
-    &::after {
-      bottom: auto;
-      top: 100%;
-      transform: translate(-20%, -$unit-2);
-    }
-    &:focus,
-    &:hover {
-      &::after {
-        transform: translate(-20%, $unit-1);
-      }
-    }
-  }
-}
 
 // Utility classes
 // @import "node_modules/spectre.css/src/_animations";
 @import "node_modules/spectre.css/src/_utilities";
+
+// Tooltips fix
+.tooltip {
+  &::after {
+    background: $bg-color-light;
+  }
+}
 
 html,
 body {
@@ -118,7 +75,7 @@ body {
 }
 
 .form-input {
-  background-color: $bg-color-toolbar;
+  background-color: $bg-color-input;
   color: $input-font-color;
   border-width: 0px;
   border-bottom-width: 1px;
@@ -258,4 +215,18 @@ body {
 }
 .title {
   text-transform: uppercase;
+}
+
+.scrollable {
+  display: flex;
+  flex-direction: column;
+  min-height: 0px;
+  min-width: 0px;
+
+  .scrollable-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: auto;
+  }
 }

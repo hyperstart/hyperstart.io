@@ -4,7 +4,7 @@ import { concat } from "lib/fs"
 
 import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, File, Files } from "projects"
 
-import { State, FileNode } from "./api"
+import { State, FileNode, FileNotFound } from "./api"
 import { Run } from "./debug/api"
 
 export function getFile(state: State, path: string): File | null {
@@ -104,6 +104,28 @@ export function getSelectedFile(state: State): FileNode | null {
   return state.fileTree[path]
 }
 
+export function isNotFound(file: any): file is FileNotFound {
+  return file.notFound === true
+}
+
+export function getPreviewedFile(state: State): FileNode | FileNotFound | null {
+  const paths = window.location.pathname.substr(1).split("/")
+  if (paths.length < 3) {
+    return null
+  }
+
+  paths.shift()
+  paths.shift()
+  const path = "/" + paths.join("/")
+
+  const result = state.fileTree[path]
+  if (!result || result.type !== "file") {
+    return { notFound: true, path }
+  }
+
+  return result
+}
+
 // import { State, FileNotFound } from "./api"
 // import { inferMainFile } from "lib/npm"
 
@@ -134,34 +156,6 @@ export function getSelectedFile(state: State): FileNode | null {
 // export function getDirtySources(state: State): string[] {
 //   const files: any = state.files.byId
 //   return Object.keys(files).filter(key => isDirty(files[key]))
-// }
-
-// export function isNotFound(file: any): file is FileNotFound {
-//   return file.notFound === true
-// }
-
-// export function getPreviewedFile(
-//   state: State
-// ): SourceNode | FileNotFound | null {
-//   const paths = window.location.pathname.substr(1).split("/")
-//   if (paths.length < 3) {
-//     return null
-//   }
-
-//   paths.shift()
-//   paths.shift()
-//   const path = "/" + paths.join("/")
-//   const id = state.files.byPath[path]
-//   if (!id) {
-//     return { notFound: true, path }
-//   }
-
-//   const result = state.files.byId[id] as SourceNode
-//   if (!result || result.type !== "file") {
-//     return { notFound: true, path }
-//   }
-
-//   return result
 // }
 
 // export function getSource(

@@ -22,7 +22,7 @@ function ProjectTableRow(
   return (
     <tr
       class={
-        project.id === state.ui.importProjectDialog.selected ? "active" : ""
+        project.id === state.ui.importProjectModal.selected ? "active" : ""
       }
       onclick={onclick}
     >
@@ -54,7 +54,7 @@ export interface ImportProjectModalProps {
 
 export const ImportProjectModal = (props: ImportProjectModalProps) => {
   const { state, actions, log } = props
-  const modal = state.ui.importProjectDialog
+  const modal = state.ui.importProjectModal
   if (!modal) {
     return <div />
   }

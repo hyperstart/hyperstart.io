@@ -8,7 +8,7 @@ import { FormField, Field } from "./FormField"
 export interface ModalFormProps {
   state: State
   actions: Actions
-  active: boolean
+  active?: boolean
   title: string
   submit(state: State)
   close()
@@ -27,7 +27,8 @@ export function ModalForm(props: ModalFormProps) {
     horizontal = ["col-3 col-sm-12", "col-9 col-sm-12"],
     titleTag = "h3",
     close,
-    canSubmit = () => true
+    canSubmit = () => true,
+    active = true
   } = props
 
   const cancel = (e: Event) => {
@@ -45,7 +46,7 @@ export function ModalForm(props: ModalFormProps) {
       class={horizontal ? "form-horizontal" : ""}
     >
       <Modal
-        active={props.active}
+        active={active}
         close={props.close}
         title={props.title}
         titleTag={titleTag}

@@ -59,7 +59,7 @@ export function FileItem(props: FileItemProps) {
         <span class="actions">
           <Action
             icon="fas fa-eye"
-            onclick={() => {}}
+            onclick={() => actions.previewFile(node)}
             tooltip="Preview File"
             tooltip-side="right"
           />

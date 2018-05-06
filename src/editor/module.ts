@@ -299,25 +299,39 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     deleteFile: (path: string) => (state, actions) => {
       checkOpen(state)
 
-      // TODO implement for folders
+      const node = state.fileTree[path]
+      const existing = state.project.files
+      let files: projects.Files
+      const toClose: string[] = []
+      if (!node) {
+        throw new Error(`File not found: ${path}`)
+      } else if (node.type === "file") {
+        files = {
+          ...existing,
+          [path]: null
+        }
+        toClose.push(path)
+      } else {
+        files = {}
+        Object.keys(existing).forEach(filePath => {
+          if (!filePath.startsWith(path)) {
+            files[filePath] = existing[filePath]
+          } else {
+            toClose.push(filePath)
+          }
+        })
+      }
 
-      actions.closeFile(path)
+      actions.closeFile(toClose)
 
       const result: Partial<api.State> = {
         project: {
           details: state.project.details,
-          files: {
-            ...state.project.files,
-            [path]: null
-          }
+          files
         }
       }
       result.fileTree = getFileTree(result)
       return result
-    },
-    moveFile: (path: string) => (state, actions) => {
-      checkOpen(state)
-      // TODO implement
     },
     setFileContent: (payload: api.SetFileContentPayload) => (
       state,
@@ -339,6 +353,29 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       }
 
       return { project }
+    },
+    previewFile: (fileOrUrl: string | api.FileNode | null) => (
+      state,
+      actions
+    ) => {
+      checkOpen(state)
+
+      // cancelling preview
+      if (!fileOrUrl) {
+        replace(getEditorUrl(state.project.details))
+        return {}
+      }
+
+      if (typeof fileOrUrl !== "string") {
+        logEvent("screen_view", { screen_name: "Preview of " + fileOrUrl.name })
+      }
+
+      replace(
+        typeof fileOrUrl === "string"
+          ? fileOrUrl
+          : getEditorUrl(state.project.details) + fileOrUrl.path
+      )
+      return {}
     },
     toggleFolder: (path: string) => (state, actions) => {
       const project = state.project

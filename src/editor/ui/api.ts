@@ -2,16 +2,20 @@ import * as form from "lib/form/api"
 import * as search from "lib/search/api"
 import * as projects from "projects/api"
 
+import { FileNode } from "../api"
+
 // # State
 
-export interface ImportProjectDialog {
+export interface ImportProjectModal {
   search: search.State
   selected?: string
 }
 
 export interface State {
   selectedViewPaneTab: string
-  importProjectDialog?: ImportProjectDialog
+  createFileModal?: form.State
+  deleteFileModal?: string
+  importProjectModal?: ImportProjectModal
   importNpmPackageModal?: form.State
   shortcutsModal?: boolean
 }
@@ -40,8 +44,6 @@ export interface Actions {
   openCreateFileModal(path: string)
   closeCreateFileModal()
   // ## Delete file modal
-  openDeleteFileModal(file: string)
+  openDeleteFileModal(path: string)
   closeDeleteFileModal()
-  // ## Previewed file
-  previewFile(fileId: string | null)
 }

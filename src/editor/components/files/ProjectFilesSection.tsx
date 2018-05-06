@@ -7,6 +7,7 @@ import { LogFn } from "logger"
 import { State, Actions, FileNode } from "../../api"
 import { FolderItem } from "./FolderItem"
 import { FileItem } from "./FileItem"
+import { CreateFileModal } from "./CreateFileModal"
 
 import "./ProjectFilesSection.scss"
 import { ROOT_PATH } from "projects"
@@ -55,6 +56,7 @@ export function ProjectFilesSection(props: ProjectFilesSectionProps) {
         class: "file-tree",
         nodeClass: "file-node"
       })}
+      {CreateFileModal(props)}
     </div>
   )
 }

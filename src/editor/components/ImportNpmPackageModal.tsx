@@ -48,7 +48,6 @@ export function ImportNpmPackageModal(props: ImportNpmPackageModalProps) {
   return ModalForm({
     state: modal,
     actions: modalActions,
-    active: true,
     close: actions.ui.closeImportNpmPackageModal,
     title: "Import package from npm",
     submit,

@@ -1,13 +1,1 @@
 @import "../../../variables";
-
-.scrollable {
-  display: flex;
-  overflow: auto;
-
-  .scrollable-content {
-    display: flex;
-    min-height: 0px;
-    min-width: 0px;
-    flex-grow: 1;
-  }
-}

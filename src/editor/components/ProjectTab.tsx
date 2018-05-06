@@ -7,10 +7,11 @@ import { State, Actions } from "../api"
 import { ProjectDetailsSection } from "./ProjectDetailsSection"
 import { ImportNpmPackageModal } from "./ImportNpmPackageModal"
 import { ImportProjectModal } from "./ImportProjectModal"
-import { ProjectFilesSection } from "./files"
+import { ProjectFilesSection, FilePreview } from "./files"
 import { LogFn } from "logger"
 
 import "./ProjectTab.scss"
+import { getPreviewedFile } from "../selectors"
 
 export interface ProjectTabProps {
   state: State
@@ -26,15 +27,14 @@ export const ProjectTab = (props: ProjectTabProps) => {
     return <div />
   }
 
-  // TODO
-  // const file = getPreviewedFile(state)
-  // if (file) {
-  //   return (
-  //     <div class="view-pane-tab project-tab">
-  //       {FilePreview({ state, actions, file })}
-  //     </div>
-  //   )
-  // }
+  const file = getPreviewedFile(state)
+  if (file) {
+    return (
+      <div class="view-pane-tab project-tab">
+        {FilePreview({ state, actions, file })}
+      </div>
+    )
+  }
 
   return (
     <div class="view-pane-tab project-tab">

@@ -59,6 +59,7 @@ function ProjectOwner(props: ProjectDetailsSectionProps) {
 export function ProjectDetailsSection(props: ProjectDetailsSectionProps) {
   const { state, actions, log, loading } = props
   const project = state.project
+
   return (
     <div class="mx-2 project-details">
       {ProjectName(props)}

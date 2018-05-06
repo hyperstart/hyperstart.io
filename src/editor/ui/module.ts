@@ -34,21 +34,21 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     openImportProjectDialog: () => {
       logEvent("screen_view", { screen_name: "Add Dependency" })
       return {
-        importProjectDialog: {
+        importProjectModal: {
           search: search.state
         }
       }
     },
     selectImportedProject: (selected: string) => state => {
       return {
-        importProjectDialog: {
-          search: state.importProjectDialog.search,
+        importProjectModal: {
+          search: state.importProjectModal.search,
           selected
         }
       }
     },
     closeImportProjectDialog: () => state => {
-      return { importProjectDialog: null }
+      return { importProjectModal: null }
     },
     // ## Import Npm Package modal
     importNpmPackageModal: importNpmPackageForm.actions,
@@ -75,7 +75,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     openCreateFileModal: (path: string) => {
       return {
         createModal: {
-          path: { value: path, original: path }
+          path: { value: path + "/", original: path + "/" }
         }
       }
     },
@@ -88,10 +88,6 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     },
     closeDeleteFileModal: () => state => {
       return { deletingFile: null }
-    },
-    // ## Previewed file
-    previewFile: (previewedFile: string | null) => state => {
-      return { previewedFile }
     }
   }
 }

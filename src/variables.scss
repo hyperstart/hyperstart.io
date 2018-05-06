@@ -32,7 +32,7 @@ $body-font-color-light: lighten($body-font-color, 30%) !default;
 $body-font-color-dark: darken($body-font-color, 30%) !default;
 
 // Input colors
-$bg-color-input: darken($bg-color, 10%) !default; //#221f22
+$bg-color-input: #111111; // darken($bg-color, 10%) !default;
 $input-font-color: darken($body-font-color, 0%);
 $placeholder-font-color: darken($body-font-color, 40%) !default;
 

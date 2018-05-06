@@ -31,7 +31,11 @@ function FolderActions(props: FolderItemProps) {
   if (item === projects.ROOT_PATH) {
     return (
       <span class="actions actions__root">
-        <Action icon="fas fa-plus" onclick={() => {}} tooltip="Add File" />
+        <Action
+          icon="fas fa-plus"
+          onclick={() => actions.ui.openCreateFileModal(item)}
+          tooltip="Add File"
+        />
       </span>
     )
   }
@@ -40,12 +44,12 @@ function FolderActions(props: FolderItemProps) {
       <span class="actions actions__dependencies">
         <Action
           icon="fas fa-box-open"
-          onclick={() => {}}
+          onclick={actions.ui.openImportProjectDialog}
           tooltip="Add Project as Dependency"
         />
         <Action
           icon="fab fa-npm"
-          onclick={() => {}}
+          onclick={actions.ui.openImportNpmPackageModal}
           tooltip="Add Npm package as Dependency"
         />
       </span>
@@ -56,8 +60,12 @@ function FolderActions(props: FolderItemProps) {
     if (pkgJson.hyperstart) {
       return (
         <span class="actions actions__dependencies">
-          <Action icon="fas fa-sync-alt" onclick={() => {}} tooltip="Update" />
-          <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+          {/* <Action icon="fas fa-sync-alt" onclick={() => {}} tooltip="Update" /> Later */}
+          <Action
+            icon="fas fa-times"
+            onclick={() => actions.ui.openDeleteFileModal(item)}
+            tooltip="Delete"
+          />
         </span>
       )
     }
@@ -68,16 +76,28 @@ function FolderActions(props: FolderItemProps) {
           onclick={() => {}}
           tooltip="Change Version"
         />
-        <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+        <Action
+          icon="fas fa-times"
+          onclick={() => actions.ui.openDeleteFileModal(item)}
+          tooltip="Delete"
+        />
       </span>
     )
   }
 
   return (
     <span class="actions actions__folder">
-      <Action icon="fas fa-plus" onclick={() => {}} tooltip="Add File" />
+      <Action
+        icon="fas fa-plus"
+        onclick={() => actions.ui.openCreateFileModal(item)}
+        tooltip="Add File"
+      />
       <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" />
-      <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+      <Action
+        icon="fas fa-times"
+        onclick={() => actions.ui.openDeleteFileModal(item)}
+        tooltip="Delete"
+      />
     </span>
   )
 }
