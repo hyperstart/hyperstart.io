@@ -73,7 +73,6 @@ function getEnclosingProjectsRoots(state: State, path: string): string[] {
 
 function getMainFilePath(state: State, rootPath: string): string {
   const pkgJsonPath = concat(rootPath, "/package.json")
-
   const pkgJsonFile = getFile(state, pkgJsonPath)
   if (!pkgJsonFile) {
     // return the default main file
@@ -139,7 +138,8 @@ function getGlobalPath(
   for (const project of enclosingProjects) {
     const rootPath = concat(project, "/dependencies", localPath)
     const node = getFileNode(state, rootPath)
-    if (!node || node.type === "folder") {
+
+    if (!node || node.type !== "folder") {
       continue
     }
 
