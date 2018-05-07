@@ -27,7 +27,7 @@ function CreateProjectForm(props: IndexPageProps) {
   }
   return (
     <div class="create-project">
-      <h4 class="text-center title">Create a project</h4>
+      <h4 class="text-center title">Create project</h4>
       <div style={{ display: "flex" }}>
         <BlankTemplateCard
           selected={blankTemplate}
@@ -42,7 +42,7 @@ function CreateProjectForm(props: IndexPageProps) {
         <Button
           size="lg"
           block={true}
-          text="CREATE"
+          text="CREATE PROJECT"
           onclick={create}
           class="btn-green"
         />
@@ -91,7 +91,7 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container">
+      <div class="container section">
         <div class="columns">
           <div class="column col-12 section-padding">
             <h2 class="text-center">Features</h2>
@@ -164,12 +164,13 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container">
+      <div class="container section">
         <div class="columns">
           <div class="column col-12 centered text-center py-6">
             <h2>Developed For Hyperapp</h2>
           </div>
-          <div class="column col-12 col-md-12 centered text-center py-2">
+          <div class="column col-7 hide-md centered py-2">//add image here</div>
+          <div class="column col-5 col-md-12 centered text-center py-2">
             <p>
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
