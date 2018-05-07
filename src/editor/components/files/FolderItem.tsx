@@ -71,11 +71,11 @@ function FolderActions(props: FolderItemProps) {
     }
     return (
       <span class="actions actions__dependencies">
-        <Action
+        {/* <Action
           icon="far fa-edit"
           onclick={() => {}}
           tooltip="Change Version"
-        />
+        /> */}
         <Action
           icon="fas fa-times"
           onclick={() => actions.ui.openDeleteFileModal(item)}
@@ -92,7 +92,7 @@ function FolderActions(props: FolderItemProps) {
         onclick={() => actions.ui.openCreateFileModal(item)}
         tooltip="Add File"
       />
-      <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" />
+      {/* <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" /> */}
       <Action
         icon="fas fa-times"
         onclick={() => actions.ui.openDeleteFileModal(item)}

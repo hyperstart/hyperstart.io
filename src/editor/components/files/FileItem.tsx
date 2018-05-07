@@ -34,7 +34,7 @@ function FileActions(props: FileItemProps) {
 
   return (
     <span class="actions actions__files">
-      <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" />
+      {/* <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" /> */}
       <Action
         icon="fas fa-times"
         onclick={() => actions.ui.openDeleteFileModal(item)}
