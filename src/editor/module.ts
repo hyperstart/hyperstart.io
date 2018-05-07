@@ -1,7 +1,7 @@
 import { guid, getErrorMessage, debounce } from "lib/utils"
 import { ModuleImpl } from "lib/modules"
 import { local } from "lib/store/local"
-import { replace } from "lib/router"
+import { replace, push } from "lib/router"
 import { set } from "lib/immutable"
 
 import * as bundles from "bundles"
@@ -375,7 +375,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
 
       // cancelling preview
       if (!fileOrUrl) {
-        replace(getEditorUrl(state.project.details))
+        push(getEditorUrl(state.project.details))
         return {}
       }
 
@@ -383,7 +383,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         logEvent("screen_view", { screen_name: "Preview of " + fileOrUrl.name })
       }
 
-      replace(
+      push(
         typeof fileOrUrl === "string"
           ? fileOrUrl
           : getEditorUrl(state.project.details) + fileOrUrl.path

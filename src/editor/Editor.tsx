@@ -7,7 +7,7 @@ import { getEditorUrl } from "utils"
 import { User } from "users"
 
 import { DebuggerPane, SourcesPane, ViewsPane } from "./components"
-import { isDebuggable } from "./selectors"
+import { isDebuggable, askForSaveOnLeave } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
 
@@ -39,27 +39,28 @@ export function Editor(props: EditorProps) {
   // ## oncreate
   const oncreate = (e: HTMLElement) => {
     // ### Confirm on exit
-    // TODO add back
-    // e[INTERCEPTOR] = (url: string) => {
-    //   if (
-    //     !url.includes(getEditorUrl(state.project.details)) &&
-    //     hasDirtySources(state)
-    //   ) {
-    //     return confirm(
-    //       "This project has unsaved changes, are you sure you want to leave this page?"
-    //     )
-    //   }
-    //   return true
-    // }
-    // addInterceptor(e[INTERCEPTOR])
+    e[INTERCEPTOR] = (url: string) => {
+      const state = actions.getState()
+      if (
+        !url.includes(getEditorUrl(state.project.details)) &&
+        askForSaveOnLeave(state)
+      ) {
+        return confirm(
+          "This project has unsaved changes, are you sure you want to leave this page?"
+        )
+      }
+      return true
+    }
+    addInterceptor(e[INTERCEPTOR])
 
-    // e[UNLOAD] = (e: BeforeUnloadEvent) => {
-    //   if (hasDirtySources(state)) {
-    //     e.returnValue =
-    //       "This project has unsaved changes, are you sure you want to leave this page?"
-    //   }
-    // }
-    // window.addEventListener("beforeunload", e[UNLOAD])
+    e[UNLOAD] = (e: BeforeUnloadEvent) => {
+      const state = actions.getState()
+      if (askForSaveOnLeave(state)) {
+        e.returnValue =
+          "This project has unsaved changes, are you sure you want to leave this page?"
+      }
+    }
+    window.addEventListener("beforeunload", e[UNLOAD])
 
     // ### Debugger
     e[IFRAME_LISTENER] = (e: MessageEvent) => {
@@ -136,9 +137,8 @@ export function Editor(props: EditorProps) {
 
   const ondestroy = (e: HTMLElement) => {
     actions.close()
-    // TODO add back
-    // removeInterceptor(e[INTERCEPTOR])
-    // window.removeEventListener("beforeunload", e[UNLOAD])
+    removeInterceptor(e[INTERCEPTOR])
+    window.removeEventListener("beforeunload", e[UNLOAD])
     window.removeEventListener("message", e[IFRAME_LISTENER])
     window.removeEventListener("keydown", e[SHORTCUTS_LISTENER])
   }
