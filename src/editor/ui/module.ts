@@ -9,6 +9,7 @@ import * as projects from "projects"
 import { PROJECT_TAB_ID } from "../constants"
 import * as api from "./api"
 import { debounce } from "lib/utils"
+import { ROOT_PATH } from "projects"
 
 const createFileForm = createForm()
 const editForm = createForm()
@@ -73,21 +74,22 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## Create file modal
     createFileModal: createFileForm.actions,
     openCreateFileModal: (path: string) => {
+      const value = path === ROOT_PATH ? ROOT_PATH : path + "/"
       return {
-        createModal: {
-          path: { value: path + "/", original: path + "/" }
+        createFileModal: {
+          path: { value, original: value }
         }
       }
     },
     closeCreateFileModal: () => {
-      return { createModal: null }
+      return { createFileModal: null }
     },
     // ## Delete file modal
-    openDeleteFileModal: (deletingFile: string) => {
-      return { deletingFile }
+    openDeleteFileModal: (deleteFileModal: string) => {
+      return { deleteFileModal }
     },
     closeDeleteFileModal: () => state => {
-      return { deletingFile: null }
+      return { deleteFileModal: null }
     }
   }
 }

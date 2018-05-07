@@ -25,6 +25,7 @@ import { computeNpmVersions } from "./computeNpmVersions"
 import { importProjects } from "projects/importProjects"
 import { getFileTree } from "./getFileTree"
 import { getSearches } from "lib/search"
+import { createModel, deleteModels } from "./monaco"
 
 //#region blahh
 
@@ -278,6 +279,9 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     createFile: (path: string) => (state, actions) => {
       checkOpen(state)
 
+      actions.ui.closeCreateFileModal()
+
+      createModel("", path)
       actions.openFiles({ sources: path })
 
       const result: Partial<api.State> = {
@@ -298,6 +302,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     },
     deleteFile: (path: string) => (state, actions) => {
       checkOpen(state)
+
+      actions.ui.closeDeleteFileModal()
 
       const node = state.fileTree[path]
       const existing = state.project.files
@@ -322,6 +328,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         })
       }
 
+      deleteModels(toClose)
       actions.closeFile(toClose)
 
       const result: Partial<api.State> = {

@@ -4,13 +4,13 @@ interface Models {
 
 const models: Models = {}
 
-export const createModel = (code: string, language: string, path: string) => {
+export const createModel = (code: string, path: string) => {
   if (models[path]) {
     throw new Error("Model already exists for path " + path)
   }
   const result = monaco.editor.createModel(
     code,
-    language,
+    undefined,
     monaco.Uri.from({ path })
   )
 

@@ -103,7 +103,7 @@ function createModelsFor(files: Files, override?: boolean): void {
   Object.keys(files).forEach(path => {
     const file = files[path]
     if (!hasModel(path)) {
-      createModel(file.content, getLanguage(path), path)
+      createModel(file.content, path)
     } else if (override) {
       updateModel(file.content, path)
     }
