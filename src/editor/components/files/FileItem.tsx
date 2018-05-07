@@ -26,7 +26,7 @@ function getFileSuffix(state: State, file: FileNode): string {
 }
 
 function FileActions(props: FileItemProps) {
-  const { state, item } = props
+  const { state, actions, item } = props
 
   if (item === state.project.details.mainPath) {
     return <span class="main-file">main file</span>
@@ -35,7 +35,11 @@ function FileActions(props: FileItemProps) {
   return (
     <span class="actions actions__files">
       <Action icon="far fa-edit" onclick={() => {}} tooltip="Rename or Move" />
-      <Action icon="fas fa-times" onclick={() => {}} tooltip="Delete" />
+      <Action
+        icon="fas fa-times"
+        onclick={() => actions.ui.openDeleteFileModal(item)}
+        tooltip="Delete"
+      />
     </span>
   )
 }

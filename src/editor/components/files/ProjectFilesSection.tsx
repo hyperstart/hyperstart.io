@@ -3,14 +3,15 @@ import { h } from "hyperapp"
 import { Tree } from "lib/components"
 
 import { LogFn } from "logger"
+import { ROOT_PATH } from "projects"
 
 import { State, Actions, FileNode } from "../../api"
 import { FolderItem } from "./FolderItem"
 import { FileItem } from "./FileItem"
 import { CreateFileModal } from "./CreateFileModal"
+import { DeleteFileModal } from "./DeleteFileModal"
 
 import "./ProjectFilesSection.scss"
-import { ROOT_PATH } from "projects"
 
 export interface ProjectFilesSectionProps {
   state: State
@@ -57,6 +58,7 @@ export function ProjectFilesSection(props: ProjectFilesSectionProps) {
         nodeClass: "file-node"
       })}
       {CreateFileModal(props)}
+      {DeleteFileModal(props)}
     </div>
   )
 }

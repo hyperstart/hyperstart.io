@@ -307,6 +307,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
 
       const node = state.fileTree[path]
       const existing = state.project.files
+      console.log("files", existing)
       let files: projects.Files
       const toClose: string[] = []
       if (!node) {
@@ -320,6 +321,10 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       } else {
         files = {}
         Object.keys(existing).forEach(filePath => {
+          // for null
+          if (!existing[filePath]) {
+            return
+          }
           if (!filePath.startsWith(path)) {
             files[filePath] = existing[filePath]
           } else {
@@ -335,7 +340,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         project: {
           details: state.project.details,
           files
-        }
+        },
+        expandedFolders: state.expandedFolders
       }
       result.fileTree = getFileTree(result)
       return result
