@@ -41,10 +41,10 @@ export function Editor(props: EditorProps) {
     // ### Confirm on exit
     e[INTERCEPTOR] = (url: string) => {
       const state = actions.getState()
-      if (
-        !url.includes(getEditorUrl(state.project.details)) &&
-        askForSaveOnLeave(state)
-      ) {
+      if (url.includes(getEditorUrl(state.project.details))) {
+        // staying inside the editor, request a re-render for the previews
+        actions.render()
+      } else if (askForSaveOnLeave(state)) {
         return confirm(
           "This project has unsaved changes, are you sure you want to leave this page?"
         )

@@ -118,6 +118,7 @@ export interface Actions extends ModuleActions<State> {
   setFileContent(payload: SetFileContentPayload)
   saveProject(): Promise<void>
   previewFile(pathOrUrl: string | FileNode)
+  render()
   // ## Editor
   openFiles(payload: OpenFilesPayload)
   closeFile(sources: string | string[])

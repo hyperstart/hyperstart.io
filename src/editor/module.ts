@@ -388,8 +388,8 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           ? fileOrUrl
           : getEditorUrl(state.project.details) + fileOrUrl.path
       )
-      return {}
     },
+    render: () => ({}),
     toggleFolder: (path: string) => (state, actions) => {
       const project = state.project
       const folders = state.expandedFolders
