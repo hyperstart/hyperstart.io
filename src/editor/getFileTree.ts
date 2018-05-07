@@ -47,7 +47,7 @@ function getRoot(payload: GetFileTreePayload): FileNode {
     type: "folder",
     name: "files",
     path: ROOT_PATH,
-    children: [],
+    children: [DEPENDENCIES_FOLDER_PATH],
     expanded: payload.expandedFolders[ROOT_PATH]
   }
 }
@@ -55,10 +55,10 @@ function getRoot(payload: GetFileTreePayload): FileNode {
 function getDependencies(payload: GetFileTreePayload): FileNode {
   return {
     type: "folder",
-    name: DEPENDENCIES_FOLDER_NAME + "/",
+    name: DEPENDENCIES_FOLDER_NAME,
     path: DEPENDENCIES_FOLDER_PATH,
     children: [],
-    expanded: true
+    expanded: payload.expandedFolders[DEPENDENCIES_FOLDER_PATH]
   }
 }
 
@@ -89,6 +89,7 @@ export function getFileTree(payload: GetFileTreePayload): FileTree {
 
   const result: FileTree = {}
   result[ROOT_PATH] = getRoot(payload)
+  result[DEPENDENCIES_FOLDER_PATH] = getDependencies(payload)
 
   // create for files & parents
   const files = payload.project.files
@@ -105,12 +106,6 @@ export function getFileTree(payload: GetFileTreePayload): FileTree {
 
     ensureParentFolders(payload, result, result[path])
   })
-
-  // // create and add the dependencies folder at the forefront.
-  // if (!result[DEPENDENCIES_FOLDER_PATH]) {
-  //   result[DEPENDENCIES_FOLDER_PATH] = getDependencies()
-  //   result[ROOT_PATH].children.unshift(DEPENDENCIES_FOLDER_PATH)
-  // }
 
   // order children
   const compare = comparePaths(result)

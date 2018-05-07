@@ -43,7 +43,7 @@ export function openProject(
     selectedSources: index ? [mainPath] : [],
     openedSources: index ? [mainPath] : [],
     status: getStatus(project, actions),
-    expandedFolders: { "/": true },
+    expandedFolders: { "/": true, "/dependencies": true },
     ui: {
       selectedViewPaneTab: PROJECT_TAB_ID
     }
