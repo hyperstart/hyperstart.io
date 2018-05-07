@@ -1,6 +1,6 @@
 {
   "name": "hyperstart.io",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "https://www.hyperstart.io",
   "repository": {
     "type": "git",
@@ -25,18 +25,18 @@
     "report": "open reports/report.html"
   },
   "dependencies": {
-    "buble": "^0.19.3",
+    "buble": "0.19.3",
     "estree-walker": "0.5.1",
     "firebase": "4.10.1",
-    "firebase-admin": "^5.12.0",
-    "firebase-functions": "^1.0.1",
-    "hyperapp": "1.1.2",
+    "firebase-admin": "5.12.0",
+    "firebase-functions": "1.0.1",
+    "hyperapp": "1.2.5",
     "magic-string": "0.22.4",
     "marked": "0.3.17",
     "monaco-editor": "0.10.1",
     "rollup": "0.56.5",
     "rollup-pluginutils": "2.0.1",
-    "semver": "^5.5.0",
+    "semver": "5.5.0",
     "spectre.css": "0.5.1",
     "typescript": "2.8.1"
   },
@@ -50,7 +50,7 @@
     "css-loader": "0.28.11",
     "firebase-tools": "3.17.6",
     "html-webpack-plugin": "3.2.0",
-    "hyperapp-devtools": "0.2.5",
+    "hyperapp-devtools": "0.3.0",
     "node-sass": "4.9.0",
     "sass-loader": "7.0.1",
     "style-loader": "0.21.0",
