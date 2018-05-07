@@ -27,7 +27,7 @@ function CreateProjectForm(props: IndexPageProps) {
   }
   return (
     <div class="create-project">
-      <h4 class="text-center title">Create a project</h4>
+      <h4 class="text-center title">Create project</h4>
       <div style={{ display: "flex" }}>
         <BlankTemplateCard
           selected={blankTemplate}
@@ -42,7 +42,7 @@ function CreateProjectForm(props: IndexPageProps) {
         <Button
           size="lg"
           block={true}
-          text="CREATE"
+          text="CREATE PROJECT"
           onclick={create}
           class="btn-green"
         />
@@ -90,12 +90,13 @@ export function IndexPage(props: IndexPageProps) {
           </div>
         </div>
       </div>
-      <div class="container">
+
+      <div class="container section">
         <div class="columns">
-          <div class="column col-12 py-4">
+          <div class="column col-12 section-padding">
             <h2 class="text-center">Features</h2>
           </div>
-          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+          <div class="col-4 col-md-12 centered py-4 px-4 text-center">
             <i class="fas fa-cogs fa-5x col-12 m-2" aria-hidden="true" />
             <h4 class="py-2">Integrated Devtools</h4>
             <p>
@@ -119,7 +120,7 @@ export function IndexPage(props: IndexPageProps) {
             </a>
           </div>
 
-          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+          <div class="col-4 col-md-12 centered py-4 px-4 text-center">
             <i class="fas fa-redo fa-5x col-12 m-2" aria-hidden="true" />
             <h4 class="py-2">Reusability</h4>
             <p>
@@ -137,7 +138,7 @@ export function IndexPage(props: IndexPageProps) {
             <a href="#search">Search for an existing project.</a>
           </div>
 
-          <div class="col-4 col-md-12 centered py-2 px-4 text-center">
+          <div class="col-4 col-md-12 centered py-4 px-4 text-center">
             <i class="fab fa-npm fa-5x col-12 m-2" aria-hidden="true" />
             <h4 class="py-2">NPM Support</h4>
             <p>
@@ -163,12 +164,13 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container">
+      <div class="container section">
         <div class="columns">
           <div class="column col-12 centered text-center py-6">
             <h2>Developed For Hyperapp</h2>
           </div>
-          <div class="column col-8 col-md-12 centered text-center py-2">
+          <div class="column col-7 hide-md centered py-2">//add image here</div>
+          <div class="column col-5 col-md-12 centered text-center py-2">
             <p>
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
@@ -182,19 +184,17 @@ export function IndexPage(props: IndexPageProps) {
               on the Hyperapp Slack channel.{" "}
             </p>
           </div>
-          <div class="column col-6 centered text-center py-2">
+          <div class="column col-3 col-md-12 col-ml-auto text-center py-2">
             <a
               href="https://github.com/hyperapp/hyperapp"
               target="_blank"
-              class="px-2 float-left hide-md"
+              class="px-2"
             >
               Check out the project on Github.
             </a>
-            <a
-              href="https://blog.hyperstart.io"
-              target="_blank"
-              class="px-2 float-right"
-            >
+          </div>
+          <div class="column col-3 col-md-12 col-mr-auto text-center py-2">
+            <a href="https://blog.hyperstart.io" target="_blank" class="px-2">
               Visit our blog to learn more.
             </a>
           </div>

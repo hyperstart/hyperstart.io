@@ -105,3 +105,12 @@
     color: #000;
   }
 }
+.section-padding {
+  padding-top: 3em;
+  padding-bottom: 1.5em;
+}
+.section {
+  min-height: 100vh;
+  align-items: center;
+  display: flex;
+}

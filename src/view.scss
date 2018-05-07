@@ -74,6 +74,10 @@ body {
   }
 }
 
+a {
+  color: $primary-color-light;
+}
+
 .form-input {
   background-color: $bg-color-input;
   color: $input-font-color;
