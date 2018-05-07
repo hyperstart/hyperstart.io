@@ -28,7 +28,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
   },
   actions: {
     // ## Import project dialog
-    importProjectDialog: {
+    importProjectModal: {
       search: search.actions
     },
     openImportProjectDialog: () => {

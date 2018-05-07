@@ -99,7 +99,7 @@ export const module: ModuleImpl<State, Actions> = {
         })
       }
       actions.search.setSearchFn(searchFn)
-      actions.editor.ui.importProjectDialog.search.setSearchFn(searchFn)
+      actions.editor.ui.importProjectModal.search.setSearchFn(searchFn)
 
       addListener("projects/:id", match => {
         const id = match.params.id

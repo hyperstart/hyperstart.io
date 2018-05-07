@@ -43,14 +43,14 @@ function FolderActions(props: FolderItemProps) {
     return (
       <span class="actions actions__dependencies">
         <Action
-          icon="fas fa-box-open"
-          onclick={actions.ui.openImportProjectDialog}
-          tooltip="Add Project as Dependency"
-        />
-        <Action
           icon="fab fa-npm"
           onclick={actions.ui.openImportNpmPackageModal}
           tooltip="Add Npm package as Dependency"
+        />
+        <Action
+          icon="fas fa-box-open"
+          onclick={actions.ui.openImportProjectDialog}
+          tooltip="Add Project as Dependency"
         />
       </span>
     )

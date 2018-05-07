@@ -74,7 +74,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
   }
 
   const searchState = modal.search
-  const searchActions = actions.ui.importProjectDialog.search
+  const searchActions = actions.ui.importProjectModal.search
   return (
     <div class="modal active import-project-modal">
       <a

@@ -24,7 +24,7 @@ export interface State {
 
 export interface Actions {
   // ## Import project modal
-  importProjectDialog: {
+  importProjectModal: {
     search: search.Actions
   }
   openImportProjectDialog()

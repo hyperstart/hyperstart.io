@@ -10,7 +10,17 @@ export function fetchContentString(url: string): Promise<string> {
   }
 
   return fetch(url)
-    .then(res => res.text())
+    .then(res => {
+      if (res.status >= 400) {
+        throw new Error(
+          `Error while fetching ${url}, got ${res.status} with error: ${
+            res.statusText
+          }`
+        )
+      }
+
+      return res.text()
+    })
     .then(content => {
       cache[url] = content
 
@@ -24,7 +34,18 @@ export function fetchContentJson(url: string): Promise<any> {
   }
 
   return fetch(url)
-    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      if (res.status >= 400) {
+        throw new Error(
+          `Error while fetching ${url}, got ${res.status} with error: ${
+            res.statusText
+          }`
+        )
+      }
+
+      return res.json()
+    })
     .then(content => {
       cache[url] = content
 
