@@ -14,6 +14,7 @@ export interface User {
 
 export interface State {
   loading: boolean
+  user?: User
   selectedEmail?: string
   signUpForm: form.State
   signInModal?: form.State
@@ -35,9 +36,7 @@ export interface Actions extends ModuleActions<State> {
   signInWithGithub(): Promise<void>
   signOut(): Promise<void>
   /** Get the current user, authenticate anonymously if needed. */
-  getCurrentUser(): Promise<User>
-  /** Get the current user, DOES NOT authenticate anonymously. */
-  getCurrentUserSync(): User | null
+  ensureUser(): Promise<User>
   // ## UI
   signUpForm: form.Actions
   signInModal: form.Actions

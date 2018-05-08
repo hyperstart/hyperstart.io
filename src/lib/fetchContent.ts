@@ -35,7 +35,6 @@ export function fetchContentJson(url: string): Promise<any> {
 
   return fetch(url)
     .then(res => {
-      console.log(res)
       if (res.status >= 400) {
         throw new Error(
           `Error while fetching ${url}, got ${res.status} with error: ${

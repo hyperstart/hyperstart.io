@@ -26,6 +26,7 @@ import { importProjects } from "projects/importProjects"
 import { getFileTree } from "./getFileTree"
 import { getSearches } from "lib/search"
 import { createModel, deleteModels } from "./monaco"
+import { getProjectOwner } from "projects/getProjectOwner"
 
 //#region blahh
 
@@ -208,22 +209,18 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       } else {
         // save for the first time
         return actions._users
-          .getCurrentUser()
+          .ensureUser()
           .then(user => {
             const files = state.project.files
             const existing = state.project.details
             const details: projects.ProjectDetails = {
-              id: user.id + "_" + guid(), // TODO remove user.id
+              id: guid(),
               name: existing.name,
               hidden: name === "",
               searches: getSearches(existing.name),
               mainPath: existing.mainPath,
               filesUrls: null,
-              owner: {
-                id: user.id,
-                displayName: user.displayName,
-                anonymous: user.anonymous
-              }
+              owner: getProjectOwner(user)
             }
 
             return actions._projects.save({
@@ -244,22 +241,18 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     fork: () => (state, actions) => {
       checkOpen(state)
       return actions._users
-        .getCurrentUser()
+        .ensureUser()
         .then(user => {
           const files = state.project.files
           const name = state.project.details.name
           const details: projects.ProjectDetails = {
-            id: user.id + "_" + guid(), // TODO remove user id
+            id: guid(),
             name,
             hidden: true,
             searches: {},
             mainPath: state.project.details.mainPath,
             filesUrls: null,
-            owner: {
-              id: user.id,
-              displayName: user.displayName,
-              anonymous: user.anonymous
-            }
+            owner: getProjectOwner(user)
           }
 
           return actions._projects.save({
@@ -307,7 +300,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
 
       const node = state.fileTree[path]
       const existing = state.project.files
-      console.log("files", existing)
+
       let files: projects.Files
       const toClose: string[] = []
       if (!node) {

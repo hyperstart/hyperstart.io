@@ -30,8 +30,6 @@ export const getNpmPackageVersions = functions.https.onRequest(
       return
     }
 
-    console.log("parameter: " + pkg)
-
     return cors(request, response, () => {
       exists(pkg)
         .then(exists => {

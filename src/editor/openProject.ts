@@ -14,7 +14,7 @@ function getStatus(project: Project, actions: api.InternalActions): api.Status {
   if (details.id === NEW_PROJECT_ID) {
     return "local-only"
   }
-  const user = actions._users.getCurrentUserSync()
+  const user = actions._users.getState().user
   if (user && user.id === details.owner.id) {
     return "editing"
   }

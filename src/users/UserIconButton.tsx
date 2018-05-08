@@ -17,9 +17,8 @@ export interface UserIconButtonProps {
 
 export function UserIconButton(props: UserIconButtonProps) {
   const { state, actions, log } = props
-  const currentUser = firebase.auth().currentUser
-  const user = currentUser && !currentUser.isAnonymous ? currentUser : null
-  if (user) {
+  const user = state.user
+  if (user && !user.anonymous) {
     const logout = (e: Event) => {
       actions.signOut()
       e.preventDefault()

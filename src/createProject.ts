@@ -3,6 +3,7 @@ import { State, Actions } from "api"
 import { createProject as create } from "projects/createProject"
 import { replace } from "lib/router"
 import { logEvent } from "analytics"
+import { getProjectOwner } from "projects/getProjectOwner"
 
 export function createProject(
   state: State,
@@ -11,13 +12,9 @@ export function createProject(
 ) {
   return actions.logger.log(
     actions.users
-      .getCurrentUser()
+      .ensureUser()
       .then(user => {
-        const owner: ProjectOwner = {
-          id: user.id,
-          displayName: user.displayName,
-          anonymous: user.anonymous
-        }
+        const owner = getProjectOwner(user)
         return create({
           fetchBundles: actions.bundles.getFromNpmPackages,
           template,
