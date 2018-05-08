@@ -5,19 +5,15 @@ import { Store, DocumentToSet } from "lib/store"
 import * as api from "../api"
 import { COLLECTION, NEW_PROJECT_ID } from "../constants"
 
+function getFilesRef(id: string, owner: string) {
+  return firebase.storage().ref(`projects/files/${owner}/${id}.json`)
+}
+
 function getExisting(state: api.State, id: string): api.Project {
   const existing = state[id]
   if (!existing || existing === "loading") {
     return {
-      details: {
-        filesUrls: null,
-        hidden: null,
-        id: null,
-        mainPath: null,
-        name: null,
-        owner: null,
-        searches: null
-      },
+      details: null,
       files: {}
     }
   }
@@ -31,19 +27,18 @@ interface SaveFileResult {
 }
 
 function saveFiles(
-  files: api.Files,
-  existing: api.Files,
-  id: string,
-  url: string
+  project: api.Project,
+  existing: api.Files
 ): Promise<SaveFileResult> {
+  const { details, files } = project
   if (files === existing) {
     return Promise.resolve({
-      url,
+      url: details.filesUrls,
       files
     })
   }
 
-  const filesRef = firebase.storage().ref(`projects/files/${id}.json`)
+  const filesRef = getFilesRef(details.id, details.owner.id)
   return filesRef.putString(JSON.stringify(files)).then(snapshot => ({
     url: snapshot.downloadURL,
     files
@@ -99,7 +94,9 @@ export const save = (store: Store) => (project: api.Project) => (
 
   const { details, files } = getExisting(state, id)
 
-  return saveFiles(project.files, files, id, project.details.filesUrls)
+  return actions._users
+    .getCurrentUser() // ensure anonymous authentication.
+    .then(() => saveFiles(project, files))
     .then(result => saveDetails(project.details, details, store, result))
     .then(project => {
       actions._setProject({ id, project })

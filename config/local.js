@@ -380,38 +380,39 @@ module.exports = {
     storageBucket: "hyperstart-development.appspot.com"
   }),
   STORE_CONFIG: JSON.stringify({
-    type: "local",
-    // only needed for local store.
-    localCache: {
-      projects: {
-        hyperapp: {
-          id: "hyperapp",
-          name: "hyperapp",
-          searches: {
-            hyperapp: 20
-          },
-          owner: {
-            id: "hyperapp",
-            displayName: "Hyperapp",
-            url: "https://github.com/hyperapp"
-          },
-          url: "https://github.com/hyperapp/hyperapp",
-          version: "1.2.5",
-          hidden: false
-        }
-      },
-      "projects/hyperapp/files": {
-        "index.js": {
-          id: "index.js",
-          name: "index.js",
-          type: "file",
-          content: hyperappJs
-        }
-      }
-    }
+    type: "firestore"
   }),
-  // the ID of the hyperapp project
-  HYPERAPP_ID: JSON.stringify("hyperapp"),
+  // STORE_CONFIG: JSON.stringify({
+  //   type: "local",
+  //   // only needed for local store.
+  //   localCache: {
+  //     projects: {
+  //       hyperapp: {
+  //         id: "hyperapp",
+  //         name: "hyperapp",
+  //         searches: {
+  //           hyperapp: 20
+  //         },
+  //         owner: {
+  //           id: "hyperapp",
+  //           displayName: "Hyperapp",
+  //           url: "https://github.com/hyperapp"
+  //         },
+  //         url: "https://github.com/hyperapp/hyperapp",
+  //         version: "1.2.5",
+  //         hidden: false
+  //       }
+  //     },
+  //     "projects/hyperapp/files": {
+  //       "index.js": {
+  //         id: "index.js",
+  //         name: "index.js",
+  //         type: "file",
+  //         content: hyperappJs
+  //       }
+  //     }
+  //   }
+  // }),
   // the current environment
   ENVIRONMENT: JSON.stringify("local")
 }

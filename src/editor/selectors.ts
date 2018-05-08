@@ -15,14 +15,14 @@ export function getFileNode(state: State, path: string): FileNode | null {
   return state.fileTree[path] || null
 }
 
-export function hasDirtySources(state: State): boolean {
+export function isEditorDirty(state: State): boolean {
   if (!state.project) {
     return false
   }
   if (state.status === "local-only") {
     return true
   }
-  return state.project.files !== state.original.files
+  return state.project !== state.original
 }
 
 export function askForSaveOnLeave(state: State): boolean {

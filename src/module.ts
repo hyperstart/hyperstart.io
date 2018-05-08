@@ -109,8 +109,9 @@ export const module: ModuleImpl<State, Actions> = {
         // when /projects/new, create
         if (id === "new") {
           createProject(actions.getState(), actions, "hyperapp")
+        } else {
+          actions.logger.log(actions.fetchProject({ id, open: true }))
         }
-        actions.logger.log(actions.fetchProject({ id, open: true }))
       })
 
       addListener("*", match => {

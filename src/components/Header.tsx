@@ -7,7 +7,7 @@ import { SearchField } from "lib/search/SearchField"
 import { Status, LogFn } from "logger"
 import { State, Actions } from "api"
 import { isLoading } from "selectors"
-import { hasDirtySources, isDebuggable } from "editor/selectors"
+import { isEditorDirty, isDebuggable } from "editor/selectors"
 import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
@@ -34,12 +34,13 @@ function CreateButton({ state, actions }: HeaderProps) {
 }
 
 function SaveButton({ state, actions }: HeaderProps) {
-  if (state.editor.status === "closed") {
+  const editor = state.editor
+  if (editor.status === "closed" || editor.status === "read-only") {
     return null
   }
 
   return Button({
-    disabled: !hasDirtySources(state.editor) || isLoading(state),
+    disabled: !isEditorDirty(state.editor) || isLoading(state),
     onclick: () => actions.logger.log(actions.editor.saveProject),
     text: "Save",
     class: "button btn-secondary mr-1"

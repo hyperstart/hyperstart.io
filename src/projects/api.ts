@@ -1,7 +1,8 @@
 import { Searches } from "lib/search"
-
-import { ModuleActions } from "api"
 import { Bundle } from "lib/bundle"
+
+import * as users from "users"
+import { ModuleActions } from "api"
 
 // # Files
 
@@ -60,5 +61,6 @@ export interface _SetProjectPayload {
 }
 
 export interface InternalActions extends Actions {
+  _users: users.Actions
   _setProject(payload: _SetProjectPayload)
 }

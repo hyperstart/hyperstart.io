@@ -4,7 +4,7 @@ import { guid } from "lib/utils"
 export function copyProject(project: Project, newOwner: ProjectOwner): Project {
   return {
     details: {
-      id: newOwner.id + "-" + guid(),
+      id: guid(),
       name: project.details.name,
       hidden: true,
       searches: {},
