@@ -6,7 +6,6 @@ import { State, Actions } from "api"
 import { Editor } from "editor/Editor"
 import { CreateProjectModal } from "./CreateProjectModal"
 
-import "./ProjectEditorPage"
 import { LogFn } from "logger"
 import { isLoading } from "selectors"
 
