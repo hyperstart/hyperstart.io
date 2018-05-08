@@ -171,10 +171,7 @@ export function IndexPage(props: IndexPageProps) {
           </div>
           <div class="column col-1" />
           <div class="column col-5 hide-md centered py-2 text-center">
-            <img
-              src="https://user-images.githubusercontent.com/8634093/39748206-c91f27d6-52af-11e8-8727-867f806190b9.gif"
-              class="img-responsive"
-            />
+            <img src="/hyperapp-debugger.gif" class="img-responsive" />
             <p class="py-2">The Hyperapp time-traveling debugger.</p>
           </div>
           <div class="column col-4 col-mx-auto col-md-12 centered text-center py-2">
