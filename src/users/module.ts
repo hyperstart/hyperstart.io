@@ -5,18 +5,7 @@ import { createForm } from "lib/form/module"
 
 import * as api from "./api"
 import { logEvent } from "analytics"
-
-interface FirebaseAuthError {
-  code: string
-  message: string
-}
-
-interface Actions extends api.Actions {
-  _set(payload: Partial<api.State>)
-  _onUserChanged(user: firebase.User)
-  _errorOnSignIn(error: FirebaseAuthError)
-  _errorOnSignUp(error: FirebaseAuthError)
-}
+import { isNullOrUndefined } from "util"
 
 function getDisplayNameFromEmail(email: string = ""): string {
   const segments = email ? email.split("@") : []
@@ -26,14 +15,15 @@ function getDisplayNameFromEmail(email: string = ""): string {
   return segments[0]
 }
 
-function toUser(u?: firebase.User): api.User | null {
+function toUser(u: firebase.User | null, linkedTo: api.User): api.User | null {
   return u
     ? {
         displayName: u.displayName || getDisplayNameFromEmail(u.email),
         email: u.email,
         emailVerified: u.emailVerified,
         id: u.uid,
-        anonymous: u.isAnonymous
+        anonymous: u.isAnonymous,
+        linkedTo
       }
     : null
 }
@@ -64,10 +54,78 @@ function checkNotEmpty(state, actions, field) {
   return false
 }
 
+function signInWithProvider(
+  previousUser: api.User,
+  provider: firebase.auth.AuthProvider,
+  eventLabel: string
+): Promise<void> {
+  const auth = firebase.auth()
+  const currentUser = auth.currentUser
+
+  // upgrading an anonymous user
+  if (currentUser && currentUser.isAnonymous) {
+    // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
+    return new Promise((resolve, reject) => {
+      currentUser
+        .linkWithPopup(provider)
+        .then(() => {
+          logEvent("login", {
+            event_category: "users",
+            event_label: eventLabel
+          })
+
+          onUserChanged(auth.currentUser, previousUser)
+          resolve()
+        })
+        .catch(e => {
+          if (e.code === "auth/user-mismatch") {
+            // There is already an anonymous account linked to those credentials.
+            // in this case, the only thing we can do is to signup the user normally.
+            auth
+              .signInWithPopup(provider)
+              .then(() => {
+                logEvent("login", {
+                  event_category: "users",
+                  event_label: eventLabel
+                })
+
+                onUserChanged(auth.currentUser, null)
+                resolve()
+              })
+              .catch(e => {
+                reject(e)
+              })
+            return
+          }
+          reject(e)
+        })
+    })
+  } else {
+    // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
+    return new Promise((resolve, reject) => {
+      auth
+        .signInWithPopup(provider)
+        .then(() => {
+          logEvent("login", {
+            event_category: "users",
+            event_label: eventLabel
+          })
+
+          onUserChanged(auth.currentUser, null)
+          resolve()
+        })
+        .catch(e => {
+          reject(e)
+        })
+    })
+  }
+}
+
 let googleProvider
 let githubProvider
+let onUserChanged: (user: firebase.User, linkedTo: api.User) => api.User
 
-const _users: ModuleImpl<api.State, Actions> = {
+const _users: ModuleImpl<api.State, api.InternalActions> = {
   // # State
   state: {
     loading: false,
@@ -77,17 +135,12 @@ const _users: ModuleImpl<api.State, Actions> = {
   actions: {
     // ## Internal
     _set: payload => payload,
-    _onUserChanged: (u: firebase.User) => {
-      return {
-        user: toUser(u)
-      }
-    },
-    _errorOnSignIn: (err: FirebaseAuthError) => (_, actions) => {
+    _errorOnSignIn: (err: api.FirebaseAuthError) => (_, actions) => {
       const { message: error, code } = err
       const field = code === "auth/wrong-password" ? "password" : "email"
       actions.signInModal.setField({ field, error })
     },
-    _errorOnSignUp: (err: FirebaseAuthError) => (_, actions) => {
+    _errorOnSignUp: (err: api.FirebaseAuthError) => (_, actions) => {
       const { message: error, code } = err
       const field = code === "auth/weak-password" ? "password" : "email"
       actions.signUpModal.setField({ field, error })
@@ -97,22 +150,25 @@ const _users: ModuleImpl<api.State, Actions> = {
     init: () => ({ signInModal: null, signUpModal: null }),
     getState: () => state => state,
     initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
-      firebase.auth().onAuthStateChanged(u => {
-        const user = firebase.auth().currentUser
-        actions._onUserChanged(user)
-        const user2 = toUser(user)
-        listeners.map(listener => listener(user2))
-      })
+      onUserChanged = (firebaseUser, linkedTo) => {
+        const previous = actions.getState().user || null
+        const user = toUser(firebaseUser, linkedTo)
+        actions._set({ user })
+        listeners.map(listener => {
+          listener(user, previous)
+        })
+        return user
+      }
     },
-    ensureUser: (): Promise<api.User> => {
-      if (firebase.auth().currentUser) {
-        return Promise.resolve(toUser(firebase.auth().currentUser))
+    ensureUser: () => (state): Promise<api.User> => {
+      if (state.user) {
+        return Promise.resolve(state.user)
       }
 
       return firebase
         .auth()
         .signInAnonymously()
-        .then(user => toUser(user))
+        .then(user => onUserChanged(user, null))
     },
     signUp: (source: "form" | "modal") => (state, actions): Promise<void> => {
       const form = source === "form" ? state.signUpForm : state.signUpModal
@@ -146,8 +202,7 @@ const _users: ModuleImpl<api.State, Actions> = {
           email,
           password
         )
-        // firebase doesn't really return a promise here...
-        // we have to do it ourselves or we trash the state...
+        // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
         return new Promise(resolve => {
           currentUser
             .linkAndRetrieveDataWithCredential(credential)
@@ -159,22 +214,34 @@ const _users: ModuleImpl<api.State, Actions> = {
               })
 
               // this does not trigger onAuthStateChanged, do it manually
-              actions._onUserChanged(auth.currentUser)
+              onUserChanged(auth.currentUser, state.user)
               resolve()
             })
-            .catch(actions._errorOnSignUp)
+            .catch(e => {
+              actions._errorOnSignUp(e)
+              resolve()
+            })
         })
       } else {
-        return auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(() => {
-            actions.hideSignUpModal()
-            logEvent("signup", {
-              event_category: "users",
-              event_label: "SignupEmail"
+        // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
+        return new Promise(resolve => {
+          auth
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+              actions.hideSignUpModal()
+              logEvent("signup", {
+                event_category: "users",
+                event_label: "SignupEmail"
+              })
+
+              onUserChanged(auth.currentUser, null)
+              resolve()
             })
-          })
-          .catch(actions._errorOnSignUp)
+            .catch(e => {
+              actions._errorOnSignUp(e)
+              resolve()
+            })
+        })
       }
     },
     signIn: () => (state, actions): Promise<void> => {
@@ -191,48 +258,95 @@ const _users: ModuleImpl<api.State, Actions> = {
       const email = form.email.value
       const password = form.password.value
 
-      return firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(val => {
-          actions.hideSignInModal()
-          logEvent("login", {
-            event_category: "users",
-            event_label: "LoginEmail"
-          })
+      const auth = firebase.auth()
+      const currentUser = auth.currentUser
+      if (currentUser && currentUser.isAnonymous) {
+        const credential = firebase.auth.EmailAuthProvider.credential(
+          email,
+          password
+        )
+        // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
+        return new Promise(resolve => {
+          currentUser
+            .reauthenticateAndRetrieveDataWithCredential(credential)
+            .then(() => {
+              actions.hideSignInModal()
+              logEvent("login", {
+                event_category: "users",
+                event_label: "LoginEmail"
+              })
+
+              onUserChanged(auth.currentUser, state.user)
+              resolve()
+            })
+            .catch(e => {
+              if (e.code === "auth/user-mismatch") {
+                // There is already an anonymous account linked to those credentials.
+                // in this case, the only thing we can do is to signup the user normally.
+                auth
+                  .signInWithEmailAndPassword(email, password)
+                  .then(val => {
+                    actions.hideSignInModal()
+                    logEvent("login", {
+                      event_category: "users",
+                      event_label: "LoginEmail"
+                    })
+
+                    onUserChanged(auth.currentUser, null)
+                    resolve()
+                  })
+                  .catch(e => {
+                    actions._errorOnSignIn(e)
+                    resolve()
+                  })
+                return
+              }
+              actions._errorOnSignIn(e)
+              resolve()
+            })
         })
-        .catch(actions._errorOnSignIn)
+      } else {
+        // firebase doesn't actually return a promise, we have to do it ourselves or we trash the state...
+        return new Promise(resolve => {
+          auth
+            .signInWithEmailAndPassword(email, password)
+            .then(val => {
+              actions.hideSignInModal()
+              logEvent("login", {
+                event_category: "users",
+                event_label: "LoginEmail"
+              })
+              onUserChanged(auth.currentUser, null)
+              resolve()
+            })
+            .catch(e => {
+              actions._errorOnSignIn(e)
+              resolve()
+            })
+        })
+      }
     },
     signInWithGoogle: () => (state, actions) => {
       if (!googleProvider) {
         googleProvider = new firebase.auth.GoogleAuthProvider()
       }
-      return firebase
-        .auth()
-        .signInWithPopup(googleProvider)
-        .then(() =>
-          logEvent("login", {
-            event_category: "users",
-            event_label: "LoginGoogle"
-          })
-        )
+
+      return signInWithProvider(state.user, googleProvider, "LoginGoogle")
     },
     signInWithGithub: () => (state, actions) => {
       if (!githubProvider) {
         githubProvider = new firebase.auth.GithubAuthProvider()
       }
-      return firebase
-        .auth()
-        .signInWithPopup(githubProvider)
-        .then(() =>
-          logEvent("login", {
-            event_category: "users",
-            event_label: "LoginGithub"
-          })
-        )
+
+      return signInWithProvider(state.user, githubProvider, "LoginGithub")
     },
     signOut: (): Promise<void> => {
-      return firebase.auth().signOut()
+      return firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          onUserChanged(null, null)
+        })
     },
     // ### Sign In
     signInModal: signInForm.actions,

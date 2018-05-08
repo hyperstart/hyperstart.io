@@ -106,6 +106,7 @@ export interface Actions extends ModuleActions<State> {
   open(project: projects.Project)
   close()
   fork(newOwner: projects.ProjectOwner)
+  onUserChanged(user: users.User | null): Promise<void>
   run(debug: boolean): Promise<void>
   setProjectName(name: string)
   // ## Import

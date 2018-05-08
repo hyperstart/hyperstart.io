@@ -10,6 +10,7 @@ export interface User {
   email?: string
   emailVerified?: boolean
   anonymous: boolean
+  linkedTo?: User
 }
 
 export interface State {
@@ -24,7 +25,7 @@ export interface State {
 // # Actions
 
 export interface AuthListener {
-  (user?: User): void
+  (user: User | null, previous: User | null): void
 }
 
 export interface Actions extends ModuleActions<State> {
@@ -45,4 +46,20 @@ export interface Actions extends ModuleActions<State> {
   signUpModal: form.Actions
   showSignUpModal()
   hideSignUpModal()
+}
+
+export interface FirebaseAuthError {
+  code: string
+  message: string
+}
+
+export interface UserChangeEvent {
+  user: User | null
+  previous: User | null
+}
+
+export interface InternalActions extends Actions {
+  _set(payload: Partial<State>)
+  _errorOnSignIn(error: FirebaseAuthError)
+  _errorOnSignUp(error: FirebaseAuthError)
 }

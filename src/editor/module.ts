@@ -269,6 +269,50 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           replace(`/projects/${project.details.id}`)
         })
     },
+    onUserChanged: (user: users.User) => (state, actions) => {
+      switch (state.status) {
+        case "editing":
+          if (!user) {
+            // logged out -> switch to read-only mode
+            actions._setState({ status: "read-only" })
+          } else if (user.linkedTo) {
+            // we were editing before (i.e. with an anonymous user)
+            // and the account was linked -> we must update the owner of the project
+            actions._setState({
+              project: {
+                details: {
+                  ...state.project.details,
+                  owner: getProjectOwner(user)
+                },
+                files: state.project.files
+              }
+            })
+            return actions.saveProject()
+          } else if (user && !user.linkedTo) {
+            // we were editing before (i.e. with an anonymous user)
+            // and the account was not linked -> we must fork the project
+            actions.fork(getProjectOwner(user))
+            return actions.saveProject()
+          }
+        case "read-only":
+          if (!user) {
+            return
+          }
+
+          // check if we are the project owner now.
+          const project: any = state.project || {}
+          const details: any = project.details || {}
+          const owner = details.owner
+          if (user.id === owner.id) {
+            actions._setState({
+              status: "editing"
+            })
+          }
+        case "local-only":
+        case "closed":
+        // nothing to do
+      }
+    },
     createFile: (path: string) => (state, actions) => {
       checkOpen(state)
 

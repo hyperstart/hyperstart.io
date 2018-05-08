@@ -17,6 +17,7 @@ import { getWords } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "./createProject"
 import { logConfig, logEvent } from "analytics"
+import { getProjectOwner } from "projects/getProjectOwner"
 
 const router = createRouter()
 const projectsStore = getProjectsStore()
@@ -56,28 +57,10 @@ export const module: ModuleImpl<State, Actions> = {
       actions.search.init(actions)
       actions.editor.init(actions)
 
-      const authListener: AuthListener = user => {
-        const state = actions.editor.getState()
-        const project = state.project
-        // TODO fix this with anonymous login and everything...
-        // if (
-        //   user &&
-        //   project &&
-        //   (project.details.owner.id === user.id)
-        // ) {
-        //   // currently editing an artifact locally, save it on login
-        //   actions.logger.log(
-        //     actions.editor.setOwner({
-        //       id: user.id,
-        //       displayName: user.displayName
-        //     })
-        //   )
-        // } else if (!user && project && state.status === "editing") {
-        //   // currently editing own artifact, switch to local mode.
-        //   actions.logger.log(actions.editor.setOwner(null))
-        // }
+      const authListener: AuthListener = (user, previous) => {
+        actions.logger.log(actions.editor.onUserChanged(user))
       }
-      actions.users.initAuthentication([])
+      actions.users.initAuthentication([authListener])
 
       const searchFn = (text, range) => {
         if (!text || text.trim() === "") {
