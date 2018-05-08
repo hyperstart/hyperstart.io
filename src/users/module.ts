@@ -21,19 +21,19 @@ interface Actions extends api.Actions {
 function getDisplayNameFromEmail(email: string = ""): string {
   const segments = email ? email.split("@") : []
   if (segments.length < 1 || segments[0] === "") {
-    return "Anonymous"
+    return "Anonymous User"
   }
   return segments[0]
 }
 
-function toUser(user?: firebase.User): api.User | null {
-  return user
+function toUser(u?: firebase.User): api.User | null {
+  return u
     ? {
-        displayName: user.displayName || getDisplayNameFromEmail(user.email),
-        email: user.email,
-        emailVerified: user.emailVerified,
-        id: user.uid,
-        anonymous: user.isAnonymous
+        displayName: u.displayName || getDisplayNameFromEmail(u.email),
+        email: u.email,
+        emailVerified: u.emailVerified,
+        id: u.uid,
+        anonymous: u.isAnonymous
       }
     : null
 }
@@ -77,11 +77,9 @@ const _users: ModuleImpl<api.State, Actions> = {
   actions: {
     // ## Internal
     _set: payload => payload,
-    _onUserChanged: (user: firebase.User) => {
+    _onUserChanged: (u: firebase.User) => {
       return {
-        user: toUser(user),
-        authenticated: !!user,
-        checked: true
+        user: toUser(u)
       }
     },
     _errorOnSignIn: (err: FirebaseAuthError) => (_, actions) => {
@@ -99,13 +97,14 @@ const _users: ModuleImpl<api.State, Actions> = {
     init: () => ({ signInModal: null, signUpModal: null }),
     getState: () => state => state,
     initAuthentication: (listeners: api.AuthListener[]) => (_, actions) => {
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(u => {
+        const user = firebase.auth().currentUser
         actions._onUserChanged(user)
         const user2 = toUser(user)
         listeners.map(listener => listener(user2))
       })
     },
-    getCurrentUser: (): Promise<api.User> => {
+    ensureUser: (): Promise<api.User> => {
       if (firebase.auth().currentUser) {
         return Promise.resolve(toUser(firebase.auth().currentUser))
       }
@@ -114,9 +113,6 @@ const _users: ModuleImpl<api.State, Actions> = {
         .auth()
         .signInAnonymously()
         .then(user => toUser(user))
-    },
-    getCurrentUserSync: (): api.User | null => {
-      return toUser(firebase.auth().currentUser)
     },
     signUp: (source: "form" | "modal") => (state, actions): Promise<void> => {
       const form = source === "form" ? state.signUpForm : state.signUpModal
@@ -143,17 +139,43 @@ const _users: ModuleImpl<api.State, Actions> = {
         return
       }
 
-      return firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          actions.hideSignUpModal()
-          logEvent("signup", {
-            event_category: "users",
-            event_label: "SignupEmail"
-          })
+      const auth = firebase.auth()
+      const currentUser = auth.currentUser
+      if (currentUser && currentUser.isAnonymous) {
+        const credential = firebase.auth.EmailAuthProvider.credential(
+          email,
+          password
+        )
+        // firebase doesn't really return a promise here...
+        // we have to do it ourselves or we trash the state...
+        return new Promise(resolve => {
+          currentUser
+            .linkAndRetrieveDataWithCredential(credential)
+            .then(() => {
+              actions.hideSignUpModal()
+              logEvent("signup", {
+                event_category: "users",
+                event_label: "SignupEmail"
+              })
+
+              // this does not trigger onAuthStateChanged, do it manually
+              actions._onUserChanged(auth.currentUser)
+              resolve()
+            })
+            .catch(actions._errorOnSignUp)
         })
-        .catch(actions._errorOnSignUp)
+      } else {
+        return auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(() => {
+            actions.hideSignUpModal()
+            logEvent("signup", {
+              event_category: "users",
+              event_label: "SignupEmail"
+            })
+          })
+          .catch(actions._errorOnSignUp)
+      }
     },
     signIn: () => (state, actions): Promise<void> => {
       if (!state.signInModal) {

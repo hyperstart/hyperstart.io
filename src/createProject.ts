@@ -12,7 +12,7 @@ export function createProject(
 ) {
   return actions.logger.log(
     actions.users
-      .getCurrentUser()
+      .ensureUser()
       .then(user => {
         const owner = getProjectOwner(user)
         return create({

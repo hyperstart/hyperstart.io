@@ -7,7 +7,7 @@ import { getProjectOwner } from "projects/getProjectOwner"
 
 export function forkProject(state: State, actions: Actions, project: Project) {
   return actions.logger.log(
-    actions.users.getCurrentUser().then(user => {
+    actions.users.ensureUser().then(user => {
       const owner = getProjectOwner(user)
       const newProject = copyProject(project, owner)
       actions.editor.open(newProject)

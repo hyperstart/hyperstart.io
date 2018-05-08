@@ -209,7 +209,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       } else {
         // save for the first time
         return actions._users
-          .getCurrentUser()
+          .ensureUser()
           .then(user => {
             const files = state.project.files
             const existing = state.project.details
@@ -241,7 +241,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
     fork: () => (state, actions) => {
       checkOpen(state)
       return actions._users
-        .getCurrentUser()
+        .ensureUser()
         .then(user => {
           const files = state.project.files
           const name = state.project.details.name
@@ -300,7 +300,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
 
       const node = state.fileTree[path]
       const existing = state.project.files
-      console.log("files", existing)
+
       let files: projects.Files
       const toClose: string[] = []
       if (!node) {

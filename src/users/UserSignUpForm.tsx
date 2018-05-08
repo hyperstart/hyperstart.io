@@ -20,16 +20,23 @@ export function UserSignUpForm(props: UserSignUpFormProps) {
     submit: () => actions.signUp("form"),
     fieldSize: "lg",
     fields: [
-      { name: "email", placeholder: "Email", type: "text" },
+      {
+        name: "email",
+        placeholder: "Email",
+        type: "text",
+        disabled: state.loading
+      },
       {
         name: "password",
         placeholder: "Password",
-        type: "password"
+        type: "password",
+        disabled: state.loading
       },
       {
         name: "confirmPassword",
         placeholder: "Confirm Password",
-        type: "password"
+        type: "password",
+        disabled: state.loading
       }
     ]
   })

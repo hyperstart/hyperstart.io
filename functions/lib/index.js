@@ -1,44 +1,47 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const functions = require("firebase-functions");
-const corsFn = require("cors");
-const npm_1 = require("./npm");
-const utils_1 = require("./utils");
-const unpkg_1 = require("./unpkg");
+"use strict"
+Object.defineProperty(exports, "__esModule", { value: true })
+const functions = require("firebase-functions")
+const corsFn = require("cors")
+const npm_1 = require("./npm")
+const utils_1 = require("./utils")
+const unpkg_1 = require("./unpkg")
 function getUrlParameter(request, response, name, optional = false) {
-    const result = request.query[name] || null;
-    if (!result && !optional) {
-        response
-            .status(400)
-            .send(`please specify the ${name} URL parameter: url?${name}=value`);
-    }
-    return result;
+  const result = request.query[name] || null
+  if (!result && !optional) {
+    response
+      .status(400)
+      .send(`please specify the ${name} URL parameter: url?${name}=value`)
+  }
+  return result
 }
-const cors = corsFn({ origin: true });
-exports.getNpmPackageVersions = functions.https.onRequest((request, response) => {
-    const pkg = getUrlParameter(request, response, "package");
+const cors = corsFn({ origin: true })
+exports.getNpmPackageVersions = functions.https.onRequest(
+  (request, response) => {
+    const pkg = getUrlParameter(request, response, "package")
     if (!pkg) {
-        return;
+      return
     }
-    console.log("parameter: " + pkg);
+
     return cors(request, response, () => {
-        unpkg_1.exists(pkg)
-            .then(exists => {
-            if (!exists) {
-                return [];
-            }
-            return npm_1.fetchVersions(pkg);
+      unpkg_1
+        .exists(pkg)
+        .then(exists => {
+          if (!exists) {
+            return []
+          }
+          return npm_1.fetchVersions(pkg)
         })
-            .then(versions => {
-            response.status(200);
-            response.contentType("application/json");
-            response.send(versions);
+        .then(versions => {
+          response.status(200)
+          response.contentType("application/json")
+          response.send(versions)
         })
-            .catch(e => {
-            response.status(500).send(utils_1.getErrorMessage(e));
-        });
-    });
-});
+        .catch(e => {
+          response.status(500).send(utils_1.getErrorMessage(e))
+        })
+    })
+  }
+)
 /* this works fine, but it's just simpler to bundle on the client for now.
 import * as admin from "firebase-admin"
 import { bundle } from "./bundle"

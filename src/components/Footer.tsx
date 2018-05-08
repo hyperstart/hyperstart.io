@@ -96,7 +96,11 @@ export function Footer(props: FooterProps) {
         </section>
       </footer>
       <UserSignInModal state={state.users} actions={actions.users} />
-      <UserSignUpModal state={state.users} actions={actions.users} />
+      <UserSignUpModal
+        state={state.users}
+        actions={actions.users}
+        log={actions.logger.log}
+      />
       <CreateProjectModal state={state} actions={actions} />
       <ShortcutsModal state={state.editor} actions={actions.editor} />
     </div>

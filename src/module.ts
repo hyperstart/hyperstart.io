@@ -77,7 +77,7 @@ export const module: ModuleImpl<State, Actions> = {
         //   actions.logger.log(actions.editor.setOwner(null))
         // }
       }
-      actions.users.initAuthentication([authListener])
+      actions.users.initAuthentication([])
 
       const searchFn = (text, range) => {
         if (!text || text.trim() === "") {

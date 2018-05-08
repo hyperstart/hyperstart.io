@@ -3,14 +3,16 @@ import { h } from "hyperapp"
 import { ModalForm } from "lib/form"
 
 import { State, Actions } from "./api"
+import { LogFn } from "logger"
 
 export interface UserSignUpModalProps {
   state: State
   actions: Actions
+  log: LogFn
 }
 
 export function UserSignUpModal(props: UserSignUpModalProps) {
-  const { state, actions } = props
+  const { state, actions, log } = props
 
   if (!state.signUpModal) {
     return <div />
@@ -21,11 +23,21 @@ export function UserSignUpModal(props: UserSignUpModalProps) {
     actions: actions.signUpModal,
     close: actions.hideSignUpModal,
     title: "Sign up with email/password",
-    submit: () => actions.signUp("modal"),
+    submit: () => log(actions.signUp("modal")),
     fields: [
-      { name: "email", label: "Email", type: "text" },
-      { name: "password", label: "Password", type: "password" },
-      { name: "confirmPassword", label: "Confirm Password", type: "password" }
+      { name: "email", label: "Email", type: "text", disabled: state.loading },
+      {
+        name: "password",
+        label: "Password",
+        type: "password",
+        disabled: state.loading
+      },
+      {
+        name: "confirmPassword",
+        label: "Confirm Password",
+        type: "password",
+        disabled: state.loading
+      }
     ]
   })
 }

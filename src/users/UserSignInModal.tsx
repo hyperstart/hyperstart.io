@@ -23,8 +23,13 @@ export function UserSignInModal(props: UserSignInModalProps) {
     title: "Sign in with email",
     submit: actions.signIn,
     fields: [
-      { name: "email", label: "Email", type: "text" },
-      { name: "password", label: "Password", type: "password" }
+      { name: "email", label: "Email", type: "text", disabled: state.loading },
+      {
+        name: "password",
+        label: "Password",
+        type: "password",
+        disabled: state.loading
+      }
     ]
   })
 }

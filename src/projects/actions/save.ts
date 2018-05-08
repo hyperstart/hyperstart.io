@@ -95,7 +95,7 @@ export const save = (store: Store) => (project: api.Project) => (
   const { details, files } = getExisting(state, id)
 
   return actions._users
-    .getCurrentUser() // ensure anonymous authentication.
+    .ensureUser() // ensure anonymous authentication.
     .then(() => saveFiles(project, files))
     .then(result => saveDetails(project.details, details, store, result))
     .then(project => {
