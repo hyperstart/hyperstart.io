@@ -72,7 +72,7 @@ export function IndexPage(props: IndexPageProps) {
                 <a
                   href="https://github.com/hyperapp/hyperapp"
                   target="_blank"
-                  class="white-color"
+                  class="white-color font-bold"
                 >
                   Hyperapp
                 </a>{" "}
@@ -166,15 +166,18 @@ export function IndexPage(props: IndexPageProps) {
 
       <div class="section blue-section">
         <div class="columns">
-          <div class="column col-12 text-center py-6">
+          <div class="column col-12 text-center section-padding">
             <h2>Developed For Hyperapp</h2>
           </div>
           <div class="column col-1" />
-          <div class="column col-5 hide-md centered py-2 text-center">
+          <div class="column col-5 hide-lg centered py-2 text-center">
             <img src="/hyperapp-debugger.gif" class="img-responsive" />
-            <p class="py-2">The Hyperapp time-traveling debugger.</p>
+            <p class="py-2">
+              The time-traveling debugger, available as part of the integrated
+              devtools on Hyperstart.
+            </p>
           </div>
-          <div class="column col-4 col-mx-auto col-md-12 centered text-center py-2">
+          <div class="column col-4 col-mx-auto col-lg-12 centered text-center py-2">
             <p class="large-font px-6">
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
@@ -184,25 +187,38 @@ export function IndexPage(props: IndexPageProps) {
               It contains all the features from the most famous frameworks,
               while being easy to learn and more performant. If you have any
               questions, check out the learning resources on our blog. We are
-              happy to answer any questions you might have either by e-mail, or
-              on the Hyperapp Slack channel.{" "}
+              happy to answer any questions you might have either by{" "}
+              <a
+                href="mailto:contact@hyperstart.io"
+                class="white-color"
+                target="_blank"
+              >
+                e-mail
+              </a>, or on the{" "}
+              <a
+                href="https://hyperapp.slack.com/messages/C9CDF88P9"
+                class="white-color"
+                target="_blank"
+              >
+                Hyperapp Slack channel.
+              </a>{" "}
             </p>
           </div>
           <div class="column col-1" />
-          <div class="column col-3 col-md-12 col-ml-auto text-center py-4">
+          <div class="column col-3 col-lg-12 col-ml-auto text-center py-4">
             <a
               href="https://github.com/hyperapp/hyperapp"
               target="_blank"
-              class="px-2 white-color"
+              class="px-2 white-color font-bold"
             >
               Check out the project on Github.
             </a>
           </div>
-          <div class="column col-3 col-md-12 col-mr-auto text-center py-4">
+          <div class="column col-3 col-lg-12 col-mr-auto text-center py-4">
             <a
               href="https://blog.hyperstart.io"
               target="_blank"
-              class="px-2 white-color"
+              class="px-2 white-color font-bold"
             >
               Visit our blog to learn more.
             </a>
@@ -210,10 +226,10 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container">
+      <div class="container section">
         <div class="columns">
           <a name="search" />
-          <div class="column col-12 py-14">
+          <div class="column col-12 section-padding">
             <h2 class="p-2 text-center">Explore Existing Projects</h2>
             <div class="col-9 col-md-12 centered">
               <p class="py-2 text-center">

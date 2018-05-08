@@ -86,12 +86,14 @@
 }
 .white-color {
   color: #fff;
-  font-weight: 500;
   &:active,
   &:hover,
   &:focus {
     color: #000;
   }
+}
+.font-bold {
+  font-weight: 500;
 }
 .section-padding {
   padding-top: 3em;
