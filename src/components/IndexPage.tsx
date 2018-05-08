@@ -164,14 +164,21 @@ export function IndexPage(props: IndexPageProps) {
         </div>
       </div>
 
-      <div class="container section">
+      <div class="section blue-section">
         <div class="columns">
-          <div class="column col-12 centered text-center py-6">
+          <div class="column col-12 text-center py-6">
             <h2>Developed For Hyperapp</h2>
           </div>
-          <div class="column col-7 hide-md centered py-2">//add image here</div>
-          <div class="column col-5 col-md-12 centered text-center py-2">
-            <p>
+          <div class="column col-1" />
+          <div class="column col-5 hide-md centered py-2 text-center">
+            <img
+              src="https://user-images.githubusercontent.com/8634093/39748206-c91f27d6-52af-11e8-8727-867f806190b9.gif"
+              class="img-responsive"
+            />
+            <p class="py-2">The Hyperapp time-traveling debugger.</p>
+          </div>
+          <div class="column col-4 col-mx-auto col-md-12 centered text-center py-2">
+            <p class="large-font px-6">
               Hyperapp is a tiny JavaScript framework which focuses on being
               minimal, pragmatic and standalone. All applications are composed
               of a state, view, and actions. It has been influenced by the Elm
@@ -184,17 +191,22 @@ export function IndexPage(props: IndexPageProps) {
               on the Hyperapp Slack channel.{" "}
             </p>
           </div>
-          <div class="column col-3 col-md-12 col-ml-auto text-center py-2">
+          <div class="column col-1" />
+          <div class="column col-3 col-md-12 col-ml-auto text-center py-4">
             <a
               href="https://github.com/hyperapp/hyperapp"
               target="_blank"
-              class="px-2"
+              class="px-2 white-color"
             >
               Check out the project on Github.
             </a>
           </div>
-          <div class="column col-3 col-md-12 col-mr-auto text-center py-2">
-            <a href="https://blog.hyperstart.io" target="_blank" class="px-2">
+          <div class="column col-3 col-md-12 col-mr-auto text-center py-4">
+            <a
+              href="https://blog.hyperstart.io"
+              target="_blank"
+              class="px-2 white-color"
+            >
               Visit our blog to learn more.
             </a>
           </div>

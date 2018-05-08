@@ -192,9 +192,25 @@ a {
   padding-right: 0.8rem;
   padding-left: 0.8rem;
 }
+.px-6 {
+  padding-right: 1.2rem;
+  padding-left: 1.2rem;
+}
 .py-4 {
   padding-top: 0.8rem;
   padding-bottom: 0.8rem;
+}
+.py-6 {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+.py-10 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.py-14 {
+  padding-top: 2.8rem;
+  padding-bottom: 2.8rem;
 }
 .btn-green {
   background: #3cb878;

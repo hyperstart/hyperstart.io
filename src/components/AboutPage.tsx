@@ -40,7 +40,8 @@ export function AboutPage(props: AboutPageProps) {
         <div class="col-10 centered text-center">
           <h2 class="title-padding">The Team</h2>
           <div class="columns py-4 px-2">
-            <div class="col-3 py-2 text-left">
+            <div class="col-1 hide-lg" />
+            <div class="col-3 col-lg-12 py-2 text-left">
               <h3>Anthony, the Developer</h3>
               <h5>Core Product Development</h5>
               <p class="text-justify">
@@ -49,15 +50,14 @@ export function AboutPage(props: AboutPageProps) {
                 to which he now dedicates his full attention.
               </p>
             </div>
-            <div class="col-2 col-mx-auto py-4">
+            <div class="col-2 col-mx-auto py-4 hide-lg">
               <img
                 src="/anthony.jpg"
-                class="round-image"
+                class="round-image float-center"
                 alt="anthony the developer"
-                align="left"
               />
             </div>
-            <div class="col-3 col-ml-auto py-2 text-left">
+            <div class="col-3 col-ml-auto col-lg-12 py-2 text-left">
               <h3>Henrique, the Human</h3>
               <h5>Core Business Development</h5>
               <p class="text-justify">
@@ -66,16 +66,15 @@ export function AboutPage(props: AboutPageProps) {
                 Germany before settling in Austria.
               </p>
             </div>
-            <div class="col-2 col-mr-auto py-4">
+            <div class="col-2 col-mr-auto py-4 hide-lg">
               <img
                 src="/henrique.jpg"
-                class="round-image float-right"
+                class="round-image float-center"
                 alt="henrique the human"
               />
             </div>
-          </div>
-          <div class="columns py-4">
-            <div class="col-2 col-ml-auto py-2">
+            <div class="col-1 hide-lg" />
+            <div class="col-2 col-ml-auto py-2 hide-lg">
               <img
                 src="/miki.png"
                 class="round-image"
@@ -83,7 +82,7 @@ export function AboutPage(props: AboutPageProps) {
                 align="left"
               />
             </div>
-            <div class="col-4 col-mr-auto py-4 text-left">
+            <div class="col-4 col-lg-12 col-mr-auto py-4 text-left">
               <h3>Miki, the Dog</h3>
               <h5>Customer Satisfaction</h5>
               <p>
@@ -98,7 +97,7 @@ export function AboutPage(props: AboutPageProps) {
         <div class="col-12 centered">
           <h2 class="text-center title-padding">Contact Us</h2>
         </div>
-        <div class="col-2 col-ml-auto col-md-8">
+        <div class="col-2 col-ml-auto col-md-12 text-center py-2">
           <i class="far fa-envelope fa-2x" />
           <a
             href="mailto:contact@hyperstart.io"
@@ -108,7 +107,7 @@ export function AboutPage(props: AboutPageProps) {
             Email
           </a>
         </div>
-        <div class="col-2 col-md-8">
+        <div class="col-2 col-md-12 text-center py-2">
           <i class="fab fa-twitter-square fa-2x" />
           <a
             href="https://twitter.com/HyperstartJS"
@@ -118,7 +117,7 @@ export function AboutPage(props: AboutPageProps) {
             Twitter
           </a>
         </div>
-        <div class="col-2 col-mr-auto col-md-8">
+        <div class="col-2 col-mr-auto col-md-12 text-center py-2">
           <i class="fab fa-slack fa-2x" />
           <a
             href="https://hyperapp.slack.com/messages/C9CDF88P9"

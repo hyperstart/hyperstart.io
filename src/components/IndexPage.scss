@@ -7,18 +7,6 @@
   padding-left: 7.5%;
   padding-right: 7.5%;
 }
-.py-6 {
-  padding-top: 24px;
-  padding-bottom: 24px;
-}
-.py-10 {
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-.py-14 {
-  padding-top: 56px;
-  padding-bottom: 56px;
-}
 .hero-header {
   padding-top: 0 !important;
   font-weight: 600;
@@ -113,4 +101,9 @@
   min-height: 100vh;
   align-items: center;
   display: flex;
+}
+.blue-section {
+  background-color: $primary-color;
+  margin-left: -10%;
+  margin-right: -10%;
 }
