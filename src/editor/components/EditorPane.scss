@@ -1,9 +1,10 @@
-.sources-pane {
+.editor-pane {
   display: flex;
   flex-direction: column;
   flex: 0 0 50%;
   min-height: 0;
   min-width: 0;
+  flex-grow: 1;
 
   .tabs-wrapper {
     display: flex;
@@ -30,4 +31,10 @@
     height: 100%;
     min-height: 0;
   }
+}
+
+.view-pane-tab {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

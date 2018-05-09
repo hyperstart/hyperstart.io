@@ -5,7 +5,7 @@ import { LogFn } from "logger"
 import * as projects from "projects"
 
 import { State, Actions, FileNode } from "../../api"
-import { isDirty, isNew } from "../../selectors"
+import { isDirty, isNew, isSinglePane } from "../../selectors"
 import { Action } from "./Action"
 
 export interface FileItemProps {
@@ -50,9 +50,7 @@ export function FileItem(props: FileItemProps) {
 
   function onselect(e: Event) {
     e.stopImmediatePropagation()
-    actions.openFiles({
-      sources: item
-    })
+    actions.panes.openFiles(item)
   }
 
   return (
@@ -60,14 +58,16 @@ export function FileItem(props: FileItemProps) {
       <span>
         <i class="far fa-file-alt" aria-hidden="true" />
         <span>{" " + node.name + getFileSuffix(state, node)}</span>{" "}
-        <span class="actions">
-          <Action
-            icon="fas fa-eye"
-            onclick={() => actions.previewFile(node)}
-            tooltip="Preview File"
-            tooltip-side="right"
-          />
-        </span>
+        {!isSinglePane() && (
+          <span class="actions">
+            <Action
+              icon="fas fa-eye"
+              onclick={() => actions.previewFile(node)}
+              tooltip="Preview File"
+              tooltip-side="right"
+            />
+          </span>
+        )}
       </span>
       {FileActions(props)}
     </div>

@@ -6,7 +6,6 @@ import { logEvent } from "analytics"
 
 import * as projects from "projects"
 
-import { PROJECT_TAB_ID } from "../constants"
 import * as api from "./api"
 import { debounce } from "lib/utils"
 import { ROOT_PATH } from "projects"
@@ -24,9 +23,7 @@ const importNpmPackageForm = createForm({
 const search = createSearch([{ name: "import-project" }])
 
 export const ui: ModuleImpl<api.State, api.Actions> = {
-  state: {
-    selectedViewPaneTab: PROJECT_TAB_ID
-  },
+  state: {},
   actions: {
     // ## Import project dialog
     importProjectModal: {
@@ -63,10 +60,6 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
       return {
         importNpmPackageModal: null
       }
-    },
-    // ## View pane's tabs
-    selectViewPaneTab: (selectedViewPaneTab: string | null) => {
-      return { selectedViewPaneTab }
     },
     // ## Shortcut modal
     showShortcutsModal: () => ({ shortcutsModal: true }),

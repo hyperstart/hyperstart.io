@@ -6,7 +6,7 @@ import { addInterceptor, removeInterceptor } from "lib/router"
 import { getEditorUrl } from "utils"
 import { User } from "users"
 
-import { DebuggerPane, SourcesPane, ViewsPane } from "./components"
+import { EditorPane } from "./components"
 import { isDebuggable, askForSaveOnLeave } from "./selectors"
 import { State, Actions } from "./api"
 import { LogFn } from "logger"
@@ -24,13 +24,14 @@ const INTERCEPTOR = "__INTERCEPTOR"
 const IFRAME_LISTENER = "__IFRAME_LISTENER"
 const UNLOAD = "__UNLOAD"
 const SHORTCUTS_LISTENER = "__SHORTCUTS_LISTENER"
+const SINGLE_PANE_LISTENER = "__SINGLE_PANE_LISTENER"
 
 function isCtrlKeyDown(event: KeyboardEvent, code: number): boolean {
   return (event.metaKey || event.ctrlKey) && event.keyCode === code
 }
 
 export function Editor(props: EditorProps) {
-  const { state, actions, log } = props
+  const { state, actions, log, loading } = props
 
   if (!state.project) {
     return <div />
@@ -133,6 +134,10 @@ export function Editor(props: EditorProps) {
       }
     }
     window.addEventListener("keydown", e[SHORTCUTS_LISTENER])
+
+    // ### Single Pane
+    e[SINGLE_PANE_LISTENER] = actions.panes.onWindowResize
+    window.addEventListener("resize", e[SINGLE_PANE_LISTENER])
   }
 
   const ondestroy = (e: HTMLElement) => {
@@ -141,6 +146,20 @@ export function Editor(props: EditorProps) {
     window.removeEventListener("beforeunload", e[UNLOAD])
     window.removeEventListener("message", e[IFRAME_LISTENER])
     window.removeEventListener("keydown", e[SHORTCUTS_LISTENER])
+    window.removeEventListener("resize", e[SINGLE_PANE_LISTENER])
+  }
+
+  if (!state.panes.sources) {
+    return (
+      <section
+        key="project-editor-div"
+        oncreate={oncreate}
+        ondestroy={ondestroy}
+        class="code-editor code-editor-sm"
+      >
+        {EditorPane({ ...props, type: "views" })}
+      </section>
+    )
   }
 
   return (
@@ -150,8 +169,8 @@ export function Editor(props: EditorProps) {
       ondestroy={ondestroy}
       class="code-editor"
     >
-      {state.debug.paneShown ? DebuggerPane(props) : SourcesPane(props)}
-      {ViewsPane(props)}
+      {EditorPane({ ...props, type: "sources" })}
+      {EditorPane({ ...props, type: "views" })}
     </SplitPane>
   )
 }

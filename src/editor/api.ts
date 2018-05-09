@@ -6,6 +6,7 @@ import * as users from "users"
 import * as bundles from "bundles"
 
 import * as debug from "./debug"
+import * as panes from "./panes"
 import * as ui from "./ui"
 
 export interface FileNotFound {
@@ -62,13 +63,12 @@ export type Status = "closed" | "editing" | "local-only" | "read-only"
 export interface State {
   // ## Sub Modules
   debug: debug.State
+  panes: panes.State
   ui: ui.State
   // ## TODO should be a sub-module
   compilationOutput?: CompilationOutput
   // ## State
   status: Status
-  openedSources: string[]
-  selectedSources: string[]
   expandedFolders: ExpandedFolders
   original?: projects.Project
   project?: projects.Project
@@ -93,14 +93,10 @@ export interface SetFileContentPayload {
   content: string
 }
 
-export interface OpenFilesPayload {
-  sources: string | string[]
-  clearOpened?: boolean
-}
-
 export interface Actions extends ModuleActions<State> {
   // ## Sub-modules
   debug: debug.Actions
+  panes: panes.Actions
   ui: ui.Actions
   // ## Project
   open(project: projects.Project)
@@ -120,11 +116,6 @@ export interface Actions extends ModuleActions<State> {
   saveProject(): Promise<void>
   previewFile(pathOrUrl: string | FileNode)
   render()
-  // ## Editor
-  openFiles(payload: OpenFilesPayload)
-  closeFile(sources: string | string[])
-  selectFile(source: string | null)
-  closeAllFiles()
   // ## Folders
   toggleFolder(path: string)
 }

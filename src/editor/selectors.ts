@@ -102,15 +102,6 @@ export function getHyperappJsMainFile(state: State): string | null {
   }`
 }
 
-export function getSelectedFile(state: State): FileNode | null {
-  const selected = state.selectedSources
-  if (selected.length === 0) {
-    return null
-  }
-  const path = selected[0]
-  return state.fileTree[path]
-}
-
 export function isNotFound(file: any): file is FileNotFound {
   return file.notFound === true
 }
@@ -133,66 +124,6 @@ export function getPreviewedFile(state: State): FileNode | FileNotFound | null {
   return result
 }
 
-// import { State, FileNotFound } from "./api"
-// import { inferMainFile } from "lib/npm"
-
-// export function isEditable(state: State): boolean {
-//   return state.status === "editing"
-// }
-
-// export function fileExists(
-//   state: State,
-//   name: string,
-//   parent?: string
-// ): boolean {
-//   const files = state.files.byId
-//   for (let id in files) {
-//     const file = files[id]
-//     if (file.name === name && file.parent == parent) {
-//       return true
-//     }
-//   }
-
-//   return false
-// }
-
-// export function isDirty(source: FileNode): boolean {
-//   return source.type === "file" && source.content !== source.original
-// }
-
-// export function getDirtySources(state: State): string[] {
-//   const files: any = state.files.byId
-//   return Object.keys(files).filter(key => isDirty(files[key]))
-// }
-
-// export function getSource(
-//   state: State,
-//   path: string,
-//   failOnNull: boolean
-// ): SourceNode | null {
-//   const id = state.files.byPath[path]
-//   const result = id ? state.files.byId[id] : null
-//   if (result && result.type === "file") {
-//     return result
-//   }
-//   if (failOnNull) {
-//     throw new Error(
-//       "Error while loading source at " +
-//         path +
-//         ". Source: " +
-//         JSON.stringify(result)
-//     )
-//   }
-//   return null
-// }
-
-// export function getFiles(state: State): Files {
-//   const result: Files = {}
-
-//   const files = state.files.byId
-//   Object.keys(files).forEach(id => {
-//     result[id] = getFile(files[id])
-//   })
-
-//   return result
-// }
+export function isSinglePane() {
+  return window.innerWidth < 600
+}
