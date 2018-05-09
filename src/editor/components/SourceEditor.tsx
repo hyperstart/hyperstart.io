@@ -36,7 +36,7 @@ export function SourceEditor(props: SourceEditorProps) {
       editorService: {
         openEditor: function(input, sideBySide): Promise<any> {
           const path = input.resource.path
-          actions.openFiles(path)
+          actions.panes.openFiles(path)
           if (input.options && input.options.selection) {
             getEditor(e).setModel(getModel(path))
             getEditor(e).revealRangeAtTop(input.options.selection)

@@ -12,7 +12,6 @@ export interface ImportProjectModal {
 }
 
 export interface State {
-  selectedViewPaneTab: string
   createFileModal?: form.State
   deleteFileModal?: string
   importProjectModal?: ImportProjectModal
@@ -35,7 +34,7 @@ export interface Actions {
   openImportNpmPackageModal()
   closeImportNpmPackageModal()
   // ## View pane's tabs
-  selectViewPaneTab(tab: string | null)
+  // selectViewPaneTab(tab: string | null)
   // ## Shortcut modal
   showShortcutsModal()
   hideShortcutsModal()
@@ -46,4 +45,6 @@ export interface Actions {
   // ## Delete file modal
   openDeleteFileModal(path: string)
   closeDeleteFileModal()
+  // # Single Pane
+  // recomputeSinglePane()
 }

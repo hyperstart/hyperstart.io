@@ -18,6 +18,7 @@ import * as monaco from "./monaco"
 
 import { ui } from "./ui/module"
 import { debug } from "./debug/module"
+import { panes } from "./panes/module"
 import { runProject } from "./runProject"
 import { openProject } from "./openProject"
 import { importBundles } from "projects/importBundles"
@@ -28,16 +29,11 @@ import { getSearches } from "lib/search"
 import { createModel, deleteModels } from "./monaco"
 import { getProjectOwner } from "projects/getProjectOwner"
 
-//#region blahh
-
-// hello
-
-//#endregion
-
 // # State
 const state: api.State = {
   // ## Sub-module
   debug: debug.state,
+  panes: panes.state,
   ui: ui.state,
   // ## State
   status: "closed",
@@ -45,13 +41,8 @@ const state: api.State = {
   original: null,
   project: null,
   expandedFolders: {},
-  openedSources: [],
-  selectedSources: [],
   monacoLoaded: false
 }
-
-const arr = (sources: string | string[]): string[] =>
-  typeof sources === "string" ? [sources] : sources
 
 function checkOpen(state: api.State) {
   if (state.status === "closed" || !state.project) {
@@ -82,6 +73,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
   actions: {
     // ## Sub-module
     debug: debug.actions,
+    panes: panes.actions,
     ui: ui.actions,
     // ## Internal
     _bundles: null,
@@ -319,7 +311,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       actions.ui.closeCreateFileModal()
 
       createModel("", path)
-      actions.openFiles({ sources: path })
+      actions.panes.openFiles(path)
 
       const result: Partial<api.State> = {
         project: {
@@ -371,7 +363,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       }
 
       deleteModels(toClose)
-      actions.closeFile(toClose)
+      actions.panes.closeFiles(toClose)
 
       const result: Partial<api.State> = {
         project: {
@@ -440,43 +432,6 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         expandedFolders,
         fileTree
       }
-    },
-    openFiles: (payload: api.OpenFilesPayload) => state => {
-      const openedSources = [...state.openedSources]
-      const array = arr(payload.sources)
-      const selectedSources = state.selectedSources.filter(
-        src => !payload.sources.includes(src)
-      )
-
-      array.forEach(source => {
-        if (!openedSources.includes(source)) {
-          openedSources.push(source)
-        }
-
-        selectedSources.unshift(source)
-      })
-
-      return { openedSources, selectedSources }
-    },
-    closeFile: (sources: string | string[]) => state => {
-      const array = arr(sources)
-      const selectedSources = state.selectedSources.filter(
-        src => !array.includes(src)
-      )
-      const openedSources = state.openedSources.filter(
-        src => !array.includes(src)
-      )
-      return { openedSources, selectedSources }
-    },
-    closeAllFiles: () => {
-      return { opened: [], selected: [] }
-    },
-    selectFile: (source: string) => state => {
-      const selectedSources = state.selectedSources.filter(
-        src => src !== source
-      )
-      selectedSources.unshift(source)
-      return { selectedSources }
     }
   }
 }

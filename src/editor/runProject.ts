@@ -4,7 +4,7 @@ import { LogFn } from "logger"
 import { logEvent } from "analytics"
 
 import * as api from "./api"
-import { OUTPUT_TAB_ID } from "./constants"
+import { OUTPUT_TAB_ID } from "./panes"
 import { getFile } from "./selectors"
 import { compile } from "./compile"
 
@@ -22,7 +22,7 @@ export function runProject(
     return
   }
   actions._setState({ compilationOutput: { loading: true, success: false } })
-  actions.ui.selectViewPaneTab(OUTPUT_TAB_ID)
+  actions.panes.selectTab(OUTPUT_TAB_ID)
   return compile(state, debug)
     .then(output => {
       if (!output.success) {

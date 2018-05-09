@@ -1,3 +1,1 @@
-export * from "./DebuggerPane"
-export * from "./SourcesPane"
-export * from "./ViewsPane"
+export * from "./EditorPane"

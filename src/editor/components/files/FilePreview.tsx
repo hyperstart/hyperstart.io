@@ -61,7 +61,8 @@ const Preview = (props: PreviewProps) => {
   return SourcePreview(props)
 }
 
-const getOptions = (): monaco.editor.IEditorOptions => {
+// monaco.editor.IEditorOptions
+const getOptions = (): any => {
   return {
     minimap: { enabled: false },
     folding: true,
@@ -69,7 +70,8 @@ const getOptions = (): monaco.editor.IEditorOptions => {
     fixedOverflowWidgets: true,
     wordWrap: "on",
     wrappingIndent: "same",
-    readOnly: true
+    readOnly: true,
+    theme: "vs-dark"
   }
 }
 

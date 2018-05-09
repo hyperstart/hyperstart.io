@@ -2,12 +2,12 @@ import * as api from "./api"
 import { Project, Files, NEW_PROJECT_ID } from "projects"
 
 import { configureFor } from "./monaco"
-import { PROJECT_TAB_ID } from "./constants"
 import { State } from "./api"
 
 import { debug } from "./debug/module"
 import { ui } from "./ui/module"
 import { getFileTree } from "./getFileTree"
+import { getState as getPanesState } from "./panes/module"
 
 function getStatus(project: Project, actions: api.InternalActions): api.Status {
   const details = project.details
@@ -40,13 +40,10 @@ export function openProject(
     ...state,
     original: project,
     project,
-    selectedSources: index ? [mainPath] : [],
-    openedSources: index ? [mainPath] : [],
     status: getStatus(project, actions),
     expandedFolders: { "/": true, "/dependencies": true },
-    ui: {
-      selectedViewPaneTab: PROJECT_TAB_ID
-    }
+    panes: getPanesState(project),
+    ui: {}
   }
 
   result.fileTree = getFileTree(result)

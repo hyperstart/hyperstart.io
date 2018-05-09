@@ -70,7 +70,7 @@ function DebugButton({ state, actions }: HeaderProps) {
 
   const debugState = state.editor.debug
   return (
-    <div class="btn-group btn-group-block button">
+    <div class="btn-group btn-group-block button btn-debug">
       <Button
         disabled={isLoading(state)}
         onclick={() => actions.editor.run(true)}

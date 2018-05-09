@@ -89,3 +89,7 @@ export const debounce = (func, delay: number): any => {
     inDebounce = setTimeout(() => func.apply(context, args), delay)
   }
 }
+
+export function arr<T>(sources: T | T[]): T[] {
+  return Array.isArray(sources) ? sources : [sources]
+}
