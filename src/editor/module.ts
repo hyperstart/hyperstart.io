@@ -28,6 +28,8 @@ import { getFileTree } from "./getFileTree"
 import { getSearches } from "lib/search"
 import { createModel, deleteModels } from "./monaco"
 import { getProjectOwner } from "projects/getProjectOwner"
+import { hasCurrentEditor, executeAction } from "./monacoActions"
+import { canExecuteMonacoAction } from "./selectors"
 
 // # State
 const state: api.State = {
@@ -432,6 +434,14 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         expandedFolders,
         fileTree
       }
+    },
+    executeAction: (action: api.MonacoAction) => (state): Promise<void> => {
+      if (!canExecuteMonacoAction(state)) {
+        return Promise.reject(
+          "Cannot currently execute an action: no monaco editor found or no source tab selected."
+        )
+      }
+      return executeAction(action)
     }
   }
 }

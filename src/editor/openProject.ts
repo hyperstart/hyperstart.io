@@ -7,7 +7,7 @@ import { State } from "./api"
 import { debug } from "./debug/module"
 import { ui } from "./ui/module"
 import { getFileTree } from "./getFileTree"
-import { getState as getPanesState } from "./panes/module"
+import { createState as getPanesState } from "./panes/module"
 
 function getStatus(project: Project, actions: api.InternalActions): api.Status {
   const details = project.details

@@ -4,15 +4,11 @@ import { arr } from "lib/utils"
 import { Project } from "projects"
 
 import * as api from "./api"
-import { isSinglePane } from "../selectors"
-
-function isSourceTab(id: string) {
-  return id && id.startsWith("/")
-}
+import { isSinglePane, isSourceTab } from "../selectors"
 
 // # getState
 
-export function getState(project: Project | null): api.State {
+export function createState(project: Project | null): api.State {
   const main = project && project.details.mainPath
   const viewTabs = [api.PROJECT_TAB_ID]
   if (main) {
@@ -44,7 +40,7 @@ export function getState(project: Project | null): api.State {
 }
 
 export const panes: ModuleImpl<api.State, api.Actions> = {
-  state: getState(null),
+  state: createState(null),
   // # Actions
   actions: {
     // ## Common

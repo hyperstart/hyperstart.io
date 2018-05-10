@@ -6,6 +6,7 @@ import { DEPENDENCIES_FOLDER_PATH, HYPERAPP_NAME, File, Files } from "projects"
 
 import { State, FileNode, FileNotFound } from "./api"
 import { Run } from "./debug/api"
+import { hasCurrentEditor } from "./monacoActions"
 
 export function getFile(state: State, path: string): File | null {
   return (state.project && state.project.files[path]) || null
@@ -126,4 +127,33 @@ export function getPreviewedFile(state: State): FileNode | FileNotFound | null {
 
 export function isSinglePane() {
   return window.innerWidth < 600
+}
+
+export function isSourceTab(id: string) {
+  return id && id.startsWith("/")
+}
+
+export function getSelectedSource(state: State): string | null {
+  const panes = state.panes
+  const pane = panes.sources ? panes.sources : panes.views
+
+  for (const selected of pane.selected) {
+    if (isSourceTab(selected)) {
+      return selected
+    }
+  }
+
+  return null
+}
+
+export function isEditingSource(state: State) {
+  if (state.status === "closed" || !state.monacoLoaded) {
+    return false
+  }
+
+  return !!getSelectedSource(state)
+}
+
+export function canExecuteMonacoAction(state: State) {
+  return isEditingSource(state) && hasCurrentEditor()
 }

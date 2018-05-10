@@ -93,6 +93,8 @@ export interface SetFileContentPayload {
   content: string
 }
 
+export type MonacoAction = "editor.action.formatDocument"
+
 export interface Actions extends ModuleActions<State> {
   // ## Sub-modules
   debug: debug.Actions
@@ -118,6 +120,7 @@ export interface Actions extends ModuleActions<State> {
   render()
   // ## Folders
   toggleFolder(path: string)
+  executeAction(action: MonacoAction): Promise<void>
 }
 
 export interface InternalActions extends Actions {

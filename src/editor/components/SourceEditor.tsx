@@ -1,7 +1,8 @@
 import { h } from "hyperapp"
 
 import { MonacoEditor, getModel, getEditor } from "../monaco"
-import { State, Actions } from "../api"
+import { State, Actions, MonacoAction } from "../api"
+import { setCurrentSourceEditor } from "../monacoActions"
 
 export interface SourceEditorProps {
   state: State
@@ -69,6 +70,9 @@ export function SourceEditor(props: SourceEditorProps) {
     getOptions,
     getOverrides,
     model,
-    onModelContentChanged
+    onModelContentChanged,
+    onEditorCreated(editor) {
+      setCurrentSourceEditor(editor)
+    }
   })
 }
