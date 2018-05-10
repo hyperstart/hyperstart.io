@@ -7,7 +7,11 @@ import { SearchField } from "lib/search/SearchField"
 import { Status, LogFn } from "logger"
 import { State, Actions } from "api"
 import { isLoading } from "selectors"
-import { isEditorDirty, isDebuggable } from "editor/selectors"
+import {
+  isEditorDirty,
+  isDebuggable,
+  canExecuteMonacoAction
+} from "editor/selectors"
 import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
@@ -88,6 +92,24 @@ function DebugButton({ state, actions }: HeaderProps) {
   )
 }
 
+function FormatButton({ state, actions }: HeaderProps) {
+  const project = state.editor.project
+  if (state.editor.status === "closed") {
+    return null
+  }
+
+  return (
+    <Button
+      disabled={!canExecuteMonacoAction(state.editor)}
+      onclick={() =>
+        actions.editor.executeAction("editor.action.formatDocument")
+      }
+      text="Format"
+      class="button btn-secondary mr-1"
+    />
+  )
+}
+
 function ForkButton({ state, actions }: HeaderProps) {
   if (state.editor.status === "closed") {
     return null
@@ -118,6 +140,7 @@ export function Header(props: HeaderProps) {
         {SaveButton(props)}
         {RunButton(props)}
         {DebugButton(props)}
+        {FormatButton(props)}
       </section>
       <section class="navbar-section">
         {Status({ state: state.logger, actions: actions.logger })}
