@@ -181,6 +181,6 @@ export function getEmbedText(state: State): string {
   src="${getEditorUrl(state)}?target=iframe" 
   sandbox="allow-scripts allow-forms allow-popups"
   width="100%"
-  height="500px">
+  height="300px">
 </iframe>`
 }
