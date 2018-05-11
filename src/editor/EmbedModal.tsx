@@ -21,11 +21,11 @@ export function EmbedModal(props: EmbedModalProps) {
   }
 
   function getOptions(): MonacoOptions {
-    console.log(getEmbedText(state))
     return {
       theme: "vs-dark",
       value: getEmbedText(state),
       minimap: { enabled: false },
+      codeLens: false,
       scrollBeyondLastLine: false,
       language: "html",
       lineNumbers: "off",
