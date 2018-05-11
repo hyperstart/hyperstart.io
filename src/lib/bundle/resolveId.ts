@@ -23,16 +23,6 @@ const getSegments = (path: string): string[] => {
   return segments
 }
 
-const KNOWN_EXTENSIONS = {
-  js: true,
-  jsx: true,
-  ts: true,
-  tsx: true,
-  html: true,
-  css: true,
-  json: true
-}
-
 /**
  *
  */
@@ -56,9 +46,7 @@ export function resolveId(importee: string, importer?: string): string {
       }
     }
 
-    const resolved = "/" + result.join("/")
-    const extension = getExtension(resolved)
-    return KNOWN_EXTENSIONS[extension] ? resolved : resolved + ".js"
+    return "/" + result.join("/")
   }
 
   // dependency

@@ -46,14 +46,18 @@ export function get(payload: GetPayload): Promise<GetResult> {
   return fetch(getUrl(payload))
     .then(response => {
       url = response.url
-      if (response.status !== 200) {
-        throw new Error(`File ` + url + " not found.")
+      if (response.status >= 400) {
+        throw new Error(
+          `Error while downloading File ${url}, got response: ${
+            response.status
+          }: ${response.statusText}`
+        )
       }
       return response.text()
     })
     .then(content => {
-      const version = payload.version || extractVersion(url, pkg)
-      const file = payload.file || extractFile(url, pkg, version)
+      const version = extractVersion(url, pkg)
+      const file = extractFile(url, pkg, version)
       return { content, url, pkg, file, version }
     })
 }
@@ -72,24 +76,3 @@ export function exists(pkg: string): Promise<boolean> {
     return res.status === 200
   })
 }
-
-// function getMetaUrl(payload: GetMetaPayload) {
-//   const { pkg, version } = payload
-//   if (version) {
-//     return URL + pkg + "@" + version + "/?meta"
-//   }
-//   return URL + pkg + "/?meta"
-// }
-
-// export interface GetMetaPayload {
-//   pkg: string
-//   version?: string
-// }
-
-// export function getMeta(payload: GetMetaPayload) {
-//   return fetch(getMetaUrl(payload))
-//     .then(response => response.json())
-//     .then(json => {
-//       console.log("Got meta", json)
-//     })
-// }

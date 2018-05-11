@@ -22,7 +22,7 @@ export function inferMainFile(json: PackageJson): string | null {
     return json.module
   } else if (json.main) {
     return json.main
-  } else {
+  } else if (json.files) {
     if (json.files.length > 0) {
       const candidates: string[] = []
       for (const file of json.files) {
@@ -39,5 +39,5 @@ export function inferMainFile(json: PackageJson): string | null {
       }
     }
   }
-  return null
+  return "index.js"
 }
