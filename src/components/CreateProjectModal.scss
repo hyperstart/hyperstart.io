@@ -8,14 +8,25 @@
     width: 280px;
     margin: 6px;
     padding: 2px;
-    border: 2px solid $border-color-dark;
-    background-color: $bg-color;
+    border: 2px solid $body-font-color-dark;
+    background: (0, 0, 0, 0);
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    color: darken($body-font-color, 15%);
+
+    img {
+      filter: invert(30%);
+    }
 
     &.active {
       background-color: $bg-color-dark;
-      border: 2px solid $primary-color-dark;
-      padding: 2px;
-      margin: 6px;
+      border: 2px solid $primary-color-light;
+      color: $light-color;
+      img {
+        filter: invert(0%);
+      }
       #hyperapp {
         background-color: $primary-color;
       }
