@@ -37,9 +37,16 @@ export function EmbedModal(props: EmbedModalProps) {
     <Modal
       close={actions.ui.closeEmbedModal}
       title="Embed editor"
+      titleTag="h2"
       class="embed-modal"
       active
     >
+      <h6>Preview of the embeded editor</h6>
+      <div
+        class="embeded"
+        oncreate={e => (e.innerHTML = getEmbedText(state))}
+      />
+      <h6>Code to embed</h6>
       <MonacoEditor getOptions={getOptions} />
     </Modal>
   )

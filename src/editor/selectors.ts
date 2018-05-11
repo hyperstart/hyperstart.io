@@ -177,10 +177,12 @@ export function getEmbedText(state: State): string {
     throw new Error("Project not saved")
   }
 
+  const name = state.project.details.name
   return `<iframe 
   src="${getEditorUrl(state)}?target=iframe" 
-  sandbox="allow-scripts allow-forms allow-popups"
+  title="${name === "" ? "Untitled project" : name}"
+  sandbox="allow-scripts allow-forms allow-same-origin"
   width="100%"
-  height="300px">
+  height="350px">
 </iframe>`
 }

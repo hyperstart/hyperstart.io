@@ -1,4 +1,15 @@
-.embed-modal {
+.modal.active.embed-modal {
+  .modal-container {
+    width: 90%;
+    height: 90%;
+    max-width: 90%;
+    max-height: 90%;
+
+    .modal-body {
+      max-height: 100%;
+    }
+  }
+
   .monaco-editor {
     height: 6rem;
   }
