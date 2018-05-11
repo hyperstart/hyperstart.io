@@ -109,7 +109,10 @@ function getTabs(state: State, actions: Actions, pane: PaneState): UiTabs {
       tab = {
         id,
         name: file.name,
-        prefix: names[file.name] > 1 ? getParentName(id) + "/" : null
+        prefix: names[file.name] > 1 ? getParentName(id) : null
+      }
+      if (tab.prefix && !tab.prefix.endsWith("/")) {
+        tab.prefix = tab.prefix + "/"
       }
       result = getSourceTab(state, actions, tab, id === selectedId)
     }

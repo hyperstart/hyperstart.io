@@ -25,7 +25,7 @@ export function getName(path: string): string {
 
 export function getParentName(path: string): string {
   const last = path.lastIndexOf("/")
-  const first = path.lastIndexOf("/", last)
+  const first = path.lastIndexOf("/", last - 1)
   if (first < 0) {
     return path
   }
