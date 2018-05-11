@@ -29,7 +29,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     importProjectModal: {
       search: search.actions
     },
-    openImportProjectDialog: () => {
+    openImportProjectModal: () => {
       logEvent("screen_view", { screen_name: "Add Dependency" })
       return {
         importProjectModal: {
@@ -45,7 +45,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
         }
       }
     },
-    closeImportProjectDialog: () => state => {
+    closeImportProjectModal: () => state => {
       return { importProjectModal: null }
     },
     // ## Import Npm Package modal
@@ -62,8 +62,8 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
       }
     },
     // ## Shortcut modal
-    showShortcutsModal: () => ({ shortcutsModal: true }),
-    hideShortcutsModal: () => ({ shortcutsModal: false }),
+    openShortcutsModal: () => ({ shortcutsModal: true }),
+    closeShortcutsModal: () => ({ shortcutsModal: false }),
     // ## Create file modal
     createFileModal: createFileForm.actions,
     openCreateFileModal: (path: string) => {
@@ -83,6 +83,13 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     },
     closeDeleteFileModal: () => state => {
       return { deleteFileModal: null }
+    },
+    // ## Embed modal
+    openEmbedModal: () => {
+      return { embedModal: true }
+    },
+    closeEmbedModal: () => {
+      return { embedModal: null }
     }
   }
 }

@@ -93,3 +93,12 @@ export const debounce = (func, delay: number): any => {
 export function arr<T>(sources: T | T[]): T[] {
   return Array.isArray(sources) ? sources : [sources]
 }
+
+export function getUrlParameter(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
+  var results = regex.exec(location.search)
+  return results === null
+    ? ""
+    : decodeURIComponent(results[1].replace(/\+/g, " "))
+}

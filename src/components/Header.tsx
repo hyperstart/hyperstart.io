@@ -110,6 +110,18 @@ function FormatButton({ state, actions }: HeaderProps) {
   )
 }
 
+function EmbedButton({ state, actions }: HeaderProps) {
+  if (state.editor.status === "closed") {
+    return null
+  }
+  return Button({
+    disabled: state.editor.status === "local-only",
+    onclick: actions.editor.ui.openEmbedModal,
+    text: "Embed",
+    class: "btn-secondary"
+  })
+}
+
 function ForkButton({ state, actions }: HeaderProps) {
   if (state.editor.status === "closed") {
     return null
@@ -146,6 +158,7 @@ export function Header(props: HeaderProps) {
         {Status({ state: state.logger, actions: actions.logger })}
       </section>
       <section class="navbar-section">
+        {EmbedButton(props)}
         {ForkButton(props)}
 
         {SearchField({

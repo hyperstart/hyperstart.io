@@ -146,7 +146,7 @@ export function getSelectedSource(state: State): string | null {
   return null
 }
 
-export function isEditingSource(state: State) {
+export function isEditingSource(state: State): boolean {
   if (state.status === "closed" || !state.monacoLoaded) {
     return false
   }
@@ -154,6 +154,33 @@ export function isEditingSource(state: State) {
   return !!getSelectedSource(state)
 }
 
-export function canExecuteMonacoAction(state: State) {
+export function canExecuteMonacoAction(state: State): boolean {
   return isEditingSource(state) && hasCurrentEditor()
+}
+
+function getEditorUrl(state: State) {
+  if (state.status === "closed") {
+    throw new Error("Editor closed")
+  }
+
+  return `${window.location.protocol}//${window.location.host}/projects/${
+    state.project.details.id
+  }`
+}
+
+export function getEmbedText(state: State): string {
+  if (state.status === "closed") {
+    throw new Error("Editor closed")
+  }
+
+  if (state.status === "local-only") {
+    throw new Error("Project not saved")
+  }
+
+  return `<iframe 
+  src="${getEditorUrl(state)}?target=iframe" 
+  sandbox="allow-scripts allow-forms allow-popups"
+  width="100%"
+  height="500px">
+</iframe>`
 }

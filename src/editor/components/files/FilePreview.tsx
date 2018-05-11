@@ -4,7 +4,7 @@ import { getExtension, getEditorUrl } from "utils"
 import { File } from "projects"
 
 import { State, Actions, FileNotFound, FileNode } from "../../api"
-import { MonacoEditor, getModel } from "../../monaco"
+import { MonacoEditor, getModel, MonacoOptions } from "../../monaco"
 import { render, postRender } from "./markdown"
 
 import "./FilePreview.scss"
@@ -14,6 +14,19 @@ export interface PreviewProps {
   state: State
   actions: Actions
   file: FileNode
+}
+
+const getOptions = (): MonacoOptions => {
+  return {
+    minimap: { enabled: false },
+    folding: true,
+    scrollBeyondLastLine: false,
+    fixedOverflowWidgets: true,
+    wordWrap: "on",
+    wrappingIndent: "same",
+    readOnly: true,
+    theme: "vs-dark"
+  }
 }
 
 const SourcePreview = (props: PreviewProps) => {
@@ -59,20 +72,6 @@ const Preview = (props: PreviewProps) => {
   }
 
   return SourcePreview(props)
-}
-
-// monaco.editor.IEditorOptions
-const getOptions = (): any => {
-  return {
-    minimap: { enabled: false },
-    folding: true,
-    scrollBeyondLastLine: false,
-    fixedOverflowWidgets: true,
-    wordWrap: "on",
-    wrappingIndent: "same",
-    readOnly: true,
-    theme: "vs-dark"
-  }
 }
 
 export interface FilePreviewProps {

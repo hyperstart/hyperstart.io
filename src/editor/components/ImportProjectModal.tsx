@@ -61,7 +61,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
 
   const oncancel = e => {
     e.preventDefault()
-    actions.ui.closeImportProjectDialog()
+    actions.ui.closeImportProjectModal()
   }
 
   const onsubmit = e => {
@@ -69,7 +69,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
     if (project) {
       e.preventDefault()
       log(actions.importProject(project))
-      actions.ui.closeImportProjectDialog()
+      actions.ui.closeImportProjectModal()
     }
   }
 
@@ -81,7 +81,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
         href="#"
         class="modal-overlay"
         aria-label="Close"
-        onclick={actions.ui.closeImportProjectDialog}
+        onclick={actions.ui.closeImportProjectModal}
       />
       <div class="modal-container">
         <div class="modal-header">
@@ -89,7 +89,7 @@ export const ImportProjectModal = (props: ImportProjectModalProps) => {
             href="#"
             class="btn btn-clear float-right"
             aria-label="Close"
-            onclick={actions.ui.closeImportProjectDialog}
+            onclick={actions.ui.closeImportProjectModal}
           />
           <h3 class="modal-title">Add Dependency</h3>
           <TextField

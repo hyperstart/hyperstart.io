@@ -17,6 +17,7 @@ export interface State {
   importProjectModal?: ImportProjectModal
   importNpmPackageModal?: form.State
   shortcutsModal?: boolean
+  embedModal?: boolean
 }
 
 // # Actions
@@ -26,18 +27,16 @@ export interface Actions {
   importProjectModal: {
     search: search.Actions
   }
-  openImportProjectDialog()
+  openImportProjectModal()
   selectImportedProject(projectId: string)
-  closeImportProjectDialog()
+  closeImportProjectModal()
   // ## Import Npm Package modal
   importNpmPackageModal: form.Actions
   openImportNpmPackageModal()
   closeImportNpmPackageModal()
-  // ## View pane's tabs
-  // selectViewPaneTab(tab: string | null)
   // ## Shortcut modal
-  showShortcutsModal()
-  hideShortcutsModal()
+  openShortcutsModal()
+  closeShortcutsModal()
   // ## Create file modal
   createFileModal: form.Actions
   openCreateFileModal(path: string)
@@ -45,6 +44,7 @@ export interface Actions {
   // ## Delete file modal
   openDeleteFileModal(path: string)
   closeDeleteFileModal()
-  // # Single Pane
-  // recomputeSinglePane()
+  // # Embed modal
+  openEmbedModal()
+  closeEmbedModal()
 }

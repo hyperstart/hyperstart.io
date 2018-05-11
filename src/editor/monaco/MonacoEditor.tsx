@@ -37,6 +37,9 @@ const createEditor = (e: HTMLElement, props: MonacoEditorProps) => {
 }
 
 const updateModel = (e: HTMLElement, props: MonacoEditorProps) => {
+  if (typeof props.model === "undefined") {
+    return
+  }
   const editor = getEditor(e)
   const model = props.model || null
   if (model !== editor.getModel()) {
@@ -57,8 +60,14 @@ const destroyEditor = (e: HTMLElement, props: MonacoEditorProps) => {
   delete e[RESIZE_LISTENER]
 }
 
+export interface MonacoOptions
+  extends monaco.editor.IEditorConstructionOptions {
+  // change to string when we have custom ones
+  theme?: "vs" | "vs-dark" | "hc-dark"
+}
+
 export interface MonacoEditorProps {
-  getOptions(): monaco.editor.IEditorConstructionOptions
+  getOptions(): MonacoOptions
   getOverrides?: (e: HTMLElement) => monaco.editor.IEditorOverrideServices
   onEditorCreated?: (editor: monaco.editor.ICodeEditor, e: HTMLElement) => void
   onEditorDeleted?: (editor: monaco.editor.ICodeEditor, e: HTMLElement) => void
@@ -69,9 +78,7 @@ export interface MonacoEditorProps {
   onModelContentChanged?: (editor: monaco.editor.ICodeEditor) => void
   model?: monaco.editor.IModel
   key?: string
-  /**
-   * Defaults to "monaco-editor"
-   */
+  /** Defaults to "monaco-editor" */
   className?: string
 }
 

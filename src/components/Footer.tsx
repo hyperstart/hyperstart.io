@@ -6,7 +6,7 @@ import { UserSignInModal, UserSignUpModal } from "users"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import "./Footer.scss"
-import { ShortcutsModal } from "editor"
+import { EmbedModal, ShortcutsModal } from "editor"
 import { Button } from "lib/components"
 import { Link } from "lib/router"
 
@@ -22,7 +22,7 @@ function ShortcutsButton(props: FooterProps) {
       <a
         class="text-light"
         href="#"
-        onclick={actions.editor.ui.showShortcutsModal}
+        onclick={actions.editor.ui.closeShortcutsModal}
       >
         Shortcuts
       </a>
@@ -103,6 +103,7 @@ export function Footer(props: FooterProps) {
       />
       <CreateProjectModal state={state} actions={actions} />
       <ShortcutsModal state={state.editor} actions={actions.editor} />
+      <EmbedModal state={state.editor} actions={actions.editor} />
     </div>
   )
 }

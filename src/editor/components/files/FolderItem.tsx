@@ -49,7 +49,7 @@ function FolderActions(props: FolderItemProps) {
         />
         <Action
           icon="fas fa-box-open"
-          onclick={actions.ui.openImportProjectDialog}
+          onclick={actions.ui.openImportProjectModal}
           tooltip="Add Project as Dependency"
         />
       </span>

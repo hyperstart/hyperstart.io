@@ -26,10 +26,9 @@ export function ShortcutsModal(props: ShortcutsModalProps) {
     return <div />
   }
 
-  const hide = props.actions.ui.hideShortcutsModal
   return (
     <Modal
-      close={hide}
+      close={props.actions.ui.closeShortcutsModal}
       title="Shortcuts"
       titleTag="h1"
       class="shortcut-modal"
