@@ -119,7 +119,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         monacoLoaded: true
       }
     },
-    setProjectName: (name: string) => (state, actions) => {
+    setProjectName: (name: string = "") => (state, actions) => {
       checkOpen(state)
 
       const { details, files } = state.project
@@ -128,7 +128,9 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         project: {
           details: {
             ...details,
-            name
+            name,
+            hidden: name !== "",
+            searches: getSearches(name)
           },
           files
         }
