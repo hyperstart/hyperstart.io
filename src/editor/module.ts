@@ -26,7 +26,7 @@ import { computeNpmVersions } from "./computeNpmVersions"
 import { importProjects } from "projects/importProjects"
 import { getFileTree } from "./getFileTree"
 import { getSearches } from "lib/search"
-import { createModel, deleteModels } from "./monaco"
+import { createModel, deleteModels, configureFor } from "./monaco"
 import { getProjectOwner } from "projects/getProjectOwner"
 import { hasCurrentEditor, executeAction } from "./monacoActions"
 import { canExecuteMonacoAction } from "./selectors"
@@ -153,6 +153,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           ])
         }
 
+        configureFor(project.files, false)
         actions._setState({
           project,
           fileTree: getFileTree({
@@ -174,6 +175,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           files: importBundles(state.project.files, [bundle])
         }
 
+        configureFor(project.files, false)
         actions._setState({
           project,
           fileTree: getFileTree({
