@@ -1,12 +1,18 @@
 .code-editor {
   display: flex;
+  flex-direction: column;
   flex: 1 1 100%;
   font-size: 0.7rem;
   min-height: 0;
   min-width: 0;
+  position: relative;
 
-  &.code-editor-sm {
+  .editor-split-pane {
+    flex: 1 1 100%;
+  }
+
+  .editor-split-pane-sm {
     display: flex;
-    flex-direction: column;
+    flex: 1 1 100%;
   }
 }

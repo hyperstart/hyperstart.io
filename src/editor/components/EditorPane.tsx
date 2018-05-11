@@ -175,16 +175,15 @@ export interface EditorPaneProps {
 export function EditorPane(props: EditorPaneProps) {
   const { state, actions, type } = props
 
-  // const debug = Debugger(props)
-  // if (debug) {
-  //   return debug
-  // }
-
   const pane: PaneState = state.panes[type]
   const { tabs, selected } = getTabs(state, actions, pane)
 
+  const className = `editor-pane ${
+    !state.panes.sources ? "editor-pane__full-screen" : ""
+  }`
+
   return (
-    <div class="editor-pane">
+    <div class={className}>
       <Tab>{tabs}</Tab>
       <EditorPaneContent {...props} tab={selected} />
     </div>

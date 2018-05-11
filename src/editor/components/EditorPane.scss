@@ -4,7 +4,6 @@
   flex: 0 0 50%;
   min-height: 0;
   min-width: 0;
-  flex-grow: 1;
 
   .tab {
     height: 1.9rem;
@@ -17,6 +16,10 @@
     .tab-item {
       flex-shrink: 0;
     }
+  }
+
+  &.editor-pane__full-screen {
+    flex: 1 0 100%;
   }
 
   .monaco-editor {

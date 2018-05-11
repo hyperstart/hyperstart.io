@@ -152,15 +152,17 @@ export function Editor(props: EditorProps) {
 
   if (!state.panes.sources) {
     return (
-      <section
-        key="project-editor-div"
-        oncreate={oncreate}
-        ondestroy={ondestroy}
-        class="code-editor code-editor-sm"
-      >
-        {EditorPane({ ...props, type: "views" })}
+      <div class="code-editor">
+        <section
+          key="project-editor-div"
+          oncreate={oncreate}
+          ondestroy={ondestroy}
+          class="editor-split-pane-sm"
+        >
+          {EditorPane({ ...props, type: "views" })}
+        </section>
         {DebuggerPane(props)}
-      </section>
+      </div>
     )
   }
 

@@ -38,9 +38,13 @@ export const DebuggerPane = (props: DebuggerPaneProps) => {
     return <div />
   }
 
+  const className = `debugger-pane ${
+    state.panes.sources ? "" : "debugger-pane__full-screen"
+  }`
+
   if (state.compilationOutput.loading) {
     return (
-      <div class="debug-pane background-dark">
+      <div class={className}>
         {Title(actions)}
         <p>Loading...</p>
       </div>
@@ -49,14 +53,14 @@ export const DebuggerPane = (props: DebuggerPaneProps) => {
   const runs = getRuns(state.debug.runs)
   if (runs.length === 0) {
     return (
-      <div class="debug-pane background-dark">
+      <div class={className}>
         {Title(actions)}
         <p>No debug information found, please debug this project.</p>
       </div>
     )
   }
   return (
-    <div class="debugger-pane">
+    <div class={className}>
       {Title(actions)}
       {DebuggerOptions({ state: state.debug, actions: actions.debug })}
       {DebugPaneContent({ state: state.debug, actions: actions.debug, runs })}

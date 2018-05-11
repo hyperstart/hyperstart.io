@@ -190,6 +190,9 @@ export const debug: ModuleImpl<api.State, api.Actions> = {
       return { runs, selectedAction }
     },
     toggleRun: (id: string) => state => {
+      if (!state.runs[id]) {
+        return
+      }
       const runs = { ...state.runs }
       runs[id] = { ...runs[id], collapsed: !runs[id].collapsed }
       return { runs }
