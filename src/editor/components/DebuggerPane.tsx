@@ -34,6 +34,10 @@ export interface DebuggerPaneProps {
 
 export const DebuggerPane = (props: DebuggerPaneProps) => {
   const { state, actions } = props
+  if (!state.debug.paneShown) {
+    return <div />
+  }
+
   if (state.compilationOutput.loading) {
     return (
       <div class="debug-pane background-dark">

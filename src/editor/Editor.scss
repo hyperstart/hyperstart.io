@@ -1,8 +1,9 @@
 .code-editor {
+  display: flex;
+  flex: 1 1 100%;
   font-size: 0.7rem;
   min-height: 0;
   min-width: 0;
-  flex-grow: 1;
 
   &.code-editor-sm {
     display: flex;

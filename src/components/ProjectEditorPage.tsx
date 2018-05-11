@@ -3,7 +3,7 @@ import { h } from "hyperapp"
 import { Match, replace } from "lib/router"
 
 import { State, Actions } from "api"
-import { Editor } from "editor/Editor"
+import { Editor } from "editor"
 import { CreateProjectModal } from "./CreateProjectModal"
 
 import { LogFn } from "logger"

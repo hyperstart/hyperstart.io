@@ -13,7 +13,6 @@ import { OutputTab } from "./OutputTab"
 import { SourceEditor } from "./SourceEditor"
 
 import "./EditorPane.scss"
-import { DebuggerPane } from "./DebuggerPane"
 
 export type EditorPaneType = "sources" | "views"
 
@@ -148,20 +147,20 @@ function EditorPaneContent(props: EditorPaneContentProps) {
   }
 }
 
-// # DebuggerPane
+// // # DebuggerPane
 
-function Debugger(props: EditorPaneProps) {
-  const { state, type } = props
-  if (!state.debug.paneShown) {
-    return
-  }
+// function Debugger(props: EditorPaneProps) {
+//   const { state, type } = props
+//   if (!state.debug.paneShown) {
+//     return
+//   }
 
-  if (type === "views" && !isSinglePane()) {
-    return
-  }
+//   if (type === "views" && !isSinglePane()) {
+//     return
+//   }
 
-  return DebuggerPane(props)
-}
+//   return DebuggerPane(props)
+// }
 
 // # EditorPane
 
@@ -176,10 +175,10 @@ export interface EditorPaneProps {
 export function EditorPane(props: EditorPaneProps) {
   const { state, actions, type } = props
 
-  const debug = Debugger(props)
-  if (debug) {
-    return debug
-  }
+  // const debug = Debugger(props)
+  // if (debug) {
+  //   return debug
+  // }
 
   const pane: PaneState = state.panes[type]
   const { tabs, selected } = getTabs(state, actions, pane)

@@ -12,6 +12,7 @@ import { State, Actions } from "./api"
 import { LogFn } from "logger"
 
 import "./Editor.scss"
+import { DebuggerPane } from "./components/DebuggerPane"
 
 export interface EditorProps {
   state: State
@@ -158,19 +159,23 @@ export function Editor(props: EditorProps) {
         class="code-editor code-editor-sm"
       >
         {EditorPane({ ...props, type: "views" })}
+        {DebuggerPane(props)}
       </section>
     )
   }
 
   return (
-    <SplitPane
-      key="project-editor-div"
-      oncreate={oncreate}
-      ondestroy={ondestroy}
-      class="code-editor"
-    >
-      {EditorPane({ ...props, type: "sources" })}
-      {EditorPane({ ...props, type: "views" })}
-    </SplitPane>
+    <div class="code-editor">
+      <SplitPane
+        key="project-editor-div"
+        oncreate={oncreate}
+        ondestroy={ondestroy}
+        class="editor-split-pane"
+      >
+        {EditorPane({ ...props, type: "sources" })}
+        {EditorPane({ ...props, type: "views" })}
+      </SplitPane>
+      {DebuggerPane(props)}
+    </div>
   )
 }
