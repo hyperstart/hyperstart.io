@@ -39,7 +39,11 @@ export const initialize = (): Promise<void> =>
       // proxy instantiation of web workers through a same-domain script
       window["MonacoEnvironment"] = {
         getWorkerUrl: function(workerId, label) {
-          return "/monaco-editor-worker-loader-proxy.js"
+          return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+            self.MonacoEnvironment = {
+              baseUrl: "https://unpkg.com/monaco-editor@0.10.1/min/"
+            }
+            importScripts("https://unpkg.com/monaco-editor@0.10.1/min/vs/base/worker/workerMain.js")`)}`
         }
       }
 
