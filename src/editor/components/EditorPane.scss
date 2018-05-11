@@ -6,21 +6,16 @@
   min-width: 0;
   flex-grow: 1;
 
-  .tabs-wrapper {
+  .tab {
+    height: 1.9rem;
+    min-width: 0px;
     display: flex;
     overflow-x: auto;
-    flex-shrink: 0;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
 
-    .tab {
-      height: 1.9rem;
-      min-width: 0px;
-      flex-grow: 1;
-      display: flex;
-      flex-wrap: nowrap;
-
-      .tab-item {
-        flex-shrink: 0;
-      }
+    .tab-item {
+      flex-shrink: 0;
     }
   }
 
