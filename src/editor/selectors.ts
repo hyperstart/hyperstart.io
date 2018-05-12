@@ -186,3 +186,10 @@ export function getEmbedText(state: State): string {
   frameBorder="0">
 </iframe>`
 }
+
+export function isForkEnabled(state: State) {
+  return (
+    state.project &&
+    (state.status === "editing" || state.status === "read-only")
+  )
+}

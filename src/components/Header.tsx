@@ -1,7 +1,7 @@
 import { h } from "hyperapp"
 
 import { Link, push } from "lib/router"
-import { Button } from "lib/components"
+import { Button, Icon, Dropdown, DropdownItem } from "lib/components"
 import { SearchField } from "lib/search/SearchField"
 
 import { Status, LogFn } from "logger"
@@ -10,7 +10,8 @@ import { isLoading, isInIframe } from "selectors"
 import {
   isEditorDirty,
   isDebuggable,
-  canExecuteMonacoAction
+  canExecuteMonacoAction,
+  isForkEnabled
 } from "editor/selectors"
 import { UserIconButton } from "users/UserIconButton"
 
@@ -63,9 +64,9 @@ function RunButton({ state, actions }: HeaderProps) {
   return Button({
     disabled: isLoading(state),
     onclick: () => actions.editor.run(false),
-    text: " Run",
+    text: "Run",
     class: `button ${
-      isDebuggable(state.editor) ? "btn-secondary" : "btn-primary"
+      isDebuggable(state.editor) ? "btn-secondary hide-sm" : "btn-primary"
     } mr-1`
   })
 }
@@ -108,7 +109,7 @@ function FormatButton({ state, actions }: HeaderProps) {
         actions.editor.executeAction("editor.action.formatDocument")
       }
       text="Format"
-      class="button btn-secondary mr-1"
+      class="button btn-secondary mr-1 hide-lg"
     />
   )
 }
@@ -121,7 +122,7 @@ function EmbedButton({ state, actions }: HeaderProps) {
     disabled: state.editor.status === "local-only",
     onclick: actions.editor.ui.openEmbedModal,
     text: "Embed",
-    class: "btn-secondary"
+    class: "btn-secondary hide-lg"
   })
 }
 
@@ -135,12 +136,12 @@ function ForkButton({ state, actions }: HeaderProps) {
   }
 
   return Button({
-    disabled: isLoading(state),
+    disabled: !isForkEnabled(state.editor) || isLoading(state),
     onclick: () => {
       forkProject(state, actions, toFork)
     },
     text: "Fork",
-    class: "fork-button btn-secondary"
+    class: "fork-button btn-secondary hide-lg"
   })
 }
 
@@ -164,8 +165,89 @@ function HeaderLink({ state }: HeaderProps) {
 
   return (
     <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
-      <strong>Hyper</strong>start
+      <span class="hide-md">
+        <strong>Hyper</strong>start
+      </span>
+      <span class="show-md">
+        <strong>H</strong>s
+      </span>
     </Link>
+  )
+}
+
+// function UserDropdownItems({ state, actions }: HeaderProps) {
+//   const user = state.users.user
+//   if (user && !user.anonymous) {
+//     return (
+//       <DropdownItem
+//         text="Sign Out"
+//         class="show-sm"
+//         onclick={actions.users.signOut}
+//       />
+//     )
+//   }
+//   const log = actions.logger.log
+//   return [
+//     <DropdownItem divider text="User" />,
+//     <DropdownItem
+//       text="Sign Up"
+//       class="show-sm"
+//       onclick={actions.users.showSignUpModal}
+//     />,
+//     <DropdownItem
+//       text="Email Sign In"
+//       class="show-sm"
+//       onclick={actions.users.showSignInModal}
+//     />,
+//     <DropdownItem
+//       text="Sign In Google"
+//       class="show-sm"
+//       onclick={() => log(actions.users.signInWithGoogle)}
+//     />,
+//     <DropdownItem
+//       text="Sign In Github"
+//       class="show-sm"
+//       onclick={() => log(actions.users.signInWithGithub)}
+//     />
+//   ]
+// }
+
+function ActionsButton(props: HeaderProps) {
+  const { state, actions } = props
+  if (state.editor.status === "closed") {
+    return null
+  }
+
+  return (
+    <Dropdown text="Actions" class="actions-button show-lg" right>
+      {isDebuggable(state.editor) && (
+        <DropdownItem
+          text="Run"
+          class="show-sm"
+          disabled={isLoading(state)}
+          onclick={() => actions.editor.run(false)}
+        />
+      )}
+      <DropdownItem divider class="show-sm" />
+      <DropdownItem
+        text="Format"
+        disabled={!canExecuteMonacoAction(state.editor)}
+        onclick={() =>
+          actions.editor.executeAction("editor.action.formatDocument")
+        }
+      />
+      <DropdownItem divider />
+      <DropdownItem
+        text="Embed"
+        disabled={state.editor.status === "local-only"}
+        onclick={actions.editor.ui.openEmbedModal}
+      />
+      <DropdownItem
+        text="Fork"
+        disabled={!isForkEnabled(state.editor) || isLoading(state)}
+        onclick={() => forkProject(state, actions, state.editor.project)}
+      />
+    </Dropdown>
   )
 }
 
@@ -179,6 +261,7 @@ function LeftNavSection(props: HeaderProps) {
       {RunButton(props)}
       {DebugButton(props)}
       {FormatButton(props)}
+      {ActionsButton(props)}
     </section>
   )
 }
