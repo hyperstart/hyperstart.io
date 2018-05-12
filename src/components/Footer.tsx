@@ -9,6 +9,7 @@ import "./Footer.scss"
 import { EmbedModal, ShortcutsModal } from "editor"
 import { Button } from "lib/components"
 import { Link } from "lib/router"
+import { isInIframe } from "selectors"
 
 export interface FooterProps {
   state: State
@@ -34,6 +35,14 @@ function ShortcutsButton(props: FooterProps) {
 
 export function Footer(props: FooterProps) {
   const { state, actions } = props
+  if (isInIframe()) {
+    return (
+      <div>
+        <ShortcutsModal state={state.editor} actions={actions.editor} />
+      </div>
+    )
+  }
+
   return (
     <div>
       <footer class="footer navbar">

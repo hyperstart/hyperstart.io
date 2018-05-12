@@ -6,7 +6,7 @@ import { SearchField } from "lib/search/SearchField"
 
 import { Status, LogFn } from "logger"
 import { State, Actions } from "api"
-import { isLoading } from "selectors"
+import { isLoading, isInIframe } from "selectors"
 import {
   isEditorDirty,
   isDebuggable,
@@ -17,6 +17,7 @@ import { UserIconButton } from "users/UserIconButton"
 import "./Header.scss"
 import { forkProject } from "forkProject"
 import { hasDebugRuns } from "editor/debug/selectors"
+import { getEditorUrl } from "utils"
 
 export interface HeaderProps {
   state: State
@@ -141,44 +142,87 @@ function ForkButton({ state, actions }: HeaderProps) {
   })
 }
 
+function HeaderLink({ state }: HeaderProps) {
+  if (isInIframe()) {
+    const project = state.editor.project
+    if (!project) {
+      return (
+        <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
+          <strong>Hyper</strong>start
+        </Link>
+      )
+    }
+    return (
+      <a
+        href={getEditorUrl(project.details)}
+        target="_blank"
+        class="navbar-brand mr-2 p-2 text-light logo"
+      >
+        <small>Edit in</small> <strong>Hyper</strong>start
+      </a>
+    )
+  }
+
+  return (
+    <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
+      <strong>Hyper</strong>start
+    </Link>
+  )
+}
+
+function LeftNavSection(props: HeaderProps) {
+  return (
+    <section class="navbar-section">
+      {HeaderLink(props)}
+      {SaveButton(props)}
+      {RunButton(props)}
+      {DebugButton(props)}
+      {FormatButton(props)}
+    </section>
+  )
+}
+
+function RightNavSection(props: HeaderProps) {
+  const { state, actions, log } = props
+  if (isInIframe()) {
+    return null
+  }
+
+  return (
+    <section class="navbar-section">
+      {EmbedButton(props)}
+      {ForkButton(props)}
+
+      {SearchField({
+        state: state.search,
+        actions: actions.search,
+        log,
+        onSearch: () => {
+          push("/projects")
+        },
+        name: "projects",
+        placeholder: "Search projects...",
+        class: "hide-md"
+      })}
+      {CreateButton(props)}
+      {UserIconButton({
+        state: state.users,
+        actions: actions.users,
+        log: actions.logger.log
+      })}
+    </section>
+  )
+}
+
 export function Header(props: HeaderProps) {
   const { state, actions, log } = props
   return (
     <header class="header navbar">
-      <section class="navbar-section">
-        <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
-          <strong>Hyper</strong>start
-        </Link>
-        {SaveButton(props)}
-        {RunButton(props)}
-        {DebugButton(props)}
-        {FormatButton(props)}
-      </section>
+      {LeftNavSection(props)}
       <section class="navbar-section">
         {Status({ state: state.logger, actions: actions.logger })}
       </section>
-      <section class="navbar-section">
-        {EmbedButton(props)}
-        {ForkButton(props)}
-
-        {SearchField({
-          state: state.search,
-          actions: actions.search,
-          log,
-          onSearch: () => {
-            push("/projects")
-          },
-          name: "projects",
-          placeholder: "Search projects...",
-          class: "hide-md"
-        })}
-        {CreateButton(props)}
-        {UserIconButton({
-          state: state.users,
-          actions: actions.users,
-          log: actions.logger.log
-        })}
-      </section>
+      {RightNavSection(props)}
     </header>
   )
 }

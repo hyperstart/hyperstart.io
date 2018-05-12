@@ -5,6 +5,7 @@ import { Project } from "projects"
 
 import * as api from "./api"
 import { isSinglePane, isSourceTab } from "../selectors"
+import { isInIframe } from "selectors"
 
 // # getState
 
@@ -27,6 +28,8 @@ export function createState(project: Project | null): api.State {
     }
   }
 
+  const selectedView = isInIframe() ? api.OUTPUT_TAB_ID : api.PROJECT_TAB_ID
+
   return {
     sources: {
       opened: main ? [main] : [],
@@ -34,7 +37,7 @@ export function createState(project: Project | null): api.State {
     },
     views: {
       opened: viewTabs,
-      selected: [api.PROJECT_TAB_ID]
+      selected: [selectedView]
     }
   }
 }
