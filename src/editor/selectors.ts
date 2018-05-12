@@ -181,7 +181,6 @@ export function getEmbedText(state: State): string {
   return `<iframe 
   src="${getEditorUrl(state)}?target=iframe" 
   title="${name === "" ? "Untitled project" : name}"
-  sandbox="allow-scripts allow-forms allow-same-origin"
   width="100%"
   height="320px"
   frameBorder="0">

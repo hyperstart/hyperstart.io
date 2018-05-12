@@ -25,6 +25,8 @@ export interface HeaderProps {
   log: LogFn
 }
 
+// # Buttons
+
 function CreateButton({ state, actions }: HeaderProps) {
   if (state.editor.status !== "closed") {
     return null
@@ -142,19 +144,16 @@ function ForkButton({ state, actions }: HeaderProps) {
   })
 }
 
+// # Header Link
+
 function HeaderLink({ state }: HeaderProps) {
   if (isInIframe()) {
-    const project = state.editor.project
-    if (!project) {
-      return (
-        <Link href="/" class="navbar-brand mr-2 p-2 text-light logo">
-          <strong>Hyper</strong>start
-        </Link>
-      )
-    }
+    const url = window.location.href
+    const search = window.location.search
+    const href = url.substring(0, url.length - search.length)
     return (
       <a
-        href={getEditorUrl(project.details)}
+        href={href}
         target="_blank"
         class="navbar-brand mr-2 p-2 text-light logo"
       >
@@ -170,6 +169,8 @@ function HeaderLink({ state }: HeaderProps) {
   )
 }
 
+// # Left Section
+
 function LeftNavSection(props: HeaderProps) {
   return (
     <section class="navbar-section">
@@ -181,6 +182,8 @@ function LeftNavSection(props: HeaderProps) {
     </section>
   )
 }
+
+// # Right Section
 
 function RightNavSection(props: HeaderProps) {
   const { state, actions, log } = props
