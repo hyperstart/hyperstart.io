@@ -206,7 +206,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
             details: {
               ...toSave.details,
               name,
-              hidden: name !== "",
+              hidden: name === "",
               searches: getSearches(name)
             },
             files: toSave.files
