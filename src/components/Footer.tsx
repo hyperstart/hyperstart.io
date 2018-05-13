@@ -96,11 +96,11 @@ export function Footer(props: FooterProps) {
         </section>
         <section class="navbar-section">
           <a
-            href="https://github.com/hyperstart/hyperstart.io/releases/tag/v0.3.0"
+            href="https://github.com/hyperstart/hyperstart.io/releases/tag/v0.4.0"
             class="text-light"
             target="_blank"
           >
-            v0.3.0
+            v0.4.0
           </a>
         </section>
       </footer>
