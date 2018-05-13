@@ -197,6 +197,10 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
       if (state.status === "editing") {
         let toSave = state.project
         if (toSave.details !== state.original.details) {
+          logEvent("rename_project", {
+            event_category: "project",
+            event_label: "Rename"
+          })
           const name = normalize(toSave.details.name)
           toSave = {
             details: {

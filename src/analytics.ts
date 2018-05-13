@@ -15,3 +15,18 @@ export function logEvent(action?: any, parameters?: any) {
     gtag("event", action, parameters)
   }
 }
+
+window.addEventListener("error", event => {
+  const { error, message, lineno, colno, filename, type } = event
+  logEvent("exception", {
+    description: JSON.stringify({
+      error,
+      message,
+      lineno,
+      colno,
+      filename,
+      type
+    }),
+    fatal: false
+  })
+})
