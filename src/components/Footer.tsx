@@ -21,7 +21,7 @@ function ShortcutsButton(props: FooterProps) {
   if (state.editor.status !== "closed") {
     return (
       <a
-        class="text-light"
+        class="text-light hide-sm"
         href="#"
         onclick={actions.editor.ui.closeShortcutsModal}
       >
@@ -97,7 +97,7 @@ export function Footer(props: FooterProps) {
         <section class="navbar-section">
           <a
             href="https://github.com/hyperstart/hyperstart.io/releases/tag/v0.3.0"
-            class="text-light"
+            class="text-light hide-sm"
             target="_blank"
           >
             v0.3.0
