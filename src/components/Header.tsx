@@ -89,7 +89,7 @@ function DebugButton({ state, actions }: HeaderProps) {
         active={debugState.paneShown}
         onclick={() => actions.editor.debug.showPane(!debugState.paneShown)}
         icon="caret-down"
-        class="btn-primary"
+        class="btn-primary mr-1"
       />
     </div>
   )
@@ -108,7 +108,7 @@ function FormatButton({ state, actions }: HeaderProps) {
         actions.editor.executeAction("editor.action.formatDocument")
       }
       text="Format"
-      class="button btn-secondary mr-1 hide-lg"
+      class="button btn-secondary hide-lg"
     />
   )
 }
@@ -121,7 +121,7 @@ function EmbedButton({ state, actions }: HeaderProps) {
     disabled: state.editor.status === "local-only",
     onclick: actions.editor.ui.openEmbedModal,
     text: "Embed",
-    class: "btn-secondary hide-lg"
+    class: "btn-secondary hide-lg mr-1"
   })
 }
 
