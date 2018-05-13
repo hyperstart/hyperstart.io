@@ -67,6 +67,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     // ## Create file modal
     createFileModal: createFileForm.actions,
     openCreateFileModal: (path: string) => {
+      logEvent("screen_view", { screen_name: "Create file" })
       const value = path === ROOT_PATH ? ROOT_PATH : path + "/"
       return {
         createFileModal: {
@@ -79,6 +80,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     },
     // ## Delete file modal
     openDeleteFileModal: (deleteFileModal: string) => {
+      logEvent("screen_view", { screen_name: "Delete file" })
       return { deleteFileModal }
     },
     closeDeleteFileModal: () => state => {
@@ -86,6 +88,7 @@ export const ui: ModuleImpl<api.State, api.Actions> = {
     },
     // ## Embed modal
     openEmbedModal: () => {
+      logEvent("screen_view", { screen_name: "Embed modal" })
       return { embedModal: true }
     },
     closeEmbedModal: () => {
