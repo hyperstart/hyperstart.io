@@ -16,7 +16,6 @@ import {
 import { UserIconButton } from "users/UserIconButton"
 
 import "./Header.scss"
-import { forkProject } from "forkProject"
 import { hasDebugRuns } from "editor/debug/selectors"
 import { getEditorUrl } from "utils"
 
@@ -137,9 +136,7 @@ function ForkButton({ state, actions }: HeaderProps) {
 
   return Button({
     disabled: !isForkEnabled(state.editor) || isLoading(state),
-    onclick: () => {
-      forkProject(state, actions, toFork)
-    },
+    onclick: () => actions.logger.log(actions.editor.fork()),
     text: "Fork",
     class: "fork-button btn-secondary hide-lg"
   })
@@ -245,7 +242,7 @@ function ActionsButton(props: HeaderProps) {
       <DropdownItem
         text="Fork"
         disabled={!isForkEnabled(state.editor) || isLoading(state)}
-        onclick={() => forkProject(state, actions, state.editor.project)}
+        onclick={() => actions.logger.log(actions.editor.fork())}
       />
     </Dropdown>
   )

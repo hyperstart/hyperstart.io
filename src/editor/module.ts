@@ -25,7 +25,7 @@ import { importBundles } from "projects/importBundles"
 import { computeNpmVersions } from "./computeNpmVersions"
 import { importProjects } from "projects/importProjects"
 import { getFileTree } from "./getFileTree"
-import { getSearches } from "lib/search"
+import { getSearches, normalize } from "lib/search"
 import { createModel, deleteModels, configureFor } from "./monaco"
 import { getProjectOwner } from "projects/getProjectOwner"
 import { hasCurrentEditor, executeAction } from "./monacoActions"
@@ -128,9 +128,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         project: {
           details: {
             ...details,
-            name,
-            hidden: name !== "",
-            searches: getSearches(name)
+            name
           },
           files
         }
@@ -197,7 +195,20 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         throw new Error(`Status should not be read-only.`)
       }
       if (state.status === "editing") {
-        return actions._projects.save(state.project).then(project => {
+        let toSave = state.project
+        if (toSave.details !== state.original.details) {
+          const name = normalize(toSave.details.name)
+          toSave = {
+            details: {
+              ...toSave.details,
+              name,
+              hidden: name !== "",
+              searches: getSearches(name)
+            },
+            files: toSave.files
+          }
+        }
+        return actions._projects.save(toSave).then(project => {
           // TODO recompute searches and stuff
           actions._setState({
             original: project,
@@ -211,11 +222,12 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           .then(user => {
             const files = state.project.files
             const existing = state.project.details
+            const name = normalize(existing.name)
             const details: projects.ProjectDetails = {
               id: guid(),
-              name: existing.name,
+              name,
               hidden: name === "",
-              searches: getSearches(existing.name),
+              searches: getSearches(name),
               mainPath: existing.mainPath,
               filesUrls: null,
               owner: getProjectOwner(user)
@@ -242,7 +254,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
         .ensureUser()
         .then(user => {
           const files = state.project.files
-          const name = state.project.details.name
+          const name = normalize(state.project.details.name)
           const details: projects.ProjectDetails = {
             id: guid(),
             name,
@@ -265,6 +277,11 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
             status: "editing"
           })
           replace(`/projects/${project.details.id}`)
+
+          logEvent("fork_project", {
+            event_category: "project",
+            event_label: "Fork"
+          })
         })
     },
     onUserChanged: (user: users.User) => (state, actions) => {
@@ -289,8 +306,7 @@ const _editor: ModuleImpl<api.State, api.InternalActions> = {
           } else if (user && !user.linkedTo) {
             // we were editing before (i.e. with an anonymous user)
             // and the account was not linked -> we must fork the project
-            actions.fork(getProjectOwner(user))
-            return actions.saveProject()
+            return actions.fork()
           }
         case "read-only":
           if (!user) {

@@ -26,13 +26,12 @@ export interface ProjectOwner {
 }
 
 export interface ProjectDetails {
+  id: string
   name: string
   hidden: boolean
   searches: any
   mainPath: string
   owner: ProjectOwner
-  // all set to null before saved
-  id: string
   filesUrls: string
 }
 

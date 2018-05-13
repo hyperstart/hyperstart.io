@@ -45,6 +45,7 @@ const _OutputTab = (props: OutputTabProps) => {
     <div class="view-pane-tab output-tab">
       <iframe
         id="preview-iframe"
+        src="about:blank"
         oncreate={setContent}
         sandbox="allow-forms allow-pointer-lock allow-popups allow-scripts allow-same-origin"
       />

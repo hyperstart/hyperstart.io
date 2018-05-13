@@ -12,7 +12,7 @@ function updateValue(searches: Searches, name: string, value: number): void {
 }
 
 export function normalize(text: string): string {
-  if (!text) {
+  if (!text || text === "") {
     return ""
   }
 
