@@ -23,7 +23,7 @@ function ShortcutsButton(props: FooterProps) {
       <a
         class="text-light hide-sm"
         href="#"
-        onclick={actions.editor.ui.closeShortcutsModal}
+        onclick={actions.editor.ui.openShortcutsModal}
       >
         Shortcuts
       </a>
