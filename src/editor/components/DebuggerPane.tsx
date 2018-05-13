@@ -35,7 +35,7 @@ export interface DebuggerPaneProps {
 export const DebuggerPane = (props: DebuggerPaneProps) => {
   const { state, actions } = props
   if (!state.debug.paneShown) {
-    return <div />
+    return <div class="debugger-hidden" />
   }
 
   const className = `debugger-pane ${

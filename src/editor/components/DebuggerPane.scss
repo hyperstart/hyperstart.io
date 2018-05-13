@@ -1,5 +1,9 @@
 @import "../../variables.scss";
 
+.debugger-hidden {
+  max-height: 0px;
+}
+
 .debugger-pane {
   display: flex;
   flex-direction: column;
@@ -9,6 +13,8 @@
   right: 50%;
   top: 0;
   bottom: 0;
+  max-height: 100vh;
+  transition: max-height 0.3s ease-in;
 
   &.debugger-pane__full-screen {
     right: 0;
@@ -18,6 +24,7 @@
     display: flex;
     justify-content: space-between;
     flex-shrink: 0;
+    background-color: $bg-color;
 
     h4 {
       margin: 0.25rem 0.8rem;
@@ -31,6 +38,7 @@
   .debugger-options {
     display: flex;
     flex-shrink: 0;
+    background-color: $bg-color;
 
     .option {
       flex-grow: 1;
