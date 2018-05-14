@@ -172,43 +172,6 @@ function HeaderLink({ state }: HeaderProps) {
   )
 }
 
-// function UserDropdownItems({ state, actions }: HeaderProps) {
-//   const user = state.users.user
-//   if (user && !user.anonymous) {
-//     return (
-//       <DropdownItem
-//         text="Sign Out"
-//         class="show-sm"
-//         onclick={actions.users.signOut}
-//       />
-//     )
-//   }
-//   const log = actions.logger.log
-//   return [
-//     <DropdownItem divider text="User" />,
-//     <DropdownItem
-//       text="Sign Up"
-//       class="show-sm"
-//       onclick={actions.users.showSignUpModal}
-//     />,
-//     <DropdownItem
-//       text="Email Sign In"
-//       class="show-sm"
-//       onclick={actions.users.showSignInModal}
-//     />,
-//     <DropdownItem
-//       text="Sign In Google"
-//       class="show-sm"
-//       onclick={() => log(actions.users.signInWithGoogle)}
-//     />,
-//     <DropdownItem
-//       text="Sign In Github"
-//       class="show-sm"
-//       onclick={() => log(actions.users.signInWithGithub)}
-//     />
-//   ]
-// }
-
 function ActionsButton(props: HeaderProps) {
   const { state, actions } = props
   if (state.editor.status === "closed") {

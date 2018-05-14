@@ -12,8 +12,8 @@ import { createSearch } from "lib/search/module"
 import { ui } from "ui/module"
 import { users } from "users/module"
 import { AuthListener } from "users"
-import { COLLECTION, ProjectOwner } from "projects"
-import { getWords } from "lib/search"
+import { COLLECTION, ProjectOwner, ProjectDetails } from "projects"
+import { getWords, SearchFn } from "lib/search"
 import { getProjectsStore } from "getProjectsStore"
 import { createProject } from "./createProject"
 import { logConfig, logEvent } from "analytics"
@@ -62,12 +62,12 @@ export const module: ModuleImpl<State, Actions> = {
       }
       actions.users.initAuthentication([authListener])
 
-      const searchFn = (text, range) => {
+      const searchFn: SearchFn = (text, range) => {
         if (!text || text.trim() === "") {
           return projectsStore.query({
             collection: COLLECTION,
             where: [{ attribute: "hidden", op: "==", value: false }],
-            first: range.value,
+            first: range.index,
             limit: range.count
           })
         }
@@ -77,7 +77,7 @@ export const module: ModuleImpl<State, Actions> = {
           collection: COLLECTION,
           where: [{ attribute, op: ">", value: 0 }],
           orderBy: { attribute, descending: true },
-          first: range.value,
+          first: range.index,
           limit: range.count
         })
       }

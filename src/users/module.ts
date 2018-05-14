@@ -78,7 +78,6 @@ function signInWithProvider(
           resolve()
         })
         .catch(e => {
-          console.log(e.code)
           if (e.code === "auth/credential-already-in-use") {
             // There is already an anonymous account linked to those credentials.
             // in this case, the only thing we can do is to signup the user normally.
