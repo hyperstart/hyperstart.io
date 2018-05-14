@@ -41,4 +41,4 @@ This repository contains:
 
 # License
 
-MIT
+GPL
