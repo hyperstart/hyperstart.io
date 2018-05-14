@@ -1,6 +1,6 @@
 import { h } from "hyperapp"
 
-import { MonacoEditor, getModel, getEditor } from "../monaco"
+import { MonacoEditor, getModel, getEditor, MonacoOptions } from "../monaco"
 import { State, Actions, MonacoAction } from "../api"
 import { setCurrentSourceEditor } from "../monacoActions"
 
@@ -9,8 +9,8 @@ export interface SourceEditorProps {
   actions: Actions
   source: string
 }
-// monaco.editor.IEditorOptions
-function getOptions(): any {
+
+function getOptions(): MonacoOptions {
   return {
     minimap: { enabled: false },
     folding: true,
