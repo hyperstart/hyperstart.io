@@ -18,7 +18,7 @@ export function map<I, O>(
 }
 
 const ALPHABET =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_~"
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 const SIZE = 12
 const rand = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)]
 
